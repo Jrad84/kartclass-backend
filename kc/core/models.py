@@ -9,7 +9,8 @@ class Category(models.Model):
     trailer = models.FileField(upload_to='documents/', blank=True, null=True)
 
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name
@@ -22,11 +23,13 @@ class Category(models.Model):
 class Driver(models.Model):
     name = models.CharField(max_length=50)
 
-    def __str__(self):
-        if self.name:
-            return f'{self.pk},{self.name}'
+    class Meta:
+        verbose_name = "Driver"
+        verbose_name_plural = "Drivers"
 
-        return self.pk
+    def __str__(self):
+         return self.name
+
 
 
 class Video(models.Model):
@@ -39,8 +42,12 @@ class Video(models.Model):
     image_file = models.ImageField(upload_to='documents/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Video"
+        verbose_name_plural = "Videos"
+
     def __str__(self):
-        return f'{self.pk},{self.title}'
+        return self.title
 
 
 class Article(models.Model):
@@ -52,14 +59,22 @@ class Article(models.Model):
     picture = models.ImageField(upload_to='documents/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Article"
+        verbose_name_plural = "Articles"
+
     def __str__(self):
-        return f'{self.pk},{self.title}'
+        return self.title
 
 
 class Testimonial(models.Model):
     name = models.CharField(max_length=50)
     comment = models.TextField()
     image = models.ImageField(upload_to='documents/', null=True)
+
+    class Meta:
+        verbose_name = "Testimonial"
+        verbose_name_plural = "Testimonials"
 
     def __str__(self):
         return self.name
