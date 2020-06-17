@@ -47,11 +47,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'core',
     'api',
+    'accounts',
     'corsheaders',
     'django_filters',
+    'rest_registration',
    
-
-
 
 ]
 
@@ -121,30 +121,52 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # DRF stuff.
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        # By default we set everything to admin,
-        #   then open endpoints on a case-by-case basis
-        # 'rest_framework.permissions.IsAdminUser',
-    ),
-    'TEST_REQUEST_RENDERER_CLASSES': (
-        'rest_framework.renderers.MultiPartRenderer',
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.TemplateHTMLRenderer'
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     # By default we set everything to admin,
+    #     #   then open endpoints on a case-by-case basis
+        
+    #      'rest_framework.permissions.IsAdminUser',
+    #      'rest_framework.permissions.IsAuthenticated',
+    # ),
+    'DEFAULT_PERMISSION_CLASSES': ( 
+       
+        'rest_framework.permissions.IsAuthenticated',
+         ),
+    # 'TEST_REQUEST_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.MultiPartRenderer',
+    #     'rest_framework.renderers.JSONRenderer',
+    #     'rest_framework.renderers.TemplateHTMLRenderer'
+    # ),
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE': 20,
 }
+# https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'REGISTER_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-user/',
+    'RESET_PASSWORD_VERIFICATION_URL': 'https://127.0.0.1:3000/reset-password/',
+    'REGISTER_EMAIL_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-email/',
 
+    'VERIFICATION_FROM_EMAIL': 'jaredtaback@gmail.com',
+    
+    "USER_DETAILS_SERIALIZER": "api.v1.serializers.user.UserRetrieveSerializer",
+    'REGISTER_SERIALIZER_CLASS': 'api.v1.serializers.user.UserCreateSerializer',
+}
 
-# JWT_AUTH = {
-#     'JWT_ALLOW_REFRESH': True,
-#     'JWT_EXPIRATION_DELTA': timedelta(hours=1),
-#     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-# }
+# ALLOWED_HOSTS = ("http://127.0.0.1:3000/",)
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -179,6 +201,7 @@ WEBPACK_LOADER = {
     }
 }
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True

@@ -1,101 +1,48 @@
-from django.contrib.auth import get_user_model
-
+from django.contrib.auth import get_user_model, hashers
 from rest_framework import serializers
 
 
-class UserListSerializer(serializers.ModelSerializer):
+class UserRetrieveSerializer(serializers.ModelSerializer):
+    """Retrieve serializer for `Users`.
+    Contains fields:
+    - `uuid`
+    - `name`
+    """
+
     class Meta:
         model = get_user_model()
         fields = (
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'date_joined',
-            'last_login',
-            'is_active',
-            'is_staff',
-            'is_superuser',
-        )
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = (
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'date_joined',
-            'last_login',
-            'is_active',
-            'is_staff',
-            'is_superuser',
+            "uuid",
+            "name",
         )
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+    """Create serializer for `Users`.
+    Contains fields:
+    - `uuid`
+    - `name`
+    - `email`
+    - `password`
+    """
+
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        style={'input_type': 'password', 'placeholder': 'Password'}
+    )
+
     class Meta:
         model = get_user_model()
         fields = (
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'date_joined',
-            'last_login',
-            'is_active',
-            'is_staff',
-            'is_superuser',
-            'password',
+            "uuid",
+            "name",
+            "email",
+            "password",
         )
-        extra_kwargs = {
-            'password': {
-                'write_only': True
-            }
-        }
+
 
     def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.set_password(validated_data.get('password'))
-        user.save()
-
-        return user
-
-
-class UserDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = (
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'date_joined',
-            'last_login',
-            'is_active',
-            'is_staff',
-            'is_superuser',
-        )
-
-
-class UserUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = (
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-        )
-        extra_kwargs = {
-            'username': {
-                'read_only': True
-            }
-        }
+        validated_data['password'] = hashers.make_password(validated_data.get('password'))
+        
+        return super(UserCreateSerializer, self).create(validated_data)

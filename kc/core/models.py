@@ -1,7 +1,35 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
+import uuid
 
 
+class Base(models.Model):
+    """Base model.
+    Contains fields:
+    - `date_created`
+    - `date_updated`
+    """
+
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Uuid(models.Model):
+    """UUID model.
+    Contains fields:
+    - `uuid`
+    """
+
+    uuid = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+    )
+
+    class Meta:
+        abstract = True
+
+        
 class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, null=True)
@@ -37,7 +65,7 @@ class Video(models.Model):
     driver = models.ForeignKey(
         Driver, default='unknown', on_delete=models.SET_DEFAULT)
     description = models.CharField(max_length=150, null=True)
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, related_name='category')
     video_file = models.FileField(upload_to='documents/', null=True)
     image_file = models.ImageField(upload_to='documents/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,6 +85,7 @@ class Article(models.Model):
     description = models.CharField(max_length=150)
     category = models.ManyToManyField(Category)
     picture = models.ImageField(upload_to='documents/', null=True)
+    text = models.TextField(default="textarea")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

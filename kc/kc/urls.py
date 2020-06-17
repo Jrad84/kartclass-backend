@@ -23,9 +23,11 @@ from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", include('api.urls')),
-    path("", include('api.urls')),
+    path("api/v1/", include('api.v1.urls')),
+    path("", include('api.v1.urls')),
+    
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

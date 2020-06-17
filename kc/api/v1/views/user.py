@@ -1,55 +1,29 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-
-from rest_framework import exceptions, filters, mixins, status, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
-from api.v1.serializers.user import UserSerializer, UserListSerializer, UserDetailSerializer
-
+from rest_framework import mixins, viewsets
+from api.v1.permissions.user import UserPermission
+from api.v1.serializers.user import UserCreateSerializer, UserRetrieveSerializer
 
 
 class UserViewSet(
-        mixins.ListModelMixin,
-        mixins.RetrieveModelMixin,
-        viewsets.GenericViewSet,):
+    mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet,):
 
-    queryset = get_user_model().objects.all()
-    permission_classes = (IsAdminUser,)
-    serializer_class = UserSerializer
-    filter_backends = (
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    )
-    search_fields = ('username',)
-    ordering = ('-id',)
-    ordering_fields = (
-        'id',
-        'username',
-        'date_joined',
-        'last_login',
-    )
-    filterset_fields = (
-        'is_active',
-        'is_staff',
-        'is_superuser',
-    )
+    """`User` view set."""
+
+    """
+    
+    Notes:
+    - Only makes use of active user accounts.
+    
+    """
+
+    queryset = get_user_model().objects.filter(is_active=True).all()
+    permission_classes = (UserPermission,)
+
+    # Change lookup field from `pk` to `uuid`.
+    lookup_field = "uuid"
 
     def get_serializer_class(self):
-        if self.action == 'list':
-            return UserListSerializer
-        if self.action == 'retrieve':
-            return UserDetailSerializer
+        if self.action == "create":
+            return UserCreateSerializer
 
-        return UserSerializer
-
-    # @action(detail=True, methods=['GET'], name='Salesperson invoices')
-    # def invoices(self, request, pk=None):
-    #     """Get invoices made by a salesperson."""
-
-    #     user = get_object_or_404(self.queryset, pk=pk)
-
-    #     invoices = Invoice.objects.filter(
-    #         salesperson=user).order_by('-datetime_created')
-    #     serializer = InvoiceListSerializer(invoices, many=True)
-
-    #     return Response(serializer.data)
+        return UserRetrieveSerializer
