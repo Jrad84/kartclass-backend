@@ -10,4 +10,4 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('id', 'driver', 'description', 'category',
-                  'picture')
+                  'picture', 'text')
