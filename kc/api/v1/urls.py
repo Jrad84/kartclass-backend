@@ -27,7 +27,7 @@ router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'drivers', DriverView)
-router.register(r'accounts', UserViewSet)
+# router.register(r'accounts', UserViewSet)
 
 
 urlpatterns.extend(router.urls)

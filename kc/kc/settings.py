@@ -119,35 +119,40 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# EMAIL settings
+# EMAIL_HOST=os.environ.get('EMAIL_HOST')
+# EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
+# EMAIL_PORT=os.environ.get('EMAIL_PORT')
+# EMAIL_USE_TLS=os.environ.get('EMAIL_USE_TLS')
+# EMAIL_USE_SSL=os.environ.get('EMAIL_USE_SSL')
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='jaredtaback@gmail.com'
+EMAIL_HOST_PASSWORD='N0v0selic'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+
 # DRF stuff.
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     # By default we set everything to admin,
-    #     #   then open endpoints on a case-by-case basis
-        
-    #      'rest_framework.permissions.IsAdminUser',
-    #      'rest_framework.permissions.IsAuthenticated',
-    # ),
+
     'DEFAULT_PERMISSION_CLASSES': ( 
        
         'rest_framework.permissions.IsAuthenticated',
          ),
-    # 'TEST_REQUEST_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.MultiPartRenderer',
-    #     'rest_framework.renderers.JSONRenderer',
-    #     'rest_framework.renderers.TemplateHTMLRenderer'
-    # ),
+
    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE': 20,
+
 }
+
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': False,
-    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
-    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'REGISTER_VERIFICATION_ENABLED': True,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': True,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': True,
     'REGISTER_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-user/',
     'RESET_PASSWORD_VERIFICATION_URL': 'https://127.0.0.1:3000/reset-password/',
     'REGISTER_EMAIL_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-email/',
