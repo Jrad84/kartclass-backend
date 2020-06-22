@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
     'core',
     'api',
@@ -51,6 +52,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'rest_registration',
+    # 'stripe',
+    'pinax.stripe',
    
 
 ]
@@ -64,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pinax.stripe.middleware.ActiveSubscriptionMiddleware',
 ]
 
 
@@ -210,3 +214,14 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True
+
+# STRIPE 
+SITE_ID = 1
+PINAX_STRIPE_DEFAULT_PLAN = "Premium plan"
+PINAX_STRIPE_SECRET_KEY = "sk_test_51GwHkBD9jmvAZt96KpjcouKUOWsePIa6G2i42kPoldiMIaSQ0OM4waIlPYIs8Qv2PVeYpqaqc5Wf11zjYFKt4B4Z00FSo6Gx3L"
+
+PINAX_STRIPE_PUBLIC_KEY = "pk_test_51GwHkBD9jmvAZt96xvln9VxxqrK0OR1ylOW6RLt7PkuQYsO0BsHzSpxj8LwSd91RIZRuVaq5rvF60s1tLWazlB4b00Lj5TaYar"
+PINAX_STRIPE_INVOICE_FROM_EMAIL = ""
+PINAX_STRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = []
+PINAX_STRIPE_SUBSCRIPTION_REQUIRED_REDIRECT = ""
+STRIPE_LIVE_MODE = False

@@ -1,6 +1,11 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
+from django.utils.translation import gettext_lazy as _
 import uuid
+import stripe
+
+stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
 
 
 class Base(models.Model):
@@ -107,3 +112,32 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    unit_price = models.FloatField()
+    active = models.BooleanField(default=False, help_text=_("Designates whether product is available for purchase"))
+
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
+
+    def __str__(self):
+        return self.name
+
+
+class Price(models.Model):
+    currency = models.CharField(max_length=3, help_text=_("Designates currency, 3 letter code, lowercase"))
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    type = models.CharField(max_length=50, help_text=_("Designates whether payment is recurring or one_time"))
+    interval = models.CharField(max_length=20, help_text=_("Designates billing frequency. Can be day, week, month or year"))
+    unit_amount = models.IntegerField(help_text=_("Designates payment amount in cents"))
+
+    class Meta:
+        verbose_name = "Price"
+
+        def __str__(self):
+            return self.currency
+
