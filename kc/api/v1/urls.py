@@ -10,6 +10,7 @@ from api.v1.views.driver import DriverView
 from rest_framework_simplejwt import views as jwt_views
 from api.v1.views.user import UserViewSet
 from api.v1.views.me import MeView
+from api.v1.views.stripe import *
 
 
 urlpatterns = [
@@ -19,6 +20,14 @@ urlpatterns = [
          name='auth-token-refresh'),
     path('me/', MeView.as_view(), name='me'),   
      path('accounts/', include('rest_registration.api.urls')),
+     path('current-user/', CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),
+    path('subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
+    path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),
+    path('charges/', ChargeListView.as_view(), name='stripe-charges'),
+    path('invoices/', InvoiceListView.as_view(), name='stripe-invoices'),
+    path('plans/', PlanListView.as_view(), name='stripe-plans'),
+    path('events/', EventListView.as_view(), name='stripe-events'),
+    path('webhook/', CancelView.as_view(), name='stripe-cancel'),
 ]
 
 router = routers.DefaultRouter()

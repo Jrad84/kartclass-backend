@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model, hashers
 from rest_framework import serializers
+from core.models import Category
+from api.v1.serializers.category import CategorySerializer
 
 
 class UserRetrieveSerializer(serializers.ModelSerializer):
@@ -11,9 +13,12 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
+        category = CategorySerializer()
         fields = (
             "uuid",
             "name",
+            "category"
+            "is_member"
         )
 
 
@@ -44,5 +49,4 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
-        
         return super(UserCreateSerializer, self).create(validated_data)
