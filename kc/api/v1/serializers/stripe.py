@@ -50,7 +50,7 @@ class EventSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class CurrentSubscriptionSerializer(ModelSerializer):
+class SubscriptionSerializer(ModelSerializer):
     class Meta:
         model = Subscription
         fields = '__all__'
@@ -91,8 +91,8 @@ class CurrentCustomerSerializer(ModelSerializer):
 """
 
 
-class SubscriptionSerializer(Serializer):
-    stripe_plan = serializers.ChoiceField(choices=app_settings.PINAX_STRIPE_DEFAULT_PLAN, required=True)
+# class SubscriptionSerializer(Serializer):
+#     stripe_plan = serializers.ChoiceField(choices=app_settings.PINAX_STRIPE_DEFAULT_PLAN, required=True)
 
 
 class CardSerializer(Serializer):

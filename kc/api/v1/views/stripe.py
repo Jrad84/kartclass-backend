@@ -12,7 +12,7 @@ from rest_framework import permissions
 import kc.settings as app_settings
 
 from api.v1.serializers.stripe import (
-    # CurrentSubscriptionSerializer,
+    SubscriptionSerializer,
     CurrentCustomerSerializer,
     SubscriptionSerializer,
     CardSerializer,
@@ -57,7 +57,7 @@ class StripeView(APIView):
 
 class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     """ See the current customer/user payment details """
-
+    
     serializer_class = CurrentCustomerSerializer
 
     def get_object(self):
@@ -67,10 +67,10 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
 class SubscriptionView(StripeView):
     """ See, change/set the current customer/user subscription plan """
     serializer_class = SubscriptionSerializer
-
+    permission_classes = (permissions.AllowAny,)
     def get(self, request, *args, **kwargs):
         current_subscription = self.get_current_subscription()
-        serializer = CurrentSubscriptionSerializer(current_subscription)
+        serializer = SubscriptionSerializer(current_subscription)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
@@ -147,8 +147,6 @@ class PlanListView(StripeView, generics.ListAPIView):
     serializer_class = PlanSerializer
     queryset = Plan.objects.all()
     
-    # def get(self, request, *args, **kwargs):
-    #     return Response(settings.PAYMENTS_PLANS, status=status.HTTP_200_OK)
 
 
 class ChargeListView(StripeView, generics.ListAPIView):

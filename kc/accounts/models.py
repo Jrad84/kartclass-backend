@@ -2,12 +2,14 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.validators import EmailValidator
 from django.db import models
-from django.db.models.signals import pre_delete, post_save
+import django.dispatch
+from django.db.models.signals import pre_delete, post_save, pre_save
 from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from accounts.managers import CustomUserManager
 from pinax.stripe.actions import customers
+from pinax.stripe.models import Customer
 import jwt
 
 from core.models import Category
@@ -61,7 +63,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base, Uuid):
         Category, null=True, 
         on_delete=models.SET_NULL,
         help_text=_("Designates what category a user is in")
-        )
+    )
+    stripe_token = models.CharField(
+        max_length=300,
+        null = True,
+        blank = True,
+        help_text=_("Stripe pay token")
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
@@ -85,6 +93,7 @@ def delete_user(sender, instance, **kwargs):
         raise PermissionDenied
 
 # Create a Stripe customer after User saved in db
-@receiver(post_save, sender=CustomUser)
-def create_stripe_user(sender, instance, **kwargs):
-    customers.create(user=instance)
+# @receiver(post_save, sender=CustomUser)
+# def create_stripe_user(sender, instance, created, **kwargs):
+#     if created:
+#         customers.create(user=instance)
