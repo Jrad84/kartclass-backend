@@ -11,7 +11,8 @@ from pinax.stripe.models import (
     Invoice,
     InvoiceItem,
     Charge,
-    Plan
+    Plan,
+    Card
 )
 
 """
@@ -54,6 +55,9 @@ class SubscriptionSerializer(ModelSerializer):
     class Meta:
         model = Subscription
         fields = '__all__'
+
+    # def create(self, validated_data):
+    #     stripe.Subscription.create()
 
 
 class ChargeSerializer(ModelSerializer):
@@ -108,6 +112,7 @@ class CardSerializer(Serializer):
     address_zip = serializers.CharField(required=False, allow_null=True)
     address_state = serializers.CharField(required=False, allow_null=True)
     address_country = serializers.CharField(required=False, allow_null=True)
+
 
 
 class CancelSerializer(Serializer):

@@ -6,6 +6,5 @@ admin.site.register(Testimonial)
 admin.site.register(Category)
 admin.site.register(Article)
 admin.site.register(Driver)
-admin.site.register(Product)
-admin.site.register(Price)
+
 

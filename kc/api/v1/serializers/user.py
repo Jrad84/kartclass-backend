@@ -51,5 +51,5 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
-        stripe.Customer.create(email=validated_data['email'])
+        stripe.Customer.create(name=validated_data['name'], email=validated_data['email'])
         return super(UserCreateSerializer, self).create(validated_data)

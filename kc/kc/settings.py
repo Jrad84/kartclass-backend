@@ -35,7 +35,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
      "5e702f67907c.ngrok.io",
-     "localhost"
+     "localhost",
+     "5142381bb929.ngrok.io"
      ]
 
 

@@ -33,6 +33,7 @@ from pinax.stripe.models import (
     Plan
 )
 
+
 import stripe
 
 stripe.api_key = "sk_test_51GwHkBD9jmvAZt96KpjcouKUOWsePIa6G2i42kPoldiMIaSQ0OM4waIlPYIs8Qv2PVeYpqaqc5Wf11zjYFKt4B4Z00FSo6Gx3L"
@@ -59,7 +60,7 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     """ See the current customer/user payment details """
     
     serializer_class = CurrentCustomerSerializer
-
+    permission_classes = (permissions.AllowAny,)
     def get_object(self):
         return self.get_customer()
 
@@ -80,8 +81,11 @@ class SubscriptionView(StripeView):
             if serializer.is_valid():
                 validated_data = serializer.validated_data
                 stripe_plan = validated_data.get('stripe_plan', None)
+                print(stripe_plan)
                 customer = self.get_customer()
-                subscription = customer.subscribe(stripe_plan)
+                print(customer)
+                subscription = stripe.Subscription.create(customer, stripe_plan, quantity=1)
+                #subscription = customer.subscribe(stripe_plan)
 
                 return Response(subscription, status=status.HTTP_201_CREATED)
             else:
