@@ -7,8 +7,9 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
+from pinax.stripe.actions import customers
 # from rest_framework.permissions import IsAuthenticated, AllowAny
-
+import datetime
 import kc.settings as app_settings
 
 from api.v1.serializers.stripe import (
@@ -53,16 +54,24 @@ class StripeView(APIView):
         try:
             return self.request.user.customer
         except ObjectDoesNotExist:
-            return Customer.create(self.request.user)
+            return customers.create(user = self.request.user)
 
 
 class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     """ See the current customer/user payment details """
     
     serializer_class = CurrentCustomerSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get_object(self):
         return self.get_customer()
+
+    # def post(self, request, *args, **kwargs):
+    #     try:
+    #         serializer = self.serializer_class(data=request.data)
+    #         if serializer.is_valid():
+    #             validated_data = serializer.validated_data
+    #             user = self.request.user
+    #             source = validated_data
 
 
 class SubscriptionView(StripeView):
@@ -83,8 +92,10 @@ class SubscriptionView(StripeView):
                 stripe_plan = validated_data.get('stripe_plan', None)
                 print(stripe_plan)
                 customer = self.get_customer()
-                print(customer)
-                subscription = stripe.Subscription.create(customer, stripe_plan, quantity=1)
+                stripe_id = customer.stripe_id
+                
+                start_time = datetime.datetime.now()
+                subscription = stripe.Subscription.create(stripe_id, stripe_plan, start_time, quantity=1,  status="active")
                 #subscription = customer.subscribe(stripe_plan)
 
                 return Response(subscription, status=status.HTTP_201_CREATED)
@@ -147,7 +158,7 @@ class CancelView(StripeView):
 
 class PlanListView(StripeView, generics.ListAPIView):
     """ List all current plans """
-    permission_classes = [permissions.AllowAny]
+    permission_classes = (permissions.AllowAny,)
     serializer_class = PlanSerializer
     queryset = Plan.objects.all()
     

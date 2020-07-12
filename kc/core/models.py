@@ -37,7 +37,7 @@ class Uuid(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100, null=True)
+    description = models.TextField(max_length=1000, null=True)
     image = models.ImageField(upload_to='documents/', null=True)
     trailer = models.FileField(upload_to='documents/', blank=True, null=True)
 

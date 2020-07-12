@@ -14,6 +14,7 @@ from pinax.stripe.models import (
     Plan,
     Card
 )
+import stripe
 
 """
     Model API Serializers
@@ -89,15 +90,15 @@ class CurrentCustomerSerializer(ModelSerializer):
         model = Customer
         fields = '__all__'
 
+    # def create(self, validated_data):
+    #     email = validated_data['email']
+    #     source = validated_data['source']
+    #     currency = 'aud'
+    #     stripe.Customer.create(email, source, currency)
 
 """
     Custom API Serializers
 """
-
-
-# class SubscriptionSerializer(Serializer):
-#     stripe_plan = serializers.ChoiceField(choices=app_settings.PINAX_STRIPE_DEFAULT_PLAN, required=True)
-
 
 class CardSerializer(Serializer):
     number = serializers.IntegerField(help_text=u'The card number, as a string without any separators.', required=True)
