@@ -29,6 +29,8 @@ urlpatterns = [
     path('events/', EventListView.as_view(), name='stripe-events'),
     path('webhook/', CancelView.as_view(), name='stripe-cancel'),
     path('customer/',CurrentCustomerDetailView.as_view(), name='stripe-customer'),
+    path('create-customer/', CustomerCreateView, name='create-stripe-customer'),
+    
 ]
 
 router = routers.DefaultRouter()

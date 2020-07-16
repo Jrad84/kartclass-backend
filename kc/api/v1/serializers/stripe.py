@@ -1,5 +1,7 @@
 from rest_framework import serializers
 import kc.settings as app_settings
+from django.contrib.auth import get_user_model
+from pinax.stripe.actions import customers
 from pinax.stripe.models import (
     EventProcessingException,
     Event,
@@ -52,14 +54,19 @@ class EventSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class SubscriptionSerializer(ModelSerializer):
-    class Meta:
-        model = Subscription
-        fields = '__all__'
+# class SubscriptionSerializer(ModelSerializer):
+#     class Meta:
+#         model = Subscription
+#         fields = '__all__'
 
     # def create(self, validated_data):
     #     stripe.Subscription.create()
 
+class SubscriptionSerializer(Serializer):
+    class Meta:
+        stripe_plan = serializers.ChoiceField(choices=app_settings.PAYMENT_PLANS, required=True)
+        model = Subscription
+        fields = '__all__'
 
 class ChargeSerializer(ModelSerializer):
     class Meta:
@@ -90,11 +97,23 @@ class CurrentCustomerSerializer(ModelSerializer):
         model = Customer
         fields = '__all__'
 
+
+
+class CustomerSerializer(ModelSerializer):
+
+    class Meta:
+        model = Customer
+        fields = '__all__'
+
     # def create(self, validated_data):
-    #     email = validated_data['email']
+    #     user = get_user_model()
     #     source = validated_data['source']
+    #     plan = validated_data['plan']
     #     currency = 'aud'
-    #     stripe.Customer.create(email, source, currency)
+        
+        
+    #     customers.create(name=validated_data['name'], email=validated_data['email'])
+    #     return super(CustomerCreateSerializer, self).create(validated_data)
 
 """
     Custom API Serializers

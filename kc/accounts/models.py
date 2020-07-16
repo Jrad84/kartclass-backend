@@ -64,11 +64,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base, Uuid):
         on_delete=models.SET_NULL,
         help_text=_("Designates what category a user is in")
     )
-    stripe_token = models.CharField(
+    stripe_id = models.CharField(
         max_length=300,
         null = True,
         blank = True,
-        help_text=_("Stripe pay token")
+        help_text=_("Stripe user id")
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, hashers
 from rest_framework import serializers
 from core.models import Category
 from api.v1.serializers.category import CategorySerializer
+from pinax.stripe.models import Customer
 import stripe
 
 
@@ -19,7 +20,9 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "uuid",
             "name",
             "category"
-            "is_member"
+            "is_member",
+            "category",
+            "stripe_id"
         )
 
 
@@ -45,11 +48,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "name",
             "email",
             "password",
-            "stripe_token"
+            "is_member",
+            "category",
+            "stripe_id"
         )
 
 
     def create(self, validated_data):
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
-        stripe.Customer.create(name=validated_data['name'], email=validated_data['email'])
+        # stripe.Customer.create(name=validated_data['name'], email=validated_data['email'])
         return super(UserCreateSerializer, self).create(validated_data)

@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils.encoding import smart_str
-
+from rest_framework import mixins, viewsets
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,6 +16,7 @@ import kc.settings as app_settings
 from api.v1.serializers.stripe import (
     SubscriptionSerializer,
     CurrentCustomerSerializer,
+    CustomerSerializer,
     SubscriptionSerializer,
     CardSerializer,
     CancelSerializer,
@@ -57,55 +59,109 @@ class StripeView(APIView):
             return customers.create(user = self.request.user)
 
 
-class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
+class CurrentCustomerDetailView(StripeView, generics.RetrieveUpdateAPIView):
     """ See the current customer/user payment details """
     
     serializer_class = CurrentCustomerSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
     def get_object(self):
         return self.get_customer()
 
-    # def post(self, request, *args, **kwargs):
-    #     try:
-    #         serializer = self.serializer_class(data=request.data)
-    #         if serializer.is_valid():
-    #             validated_data = serializer.validated_data
-    #             user = self.request.user
-    #             source = validated_data
+    def post(self, request, *args, **kwargs):
+        
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            customer = self.get_customer()
+            validated_data = serializer.validated_data
+            stripe_plan = validated_data.get('stripe_plan', None)
+            source = validated_data.get('source')
+            customer.modify(stripe_plan, source)
+            return Response(customer, status=status.HTTP_201_CREATED)
+        else:
+            print('CurrentCustomerDetailView ERROR!!!!!!!!!!!!!!!!!!!!!!!!!')
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+       
+
+class CustomerCreateView(mixins.CreateModelMixin,viewsets.GenericViewSet,
+    generics.GenericAPIView):
+
+    """ Creates a Stripe customer """
+
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, *args, **kwargs):
+        
+        data = request.data
+        serializer = CustomerSerializer(data=data)
+        
+        if serializer.is_valid():
+            print('Nice, Serializer is VALID !!!!')
+            stripe_customer = stripe.Customer.create(serializer.data, user=self.request.user)
+            print(stripe_customer)
+            serializer.save()
+            return Response(stripe_customer, status=status.HTTP_201_CREATED)
+        else:
+            print("else block, Serializer NOT VALID - FAIL!!!")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SubscriptionView(StripeView):
     """ See, change/set the current customer/user subscription plan """
     serializer_class = SubscriptionSerializer
-    permission_classes = (permissions.AllowAny,)
+
     def get(self, request, *args, **kwargs):
         current_subscription = self.get_current_subscription()
         serializer = SubscriptionSerializer(current_subscription)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        try:
-            serializer = self.serializer_class(data=request.data)
+        
+        serializer = self.serializer_class(data=request.data)
 
-            if serializer.is_valid():
-                validated_data = serializer.validated_data
-                stripe_plan = validated_data.get('stripe_plan', None)
-                print(stripe_plan)
-                customer = self.get_customer()
-                stripe_id = customer.stripe_id
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            stripe_plan = validated_data.get('stripe_plan', None)
+            customer = self.get_customer()
+            subscription = customer.subscribe(stripe_plan)
+            return Response(subscription, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+       
+# class SubscriptionView(StripeView):
+#     """ See, change/set the current customer/user subscription plan """
+#     serializer_class = SubscriptionSerializer
+#     permission_classes = (permissions.AllowAny,)
+#     def get(self, request, *args, **kwargs):
+#         current_subscription = self.get_current_subscription()
+#         serializer = SubscriptionSerializer(current_subscription)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+#     def post(self, request, *args, **kwargs):
+#         try:
+#             serializer = self.serializer_class(data=request.data)
+
+#             if serializer.is_valid():
+#                 validated_data = serializer.validated_data
+#                 # stripe_plan = validated_data.get('stripe_plan', None)
+#                 # print(stripe_plan)
+#                 # customer = self.get_customer()
+#                 # stripe_id = customer.stripe_id
                 
-                start_time = datetime.datetime.now()
-                subscription = stripe.Subscription.create(stripe_id, stripe_plan, start_time, quantity=1,  status="active")
-                #subscription = customer.subscribe(stripe_plan)
+#                 start_time = datetime.datetime.now()
+#                 subscription = stripe.Subscription.create(validated_data, start_time, quantity=1,  status="active")
+#                 #subscription = customer.subscribe(stripe_plan)
 
-                return Response(subscription, status=status.HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except stripe.StripeError as e:
-            from django.utils.encoding import smart_str
+#                 return Response(subscription, status=status.HTTP_201_CREATED)
+#             else:
+#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         except stripe.StripeError as e:
+#             from django.utils.encoding import smart_str
 
-            error_data = {u'error': smart_str(e) or u'Unknown error'}
-            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+#             error_data = {u'error': smart_str(e) or u'Unknown error'}
+#             return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangeCardView(StripeView):
