@@ -12,7 +12,7 @@ from pinax.stripe.actions import customers
 # from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
 import kc.settings as app_settings
-
+from accounts.models import CustomUser
 from api.v1.serializers.stripe import (
     SubscriptionSerializer,
     CurrentCustomerSerializer,
@@ -33,14 +33,15 @@ from pinax.stripe.models import (
     Customer,
     Subscription,
     EventProcessingException,
-    Plan
+    Plan,
+    Card
 )
 
 
 import stripe
 
-stripe.api_key = "sk_test_51GwHkBD9jmvAZt96KpjcouKUOWsePIa6G2i42kPoldiMIaSQ0OM4waIlPYIs8Qv2PVeYpqaqc5Wf11zjYFKt4B4Z00FSo6Gx3L"
 
+stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -56,55 +57,116 @@ class StripeView(APIView):
         try:
             return self.request.user.customer
         except ObjectDoesNotExist:
-            return customers.create(user = self.request.user)
+            customers.create(user = self.request.user)
+            # print(customer.stripe_id)
+            # self.request.user.stripe_id = customer.stripe_id
+            return customer
 
 
-class CurrentCustomerDetailView(StripeView, generics.RetrieveUpdateAPIView):
+# class CurrentCustomerDetailView(mixins.CreateModelMixin, viewsets.GenericViewSet,
+#     generics.GenericAPIView):
+#     """ See the current customer/user payment details """
+    
+#     serializer_class = CurrentCustomerSerializer
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     # def get_object(self):
+#     #     try:
+#     #         return self.request.user.customer
+#     #     except ObjectDoesNotExist:
+#     #         return stripe.Customer.create(user = self.request.user)
+
+#     def post(self, request, *args, **kwargs):
+#         customer = stripe.Customer.create(user = self.request.user)
+#         CustomUser.stripe_id = customer.stripe_id
+#         serializer = self.serializer_class(data=request.data)
+
+#         if serializer.is_valid():
+            
+#             validated_data = serializer.validated_data
+#             stripe_plan = validated_data.get('stripe_plan', None)
+#             source = validated_data.get('source')
+#             customer.modify(stripe_plan, source)
+#             return Response(customer, status=status.HTTP_201_CREATED)
+#         else:
+#             print('CurrentCustomerDetailView ERROR!!!!!!!!!!!!!!!!!!!!!!!!!')
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+       
+
+# class CustomerCreateView(StripeView, mixins.CreateModelMixin,viewsets.GenericViewSet,
+#     generics.GenericAPIView):
+
+#     """ Creates a Stripe customer 
+#         1. Use StripeView to create customer (returns...)
+#         2. Add payment source..
+
+#     """
+
+
+#     permission_classes = (permissions.IsAuthenticated, )
+
+#     def post(self, request, *args, **kwargs):
+#         # customer = stripe.Customer.create(request.data)
+#         customer = customers.create(request.data)
+#         print(customer.stripe_id)
+#         CustomUser.stripe_id = customer.stripe_id
+#         CustomUser.save()
+#         data = request.data
+#         serializer = CurrentCustomerSerializer(data=data)
+        
+#         if serializer.is_valid():
+#             print('Nice, Serializer is VALID !!!!')
+#             # serializer.save()
+#             return Response(customer, status=status.HTTP_201_CREATED)
+#         else:
+#             print(serializer)
+#             print("Serializer NOT VALID - FAIL!!!")
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Card:
+
+    def __init__(self):
+        self.exp_month = 0
+        self.exp_year = 0
+        self.last4 = ''
+        self.country = ''
+
+    
+class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     """ See the current customer/user payment details """
     
     serializer_class = CurrentCustomerSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    
 
-    def get_object(self):
-        return self.get_customer()
+    # def get_object(self):
+    #     return self.get_customer()
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
+        user = request.user
+        plan = request.data['plan']
+        plan_id = plan.get('stripe_id')
+        source = request.data['source']
+        source_dict = source.get('source')
+        source_id = source_dict.get('id')
         
-        serializer = self.serializer_class(data=request.data)
-
-        if serializer.is_valid():
-            customer = self.get_customer()
-            validated_data = serializer.validated_data
-            stripe_plan = validated_data.get('stripe_plan', None)
-            source = validated_data.get('source')
-            customer.modify(stripe_plan, source)
-            return Response(customer, status=status.HTTP_201_CREATED)
-        else:
-            print('CurrentCustomerDetailView ERROR!!!!!!!!!!!!!!!!!!!!!!!!!')
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
        
-
-class CustomerCreateView(mixins.CreateModelMixin,viewsets.GenericViewSet,
-    generics.GenericAPIView):
-
-    """ Creates a Stripe customer """
-
-    permission_classes = (permissions.IsAuthenticated, )
-
-    def post(self, request, *args, **kwargs):
-        
+        customer = customers.create(user, source_id, plan_id, quantity=1)
+        print(customer)
+        CustomUser.stripe_id = customer.stripe_id
+        CustomUser.save(self)
         data = request.data
-        serializer = CustomerSerializer(data=data)
+        serializer = CurrentCustomerSerializer(data=data)
         
         if serializer.is_valid():
             print('Nice, Serializer is VALID !!!!')
-            stripe_customer = stripe.Customer.create(serializer.data, user=self.request.user)
-            print(stripe_customer)
-            serializer.save()
-            return Response(stripe_customer, status=status.HTTP_201_CREATED)
+            # serializer.save()
+            return Response(customer, status=status.HTTP_201_CREATED)
         else:
-            print("else block, Serializer NOT VALID - FAIL!!!")
+            print(serializer)
+            print("Serializer NOT VALID - FAIL!!!")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

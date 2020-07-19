@@ -17,7 +17,7 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
         model = get_user_model()
         category = CategorySerializer()
         fields = (
-            "uuid",
+            "id",
             "name",
             "category"
             "is_member",
@@ -44,7 +44,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = (
-            "uuid",
+            "id",
             "name",
             "email",
             "password",

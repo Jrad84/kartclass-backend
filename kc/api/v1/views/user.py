@@ -28,7 +28,7 @@ class UserViewSet(
     filter_fields = ('id', 'category__id')
 
     # Change lookup field from `pk` to `uuid`.
-    lookup_field = "uuid"
+    # lookup_field = "uuid"
 
     def get_serializer_class(self):
         if self.action == "create":

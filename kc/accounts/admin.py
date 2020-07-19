@@ -19,7 +19,7 @@ class CustomUserAdmin(DjangoUserAdmin):
         "email",
     )
     fieldsets = (
-        (None, {"fields": ("email", "password", "uuid",)}),
+        (None, {"fields": ("email", "password", "id",)}),
         (_("Personal info"), {"fields": ("name",)}),
         (
             _("Permissions"),
@@ -36,7 +36,7 @@ class CustomUserAdmin(DjangoUserAdmin):
         (_("Important dates"), {"fields": ("last_login", "date_created",)},),
     )
     readonly_fields = (
-        "uuid",
+        "id",
         "date_created",
     )
     ordering = ("name",)
@@ -44,7 +44,7 @@ class CustomUserAdmin(DjangoUserAdmin):
     def get_fieldsets(self, request, obj=None, *args, **kwargs):
         # Non superuser fieldsets.
         fieldsets = (
-            (None, {"fields": ("password", "uuid",)}),
+            (None, {"fields": ("password", "id",)}),
             (_("Personal info"), {"fields": ("name", "email",)}),
             (_("Important dates"), {"fields": ("last_login", "date_created",)},),
         )
@@ -69,7 +69,7 @@ class CustomUserAdmin(DjangoUserAdmin):
 
     def get_readonly_fields(self, request, obj=None, *args, **kwargs):
         readonly_fields = [
-            "uuid",
+            "id",
             "date_created",
             "last_login",
         ]

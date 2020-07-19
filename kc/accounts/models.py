@@ -21,7 +21,7 @@ import decimal
 
 stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
 
-class CustomUser(AbstractBaseUser, PermissionsMixin, Base, Uuid):
+class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     """Custom user model that extends `AbstractUser`, `Base`, `Uuid`.
     Contains fields:
     - `email: str`
@@ -96,4 +96,7 @@ def delete_user(sender, instance, **kwargs):
 # @receiver(post_save, sender=CustomUser)
 # def create_stripe_user(sender, instance, created, **kwargs):
 #     if created:
-#         customers.create(user=instance)
+#         customer = customers.create(user=instance)
+#         customer.save()
+#         CustomUser.stripe_id = customer.stripe_id
+#         CustomUser.save()

@@ -15,7 +15,7 @@ class MeRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = (
-            "uuid",
+            "id",
             "email",
             "name",
             "is_staff",
@@ -33,7 +33,7 @@ class MeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = (
-            "uuid",
+            "id",
             "email",
             "name",
         )
