@@ -1,6 +1,11 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
+from django.utils.translation import gettext_lazy as _
 import uuid
+import stripe
+
+stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
 
 
 class Base(models.Model):
@@ -32,7 +37,7 @@ class Uuid(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100, null=True)
+    description = models.TextField(max_length=1000, null=True)
     image = models.ImageField(upload_to='documents/', null=True)
     trailer = models.FileField(upload_to='documents/', blank=True, null=True)
 
@@ -107,3 +112,4 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return self.name
+

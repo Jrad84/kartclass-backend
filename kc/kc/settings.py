@@ -32,7 +32,12 @@ SECRET_KEY = '6o!xk51_#vyx*nu1opxm(2o&baaaw3)5@*2x3@a_2$xc3us)tj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+     "ed57609ccea0.ngrok.io",
+     "localhost",
+     
+     ]
 
 
 # Application definition
@@ -44,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
     'core',
     'api',
@@ -51,6 +57,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'rest_registration',
+    'stripe',
+    'pinax.stripe',
    
 
 ]
@@ -64,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pinax.stripe.middleware.ActiveSubscriptionMiddleware',
 ]
 
 
@@ -210,3 +219,15 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+# STRIPE 
+SITE_ID = 1
+PINAX_STRIPE_DEFAULT_PLAN = "price_1GwNa9D9jmvAZt96EzeSecCF"
+PAYMENT_PLANS = ["price_1GwNaAD9jmvAZt96ATES1Tdd", "price_1GwNa9D9jmvAZt96EzeSecCF", "price_1GwNaAD9jmvAZt96Oy5z52aU"]
+PINAX_STRIPE_SECRET_KEY = "sk_test_51GwHkBD9jmvAZt96KpjcouKUOWsePIa6G2i42kPoldiMIaSQ0OM4waIlPYIs8Qv2PVeYpqaqc5Wf11zjYFKt4B4Z00FSo6Gx3L"
+PINAX_STRIPE_PUBLIC_KEY = "pk_test_51GwHkBD9jmvAZt96xvln9VxxqrK0OR1ylOW6RLt7PkuQYsO0BsHzSpxj8LwSd91RIZRuVaq5rvF60s1tLWazlB4b00Lj5TaYar"
+PINAX_STRIPE_INVOICE_FROM_EMAIL = "jaredtaback@gmail.com"
+PINAX_STRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = []
+PINAX_STRIPE_SUBSCRIPTION_REQUIRED_REDIRECT = ""
+STRIPE_LIVE_MODE = False

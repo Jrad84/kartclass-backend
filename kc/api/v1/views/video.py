@@ -1,6 +1,7 @@
 from rest_framework import viewsets, generics, filters, mixins
 from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 from api.v1.serializers.video import VideoSerializer
@@ -29,6 +30,7 @@ class VideoListView(mixins.ListModelMixin,
                     ):
     serializer_class = VideoSerializer
     category = CategorySerializer
+    permission_classes = [permissions.AllowAny]
     # categories = Category.objects.all()
     queryset = Video.objects.all()
     filter_backends = (DjangoFilterBackend,)
