@@ -11,4 +11,4 @@ class CategoryView(viewsets.GenericViewSet,
                     mixins.DestroyModelMixin):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny,]
