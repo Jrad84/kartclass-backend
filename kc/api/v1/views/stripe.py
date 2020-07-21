@@ -36,8 +36,7 @@ from pinax.stripe.models import (
     Plan,
     Card
 )
-import json
-from json import JSONEncoder
+
 
 import stripe
 
@@ -79,25 +78,25 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
 
     def post(self, request, *args, **kwargs):
         
+        serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
         plan = request.data['stripe_id']
         source = request.data['source']
         source_id = source.get('source').get('id')
        
         result = customers.create(user=user, card=source_id, plan=plan, quantity=1)
-        customer = result.stripe_id
-        user.stripe_id = customer
+            
+        user.stripe_id = result.stripe_id
         user.is_member = True
         user.save(update_fields=["stripe_id", "is_member"])
-        
-        serializer = CurrentCustomerSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            print('nice')
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
+        # This is dodgy -- need to fix
+        if not serializer.is_valid():
+            
+            
+            # serializer.save()
+            return Response(serializer.errors, status=status.HTTP_201_CREATED)
         else:
-            print('fail')
+            
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SubscriptionView(StripeView):
