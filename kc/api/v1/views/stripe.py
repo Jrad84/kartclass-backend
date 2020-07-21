@@ -80,17 +80,12 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     def post(self, request, *args, **kwargs):
         
         user = CustomUser.objects.get(email=request.user)
-        # user1 = CustomUser.objects.get(email='user')
-        print(user)
         plan = request.data['stripe_id']
-        # stripe_id = plan.get('stripe_id')
         source = request.data['source']
         source_id = source.get('source').get('id')
        
         result = customers.create(user=user, card=source_id, plan=plan, quantity=1)
-        print(result)
         customer = result.stripe_id
-        print(customer)
         user.stripe_id = customer
         user.is_member = True
         user.save(update_fields=["stripe_id", "is_member"])
@@ -98,12 +93,11 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
         serializer = CurrentCustomerSerializer(data=request.data)
         
         if serializer.is_valid():
-            print('Nice, Serializer is VALID !!!!')
+            print('nice')
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
         else:
-            # print(serializer)
-            print("Serializer NOT VALID - FAIL!!!")
+            print('fail')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SubscriptionView(StripeView):
@@ -123,6 +117,7 @@ class SubscriptionView(StripeView):
             validated_data = serializer.validated_data
             stripe_plan = validated_data.get('stripe_plan', None)
             customer = self.get_customer()
+            print(customer)
             subscription = customer.subscribe(stripe_plan)
             return Response(subscription, status=status.HTTP_201_CREATED)
         else:
