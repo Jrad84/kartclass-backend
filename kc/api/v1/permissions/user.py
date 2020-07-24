@@ -20,4 +20,8 @@ class UserPermission(permissions.BasePermission):
 
             return True
 
+        # # Control user access to content according to current category
+        # if request.method == "GET":
+        #     if request.user.category
+
         return False

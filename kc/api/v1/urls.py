@@ -7,10 +7,12 @@ from api.v1.views.testimonial import TestimonialView
 from api.v1.views.video import VideoListView, VideoView
 from api.v1.views.category import CategoryView
 from api.v1.views.driver import DriverView
+from api.v1.views.product import ProductView
 from rest_framework_simplejwt import views as jwt_views
 from api.v1.views.user import UserViewSet
+from api.v1.views.registration import RegistrationView
 from api.v1.views.me import MeView
-from api.v1.views.stripe import *
+from api.v1.views.payments import *
 
 
 urlpatterns = [
@@ -40,6 +42,8 @@ router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'drivers', DriverView)
 router.register(r'accounts', UserViewSet)
+router.register(r'registration', RegistrationView)
+router.register(r'products', ProductView)
 
 
 urlpatterns.extend(router.urls)

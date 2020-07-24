@@ -36,20 +36,17 @@ class UserViewSet(
 
         return UserRetrieveSerializer
 
-    # def get_object(self, id):
-    #     user = stripe.Customer.retrieve(id)
-    #     return user
-
-    # def put(self, request, *args, **kwargs):
-    #     user = self.get_object()
-    #     data = request.data
-    #     serializer = UserRetrieveSerializer(data=data)
-    #     if serializer.is_valid:
-    #         stripe_user = stripe.Customer.modify(data)
-    #         user.stripe_id = stripe_user.stripe_id
-    #         serializer.save()
-    #         return Response(user, status=status.HTTP_201_CREATED)
-    #     else:
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+   # Change user category. Possibly move to questionairre endpoint
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        data = request.data
+        serializer = UserRetrieveSerializer(data=data)
+        if serializer.is_valid:
+            category = request.data['category']
+            user.category = category
+            user.save(update_fields=["category"])
+            return Response(user, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         

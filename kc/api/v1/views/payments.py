@@ -8,12 +8,12 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-from pinax.stripe.actions import customers
+from pinax.stripe.actions import customers, charges
 # from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
 import kc.settings as app_settings
 from accounts.models import CustomUser
-from api.v1.serializers.stripe import (
+from api.v1.serializers.payments import (
     SubscriptionSerializer,
     CurrentCustomerSerializer,
     CustomerSerializer,
@@ -39,6 +39,7 @@ from pinax.stripe.models import (
 
 
 import stripe
+import decimal
 
 
 stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
@@ -79,12 +80,16 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     def post(self, request, *args, **kwargs):
         
         serializer = self.serializer_class(data=request.data)
+        print(serializer)
         user = CustomUser.objects.get(email=request.user)
-        plan = request.data['stripe_id']
+        # plan = request.data['stripe_id']
+        amount = request.data['amount']
         source = request.data['source']
         source_id = source.get('source').get('id')
        
-        result = customers.create(user=user, card=source_id, plan=plan, quantity=1)
+        # result = customers.create(user=user, card=source_id, plan=plan, quantity=1)
+        result = customers.create(user=user, card=source_id, quantity=1)
+        # result = Customer.create(user=user.email, card=source_id, quantity=1)
             
         user.stripe_id = result.stripe_id
         user.is_member = True
@@ -116,45 +121,12 @@ class SubscriptionView(StripeView):
             validated_data = serializer.validated_data
             stripe_plan = validated_data.get('stripe_plan', None)
             customer = self.get_customer()
-            print(customer)
+            
             subscription = customer.subscribe(stripe_plan)
             return Response(subscription, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
        
-# class SubscriptionView(StripeView):
-#     """ See, change/set the current customer/user subscription plan """
-#     serializer_class = SubscriptionSerializer
-#     permission_classes = (permissions.AllowAny,)
-#     def get(self, request, *args, **kwargs):
-#         current_subscription = self.get_current_subscription()
-#         serializer = SubscriptionSerializer(current_subscription)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-
-#     def post(self, request, *args, **kwargs):
-#         try:
-#             serializer = self.serializer_class(data=request.data)
-
-#             if serializer.is_valid():
-#                 validated_data = serializer.validated_data
-#                 # stripe_plan = validated_data.get('stripe_plan', None)
-#                 # print(stripe_plan)
-#                 # customer = self.get_customer()
-#                 # stripe_id = customer.stripe_id
-                
-#                 start_time = datetime.datetime.now()
-#                 subscription = stripe.Subscription.create(validated_data, start_time, quantity=1,  status="active")
-#                 #subscription = customer.subscribe(stripe_plan)
-
-#                 return Response(subscription, status=status.HTTP_201_CREATED)
-#             else:
-#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#         except stripe.StripeError as e:
-#             from django.utils.encoding import smart_str
-
-#             error_data = {u'error': smart_str(e) or u'Unknown error'}
-#             return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ChangeCardView(StripeView):
     """ Add or update customer card details """
@@ -208,7 +180,7 @@ class PlanListView(StripeView, generics.ListAPIView):
     """ List all current plans """
     permission_classes = (permissions.AllowAny,)
     serializer_class = PlanSerializer
-    queryset = Plan.objects.all()
+    queryset = Plan.objects.exclude(name="Premium plan")
     
 
 
@@ -221,6 +193,31 @@ class ChargeListView(StripeView, generics.ListAPIView):
         charges = customer.charges.all()
         return charges
 
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        print(serializer)
+        user = CustomUser.objects.get(email=request.user)
+        amount = request.data['data'].get('amount')
+        
+        category = request.data['data'].get('plan').get('category')
+        print(amount)
+        print(category)
+        
+        
+        source = request.data['data'].get('source')
+        source_id = source.get('source').get('id')
+        print(source_id)
+        stripe.Charge.create(
+            amount=amount,
+            currency='aud',
+            source=source_id,
+            receipt_email=user.email
+        )
+        # charges.create(user.stripe_id, amount, source_id)
+        if not serializer.is_valid():
+            return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InvoiceListView(StripeView, generics.ListAPIView):
     """ List customer invoices """

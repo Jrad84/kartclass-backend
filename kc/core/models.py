@@ -113,3 +113,27 @@ class Testimonial(models.Model):
     def __str__(self):
         return self.name
 
+
+class Registration(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "Registration dates"
+
+    def __str__(self):
+        return str(self.start.strftime("%d %B %Y"))
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=250, blank=True)
+    amount = models.DecimalField(max_digits=6, decimal_places=2)
+    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
+    currency = models.CharField(max_length=3)
+    picture = models.ImageField(upload_to='documents/', null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
