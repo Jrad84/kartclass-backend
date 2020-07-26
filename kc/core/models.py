@@ -39,6 +39,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=1000, null=True)
     image = models.ImageField(upload_to='documents/', null=True)
+    amount = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     trailer = models.FileField(upload_to='documents/', blank=True, null=True)
 
     class Meta:
@@ -125,15 +126,3 @@ class Registration(models.Model):
         return str(self.start.strftime("%d %B %Y"))
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=250, blank=True)
-    amount = models.DecimalField(max_digits=6, decimal_places=2)
-    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
-    currency = models.CharField(max_length=3)
-    picture = models.ImageField(upload_to='documents/', null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = "Product"
-        verbose_name_plural = "Products"

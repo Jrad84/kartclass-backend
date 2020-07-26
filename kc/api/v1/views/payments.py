@@ -13,6 +13,7 @@ from pinax.stripe.actions import customers, charges
 import datetime
 import kc.settings as app_settings
 from accounts.models import CustomUser
+from core.models import Category
 from api.v1.serializers.payments import (
     SubscriptionSerializer,
     CurrentCustomerSerializer,
@@ -199,20 +200,23 @@ class ChargeListView(StripeView, generics.ListAPIView):
         user = CustomUser.objects.get(email=request.user)
         amount = request.data['data'].get('amount')
         
-        category = request.data['data'].get('plan').get('category')
-        print(amount)
+        category = request.data['data'].get('category').get('id')
+        # category = Category.objects.filter(pk=category)
         print(category)
-        
-        
         source = request.data['data'].get('source')
         source_id = source.get('source').get('id')
-        print(source_id)
-        stripe.Charge.create(
+        
+        result = stripe.Charge.create(
             amount=amount,
             currency='aud',
             source=source_id,
             receipt_email=user.email
         )
+        if (result):
+            user.is_member = True
+            user.category_id = category
+            print(user.category)
+            user.save(update_fields=["category", "is_member"])
         # charges.create(user.stripe_id, amount, source_id)
         if not serializer.is_valid():
             return Response({'success': True}, status=status.HTTP_202_ACCEPTED)

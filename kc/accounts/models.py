@@ -64,6 +64,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         on_delete=models.SET_NULL,
         help_text=_("Designates what category a user is in")
     )
+    # category = models.IntegerField(null=True)
     stripe_id = models.CharField(
         max_length=300,
         null = True,
