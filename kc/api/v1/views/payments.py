@@ -196,13 +196,13 @@ class ChargeListView(StripeView, generics.ListAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        print(serializer)
+        
         user = CustomUser.objects.get(email=request.user)
         amount = request.data['data'].get('amount')
         
         category = request.data['data'].get('category').get('id')
         # category = Category.objects.filter(pk=category)
-        print(category)
+        
         source = request.data['data'].get('source')
         source_id = source.get('source').get('id')
         
@@ -215,7 +215,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
         if (result):
             user.is_member = True
             user.category_id = category
-            print(user.category)
+           
             user.save(update_fields=["category", "is_member"])
         # charges.create(user.stripe_id, amount, source_id)
         if not serializer.is_valid():

@@ -36,17 +36,6 @@ class UserViewSet(
 
         return UserRetrieveSerializer
 
-   # Change user category. Possibly move to questionairre endpoint
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        data = request.data
-        serializer = UserRetrieveSerializer(data=data)
-        if serializer.is_valid:
-            category = request.data['category']
-            user.category = category
-            user.save(update_fields=["category"])
-            return Response(user, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+ 
 
         

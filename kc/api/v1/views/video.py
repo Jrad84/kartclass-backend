@@ -29,17 +29,18 @@ class VideoListView(mixins.ListModelMixin,
                     viewsets.GenericViewSet,
                     # generics.GenericAPIView
                     ):
-    # User permission to access videos
-    # def get_user(request):
-    #     return request.user
 
-    # user = self.get_user()
     serializer_class = VideoSerializer
     category = CategorySerializer
-    permission_classes = [permissions.IsAdminUser, permissions.AllowAny,]
-    # categories = Category.objects.all()
-    # queryset = Video.objects.filter(category <= user.category)
+    permission_classes = [permissions.IsAuthenticated,]
+    
     queryset = Video.objects.all()
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('id', 'category__id')
+
+    # def get(self, request):
+    #     user = request.user
+    #     category = user.category_id
+    #     videos = Video.objects.filter(category__id=category)
+    #     return videos
 
