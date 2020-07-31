@@ -8,7 +8,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-from pinax.stripe.actions import customers, charges
+# from pinax.stripe.actions import customers, charges
 # from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
 import kc.settings as app_settings
@@ -89,8 +89,8 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
         source_id = source.get('source').get('id')
        
         # result = customers.create(user=user, card=source_id, plan=plan, quantity=1)
-        result = customers.create(user=user, card=source_id, quantity=1)
-        # result = Customer.create(user=user.email, card=source_id, quantity=1)
+        # result = customers.create(user=user, card=source_id, quantity=1)
+        result = Customer.create(user=user.email, card=source_id, quantity=1)
             
         user.stripe_id = result.stripe_id
         user.is_member = True

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 import kc.settings.local as app_settings
 from django.contrib.auth import get_user_model
-from pinax.stripe.actions import customers
 from pinax.stripe.models import (
     EventProcessingException,
     Event,
