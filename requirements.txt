@@ -41,7 +41,6 @@ django-templated-mail==1.1.1
 djangorestframework==3.11.0
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==4.4.0
-djoser==2.0.3
 docutils==0.16
 drf-flex-fields==0.8.0
 entrypoints==0.3
@@ -76,7 +75,6 @@ lazy-object-proxy==1.4.3
 lxml==4.5.0
 Markdown==3.2.1
 MarkupSafe==1.1.1
-matplotlib==3.2.1
 mccabe==0.6.1
 mistune==0.8.4
 msrest==0.6.14
@@ -86,7 +84,6 @@ nbformat==5.0.5
 networkx==2.4
 oauthlib==3.1.0
 packaging==20.3
-pandas==1.0.3
 pandocfilters==1.4.2
 paramiko==2.7.1
 parso==0.5.2
@@ -95,7 +92,7 @@ pbr==5.4.5
 pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==7.1.2
-pinax-cli==1.1.4
+pinax-stripe==4.4.0
 pluggy==0.13.1
 prompt-toolkit==3.0.5
 protobuf==3.11.3
