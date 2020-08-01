@@ -23,6 +23,9 @@ environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+DEBUG = False
 
 # add the following just below STATIC_URL
 MEDIA_URL = '/media/'  # add this
