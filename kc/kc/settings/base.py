@@ -35,12 +35,14 @@ ROOT_URLCONF = 'kc.urls'
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+# SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
 ALLOWED_HOSTS = [
+    "0.0.0.0",
     "127.0.0.1",
      "81281f4fbf47.ngrok.io",
      "localhost",
@@ -213,6 +215,8 @@ PASSWORD_HASHERS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
 STATIC_URL = '/static/'
+
+CSRF_COOKIE_SECURE=True
 
 WEBPACK_LOADER = {
     'DEFAULT': {
