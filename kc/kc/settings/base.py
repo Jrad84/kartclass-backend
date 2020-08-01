@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_registration',
     'stripe',
-    'pinax.stripe',
+   
    
 
 ]
@@ -80,7 +80,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pinax.stripe.middleware.ActiveSubscriptionMiddleware',
+    # 'pinax.stripe.middleware.ActiveSubscriptionMiddleware',
 ]
 
 

@@ -1,18 +1,25 @@
 from rest_framework import serializers
 import kc.settings.local as app_settings
 from django.contrib.auth import get_user_model
-from pinax.stripe.models import (
-    EventProcessingException,
-    Event,
-    Transfer,
-    TransferChargeFee,
-    TransferChargeFee,
+# from pinax.stripe.models import (
+#     EventProcessingException,
+#     Event,
+#     Transfer,
+#     TransferChargeFee,
+#     TransferChargeFee,
+#     Customer,
+#     Subscription,
+#     Invoice,
+#     InvoiceItem,
+#     Charge,
+#     Plan,
+#     Card
+# )
+from core.models import (
     Customer,
     Subscription,
-    Invoice,
-    InvoiceItem,
-    Charge,
     Plan,
+    Charge,
     Card
 )
 import stripe
@@ -39,18 +46,18 @@ class PlanSerializer(ModelSerializer):
         model = Plan
         fields = '__all__'
         
-class EventProcessingExceptionSerializer(ModelSerializer):
-    class Meta:
-        model = EventProcessingException
-        fields = '__all__'
+# class EventProcessingExceptionSerializer(ModelSerializer):
+#     class Meta:
+#         model = EventProcessingException
+#         fields = '__all__'
 
 
-class EventSerializer(ModelSerializer):
-    event_processing_exceptions = EventProcessingExceptionSerializer(source='event_processing_exception_serializer_set', many=True, read_only=True)
+# class EventSerializer(ModelSerializer):
+#     event_processing_exceptions = EventProcessingExceptionSerializer(source='event_processing_exception_serializer_set', many=True, read_only=True)
 
-    class Meta:
-        model = Event
-        fields = '__all__'
+#     class Meta:
+#         model = Event
+#         fields = '__all__'
 
 
 # class SubscriptionSerializer(ModelSerializer):
@@ -73,19 +80,19 @@ class ChargeSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class InvoiceItemSerializer(ModelSerializer):
-    class Meta:
-        model = InvoiceItem
-        fields = '__all__'
+# class InvoiceItemSerializer(ModelSerializer):
+#     class Meta:
+#         model = InvoiceItem
+#         fields = '__all__'
 
 
-class InvoiceSerializer(ModelSerializer):
-    items = InvoiceItemSerializer(many=True, read_only=True)
-    charges = ChargeSerializer(many=True, read_only=True)
+# class InvoiceSerializer(ModelSerializer):
+#     items = InvoiceItemSerializer(many=True, read_only=True)
+#     charges = ChargeSerializer(many=True, read_only=True)
 
-    class Meta:
-        model = Invoice
-        fields = '__all__'
+#     class Meta:
+#         model = Invoice
+#         fields = '__all__'
 
 
 class CurrentCustomerSerializer(ModelSerializer):

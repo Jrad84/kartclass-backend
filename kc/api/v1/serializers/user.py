@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model, hashers
 from rest_framework import serializers
 from core.models import Category
 from api.v1.serializers.category import CategorySerializer
-from pinax.stripe.models import Customer
+
 import stripe
 
 

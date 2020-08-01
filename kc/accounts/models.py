@@ -8,11 +8,11 @@ from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from accounts.managers import CustomUserManager
-from pinax.stripe.actions import customers
-from pinax.stripe.models import Customer
+# from pinax.stripe.actions import customers
+# from pinax.stripe.models import Customer
 import jwt
 
-from core.models import Category
+from core.models import Category, Customer
 
 from django.conf import settings
 from core.models import Base, Uuid
@@ -92,12 +92,3 @@ def delete_user(sender, instance, **kwargs):
     # Prevent superuser deletion.
     if instance.is_superuser:
         raise PermissionDenied
-
-# Create a Stripe customer after User saved in db
-# @receiver(post_save, sender=CustomUser)
-# def create_stripe_user(sender, instance, created, **kwargs):
-#     if created:
-#         customer = customers.create(user=instance)
-#         customer.save()
-#         CustomUser.stripe_id = customer.stripe_id
-#         CustomUser.save()

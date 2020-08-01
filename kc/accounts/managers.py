@@ -39,6 +39,9 @@ class CustomUserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+
+class CustomerManager(models.Manager):
+
     def started_during(self, year, month):
         return self.exclude(
             subscription__status="trialing"
@@ -88,6 +91,7 @@ class CustomUserManager(BaseUserManager):
         canceled = self.canceled().count()
         active = self.active().count()
         return decimal.Decimal(str(canceled)) / decimal.Decimal(str(active))
+
 
 
 class ChargeManager(models.Manager):

@@ -22,22 +22,27 @@ from api.v1.serializers.payments import (
     CardSerializer,
     CancelSerializer,
     ChargeSerializer,
-    InvoiceSerializer,
-    EventSerializer,
+    # InvoiceSerializer,
+    # EventSerializer,
     WebhookSerializer,
-    EventProcessingExceptionSerializer,
+    # EventProcessingExceptionSerializer,
     PlanSerializer
 )
 
-from pinax.stripe.models import (
-    Event,
+# from pinax.stripe.models import (
+#     Event,
+#     Customer,
+#     Subscription,
+#     EventProcessingException,
+#     Plan,
+#     Card
+# )
+from core.models import (
     Customer,
     Subscription,
-    EventProcessingException,
     Plan,
     Card
 )
-
 
 import stripe
 import decimal
@@ -223,24 +228,24 @@ class ChargeListView(StripeView, generics.ListAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class InvoiceListView(StripeView, generics.ListAPIView):
-    """ List customer invoices """
-    serializer_class = InvoiceSerializer
+# class InvoiceListView(StripeView, generics.ListAPIView):
+#     """ List customer invoices """
+#     serializer_class = InvoiceSerializer
 
-    def get_queryset(self):
-        customer = self.get_customer()
-        invoices = customer.invoices.all()
-        return invoices
+#     def get_queryset(self):
+#         customer = self.get_customer()
+#         invoices = customer.invoices.all()
+#         return invoices
 
 
-class EventListView(StripeView, generics.ListAPIView):
-    """ List customer events """
-    serializer_class = EventSerializer
+# class EventListView(StripeView, generics.ListAPIView):
+#     """ List customer events """
+#     serializer_class = EventSerializer
 
-    def get_queryset(self):
-        customer = self.get_customer()
-        events = customer.event_set.all()
-        return events
+#     def get_queryset(self):
+#         customer = self.get_customer()
+#         events = customer.event_set.all()
+#         return events
 
 
 class WebhookView(StripeView):
