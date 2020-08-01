@@ -1,4 +1,4 @@
-from base import *
+from kc.settings.base import *
 
 
 DEBUG = True
