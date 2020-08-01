@@ -74,6 +74,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,6 +84,7 @@ MIDDLEWARE = [
     # 'pinax.stripe.middleware.ActiveSubscriptionMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TEMPLATES = [
     {
@@ -234,6 +236,12 @@ PINAX_STRIPE_INVOICE_FROM_EMAIL = os.environ.get('PINAX_STRIPE_INVOICE_FROM_EMAI
 PINAX_STRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = []
 PINAX_STRIPE_SUBSCRIPTION_REQUIRED_REDIRECT = ""
 STRIPE_LIVE_MODE = False
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
