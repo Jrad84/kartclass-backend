@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from core.models import Article
-from api.v1.serializers.category import CategorySerializer
-from api.v1.serializers.driver import DriverSerializer
+from kc.core.models import Article
+from kc.api.v1.serializers.category import CategorySerializer
+from kc.api.v1.serializers.driver import DriverSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True)

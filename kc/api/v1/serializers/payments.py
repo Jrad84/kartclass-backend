@@ -15,7 +15,7 @@ from django.contrib.auth import get_user_model
 #     Plan,
 #     Card
 # )
-from core.models import (
+from kc.core.models import (
     Customer,
     Subscription,
     Plan,

@@ -1,8 +1,8 @@
 from rest_framework import viewsets, generics, mixins
-from api.v1.serializers.registration import RegistrationSerializer
+from kc.api.v1.serializers.registration import RegistrationSerializer
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from core.models import Registration
+from kc.core.models import Registration
 import datetime
 
 class RegistrationView(viewsets.GenericViewSet,

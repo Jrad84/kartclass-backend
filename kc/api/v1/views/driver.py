@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from api.v1.serializers.driver import DriverSerializer
+from kc.api.v1.serializers.driver import DriverSerializer
 from rest_framework import permissions
-from core.models import Driver
+from kc.core.models import Driver
 
 class DriverView(viewsets.ModelViewSet):
     serializer_class = DriverSerializer

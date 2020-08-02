@@ -7,15 +7,14 @@ from django.db.models.signals import pre_delete, post_save, pre_save
 from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from accounts.managers import CustomUserManager
+from kc.accounts.managers import CustomUserManager
 # from pinax.stripe.actions import customers
 # from pinax.stripe.models import Customer
 import jwt
 
-from core.models import Category, Customer
+from kc.core.models import Category, Customer, Base, Uuid
 
 from django.conf import settings
-from core.models import Base, Uuid
 import stripe
 import decimal
 

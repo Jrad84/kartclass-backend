@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Registration
+from kc.core.models import Registration
 
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Testimonial
+from kc.core.models import Testimonial
 
 
 class TestimonialSerializer(serializers.ModelSerializer):

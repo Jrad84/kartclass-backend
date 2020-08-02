@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Driver
+from kc.core.models import Driver
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:

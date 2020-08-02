@@ -2,17 +2,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework import routers
-from api.v1.views.article import ArticleView
-from api.v1.views.testimonial import TestimonialView
-from api.v1.views.video import VideoListView, VideoView
-from api.v1.views.category import CategoryView
-from api.v1.views.driver import DriverView
+from kc.api.v1.views.article import ArticleView
+from kc.api.v1.views.testimonial import TestimonialView
+from kc.api.v1.views.video import VideoListView, VideoView
+from kc.api.v1.views.category import CategoryView
+from kc.api.v1.views.driver import DriverView
 
 from rest_framework_simplejwt import views as jwt_views
-from api.v1.views.user import UserViewSet
-from api.v1.views.registration import RegistrationView
-from api.v1.views.me import MeView
-from api.v1.views.payments import *
+from kc.api.v1.views.user import UserViewSet
+from kc.api.v1.views.registration import RegistrationView
+from kc.api.v1.views.me import MeView
+from kc.api.v1.views.payments import *
 
 
 urlpatterns = [

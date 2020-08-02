@@ -12,9 +12,9 @@ from rest_framework import permissions
 # from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
 import kc.settings.local as app_settings
-from accounts.models import CustomUser
-from core.models import Category
-from api.v1.serializers.payments import (
+from kc.accounts.models import CustomUser
+from kc.core.models import Category
+from kc.api.v1.serializers.payments import (
     SubscriptionSerializer,
     CurrentCustomerSerializer,
     CustomerSerializer,
@@ -37,7 +37,7 @@ from api.v1.serializers.payments import (
 #     Plan,
 #     Card
 # )
-from core.models import (
+from kc.core.models import (
     Customer,
     Subscription,
     Plan,

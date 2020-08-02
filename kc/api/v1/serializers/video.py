@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from api.v1.serializers.category import CategorySerializer
-from api.v1.serializers.driver import DriverSerializer
-from core.models import Video, Category
+from kc.api.v1.serializers.category import CategorySerializer
+from kc.api.v1.serializers.driver import DriverSerializer
+from kc.core.models import Video, Category
 
 class VideoSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True)

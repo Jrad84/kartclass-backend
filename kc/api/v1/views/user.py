@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets, filters, generics, status
 from django_filters.rest_framework import DjangoFilterBackend
-from api.v1.permissions.user import UserPermission
-from api.v1.serializers.user import UserCreateSerializer, UserRetrieveSerializer
-from api.v1.serializers.category import CategorySerializer
+from kc.api.v1.permissions.user import UserPermission
+from kc.api.v1.serializers.user import UserCreateSerializer, UserRetrieveSerializer
+from kc.api.v1.serializers.category import CategorySerializer
 from rest_framework.response import Response
 import stripe
 

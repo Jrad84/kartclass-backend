@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from api.common import exceptions
+from kc.api.common import exceptions
 
 
 class UserPermission(permissions.BasePermission):

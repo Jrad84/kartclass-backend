@@ -4,10 +4,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
-from api.common import exceptions
-from api.v1.serializers.video import VideoSerializer
-from api.v1.serializers.category import CategorySerializer
-from core.models import Video, Category
+from kc.api.common import exceptions
+from kc.api.v1.serializers.video import VideoSerializer
+from kc.api.v1.serializers.category import CategorySerializer
+from kc.core.models import Video, Category
 
 class VideoView(
         mixins.ListModelMixin,
