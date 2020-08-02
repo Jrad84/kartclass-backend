@@ -7,7 +7,7 @@ import uuid
 import stripe
 from django.utils import timezone
 from jsonfield.fields import JSONField
-from kc.utils import CURRENCY_SYMBOLS
+from kart.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
 
 stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY

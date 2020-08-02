@@ -1,3 +1,6 @@
 kartclass/Lib/
 kartclass/Scripts/
 kc/media/
+kc/.env
+kc/kc/settings/.env
+kc/kc/__pycache__/*

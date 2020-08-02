@@ -11,7 +11,7 @@ from rest_framework import permissions
 # from pinax.stripe.actions import customers, charges
 # from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
-import kc.settings.local as app_settings
+import kart.settings.local as app_settings
 from accounts.models import CustomUser
 from core.models import Category
 from api.v1.serializers.payments import (
