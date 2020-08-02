@@ -183,7 +183,6 @@ REST_REGISTRATION = {
     'REGISTER_SERIALIZER_CLASS': 'api.v1.serializers.user.UserCreateSerializer',
 }
 
-# ALLOWED_HOSTS = ("http://127.0.0.1:3000/",)
 
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
@@ -220,6 +219,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
 STATIC_URL = '/static/'
 
 CSRF_COOKIE_SECURE=True
+SESSION_COOKIE_SECURE=True
 
 WEBPACK_LOADER = {
     'DEFAULT': {
