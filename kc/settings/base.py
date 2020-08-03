@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 from datetime import timedelta
 import os
 import django_heroku
+import dj_database_url
 import environ
 
 
@@ -113,16 +114,7 @@ WSGI_APPLICATION = 'kc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('ENGINE'),
-        'NAME': os.environ.get('NAME'),
-        'USER': os.environ.get('USER'),
-        'PASSWORD': os.environ.get('PASSWORD'),
-        'HOST': os.environ.get('HOST'),
-        'PORT': '',
-    }
-}
+
 
 
 # Password validation
@@ -245,9 +237,19 @@ PINAX_STRIPE_SUBSCRIPTION_REQUIRED_REDIRECT = ""
 STRIPE_LIVE_MODE = False
 
 # Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': os.environ.get('DEV_NAME'),
+        # 'USER': os.environ.get('DEV_USER'),
+        # 'PASSWORD': os.environ.get('DEV_PASSWORD'),
+        # 'HOST': os.environ.get('DEV_HOST'),
+        # 'PORT': '',
+    }
+}
 db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES = {}
 DATABASES['default'].update(db_from_env)
 
 # Activate Django-Heroku.

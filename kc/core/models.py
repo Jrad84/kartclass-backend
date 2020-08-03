@@ -189,7 +189,6 @@ class Customer(models.Model):
     def stripe_customer(self):
         return stripe.Customer.retrieve(
             self.stripe_id,
-            stripe_account=self.stripe_account_stripe_id,
         )
 
     def __str__(self):
