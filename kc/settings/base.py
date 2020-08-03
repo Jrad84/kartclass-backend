@@ -227,7 +227,7 @@ WEBPACK_LOADER = {
     }
 }
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'kc.accounts.CustomUser'
 
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True
