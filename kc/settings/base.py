@@ -241,11 +241,11 @@ STRIPE_LIVE_MODE = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': os.environ.get('DEV_NAME'),
-        # 'USER': os.environ.get('DEV_USER'),
-        # 'PASSWORD': os.environ.get('DEV_PASSWORD'),
-        # 'HOST': os.environ.get('DEV_HOST'),
-        # 'PORT': '',
+        'NAME': os.environ.get('DEV_NAME'),
+        'USER': os.environ.get('DEV_USER'),
+        'PASSWORD': os.environ.get('DEV_PASSWORD'),
+        'HOST': os.environ.get('DEV_HOST'),
+        'PORT': '',
     }
 }
 db_from_env = dj_database_url.config(conn_max_age=500)
