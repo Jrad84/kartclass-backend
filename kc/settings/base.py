@@ -219,7 +219,7 @@ WEBPACK_LOADER = {
     }
 }
 
-AUTH_USER_MODEL = 'kc.accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True
@@ -249,7 +249,7 @@ DATABASES = {
     }
 }
 db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES = {}
+
 DATABASES['default'].update(db_from_env)
 
 # Activate Django-Heroku.
