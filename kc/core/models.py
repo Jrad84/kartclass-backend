@@ -9,6 +9,7 @@ from django.utils import timezone
 from jsonfield.fields import JSONField
 from kc.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
+from kc.settings.base import AUTH_USER_MODEL as custom_user
 
 stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
 
@@ -175,7 +176,7 @@ class Plan(models.Model):
 
 class Customer(models.Model):
 
-    user = models.OneToOneField(kc.settings.base.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(custom_user, null=True, blank=True, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=191)
     currency = models.CharField(max_length=10, default="aud", blank=True)
     delinquent = models.BooleanField(default=False)
