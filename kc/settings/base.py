@@ -14,12 +14,12 @@ from datetime import timedelta
 import os
 import django_heroku
 import dj_database_url
-import environ
+from dj_database_url import parse as db_url
+from decouple import config
 
 
 # root = environ.Path(__file__) - 3  
-env = environ.Env()
-environ.Env.read_env()
+
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -39,8 +39,8 @@ ROOT_URLCONF = 'kc.urls'
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
-# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -85,7 +85,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'pinax.stripe.middleware.ActiveSubscriptionMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -134,12 +133,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # EMAIL settings
-EMAIL_HOST=os.environ.get('EMAIL_HOST')
-EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT=os.environ.get('EMAIL_PORT')
-EMAIL_USE_TLS=os.environ.get('EMAIL_USE_TLS')
-EMAIL_USE_SSL=os.environ.get('EMAIL_USE_SSL')
+EMAIL_HOST=config('EMAIL_HOST')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_TLS=config('EMAIL_USE_TLS')
+EMAIL_USE_SSL=config('EMAIL_USE_SSL')
 
 
 
@@ -224,27 +223,16 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 # STRIPE 
-SITE_ID = 1
-PINAX_STRIPE_DEFAULT_PLAN = ""
-PAYMENT_PLANS = []
-PINAX_STRIPE_SECRET_KEY = os.environ.get('PINAX_STRIPE_SECRET_KEY')
-PINAX_STRIPE_PUBLIC_KEY = os.environ.get('PINAX_STRIPE_PUBLIC_KEY')
-PINAX_STRIPE_INVOICE_FROM_EMAIL = os.environ.get('PINAX_STRIPE_INVOICE_FROM_EMAIL')
-PINAX_STRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = []
-PINAX_STRIPE_SUBSCRIPTION_REQUIRED_REDIRECT = ""
-STRIPE_LIVE_MODE = False
+
 
 # Heroku: Update database configuration from $DATABASE_URL.
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DEV_NAME'),
-        'USER': os.environ.get('DEV_USER'),
-        'PASSWORD': os.environ.get('DEV_PASSWORD'),
-        'HOST': os.environ.get('DEV_HOST'),
-        'PORT': '',
-    }
+    'default': config(
+        'DATABASE_URL',
+        default='postgres://USER:PASSWORD@HOST:PORT/NAME',
+        cast=db_url
+    )
 }
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
