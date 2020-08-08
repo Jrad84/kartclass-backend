@@ -10,8 +10,8 @@ from jsonfield.fields import JSONField
 from kc.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
 from kc.settings.base import AUTH_USER_MODEL as custom_user
-
-stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
+from decouple import config
+stripe.api_key =config('STRIPE_SECRET_KEY')
 
 
 class Base(models.Model):
