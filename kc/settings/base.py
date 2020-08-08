@@ -246,7 +246,8 @@ DATABASES = {
         'PORT': '',
     }
 }
-DATABASES['default'] = dj_database_url.config(default=env.str('DB_URL'),conn_max_age=600, ssl_require=True)
+db = env.str('DB_URL')
+DATABASES['default'] = dj_database_url.config(default=db,conn_max_age=600, ssl_require=True)
 
 
 
