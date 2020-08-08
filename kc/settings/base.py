@@ -246,7 +246,7 @@ DATABASES = {
         'PORT': '',
     }
 }
-db = os.environ.get('DB_URL')
+db = os.environ['DB_URL']
 DATABASES['default'] = dj_database_url.config(default=db,conn_max_age=600, ssl_require=True)
 
 
