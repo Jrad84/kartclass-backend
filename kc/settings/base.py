@@ -223,7 +223,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 # STRIPE 
-
+STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
 

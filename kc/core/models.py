@@ -9,9 +9,9 @@ from django.utils import timezone
 from jsonfield.fields import JSONField
 from kc.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
-from kc.settings.base import AUTH_USER_MODEL as custom_user
-from decouple import config
-stripe.api_key =config('STRIPE_SECRET_KEY')
+from kc.settings.base import STRIPE_SECRET_KEY, AUTH_USER_MODEL as custom_user
+
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 class Base(models.Model):
