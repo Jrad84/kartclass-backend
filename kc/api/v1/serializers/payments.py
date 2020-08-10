@@ -70,7 +70,7 @@ class PlanSerializer(ModelSerializer):
 
 class SubscriptionSerializer(Serializer):
     class Meta:
-        stripe_plan = serializers.ChoiceField(choices=app_settings.PAYMENT_PLANS, required=True)
+        # stripe_plan = serializers.ChoiceField(choices=app_settings.PAYMENT_PLANS, required=True)
         model = Subscription
         fields = '__all__'
 
