@@ -11,7 +11,8 @@ from rest_framework import permissions
 # from pinax.stripe.actions import customers, charges
 # from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
-import kc.settings.local as app_settings
+import kc.settings.base as app_settings
+from kc.settings.base import STRIPE_SECRET_KEY
 from kc.accounts.models import CustomUser
 from kc.core.models import Category
 from kc.api.v1.serializers.payments import (
@@ -48,7 +49,7 @@ import stripe
 import decimal
 
 
-stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
+stripe.api_key = STRIPE_SECRET_KEY
 
 class StripeView(APIView):
     """ Generic API StripeView """

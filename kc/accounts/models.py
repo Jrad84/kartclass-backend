@@ -11,14 +11,14 @@ from kc.accounts.managers import CustomUserManager
 # from pinax.stripe.actions import customers
 # from pinax.stripe.models import Customer
 import jwt
-
+from kc.settings.base import STRIPE_SECRET_KEY
 from kc.core.models import Category, Customer, Base, Uuid
 
 from django.conf import settings
 import stripe
 import decimal
 
-stripe.api_key = settings.PINAX_STRIPE_SECRET_KEY
+stripe.api_key = STRIPE_SECRET_KEY
 
 class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     """Custom user model that extends `AbstractUser`, `Base`, `Uuid`.
