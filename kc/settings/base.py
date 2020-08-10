@@ -16,6 +16,7 @@ import django_heroku
 import dj_database_url
 from dj_database_url import parse as db_url
 from decouple import config
+from unipath import Path
 
 
 # root = environ.Path(__file__) - 3  
@@ -23,7 +24,8 @@ from decouple import config
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).parent
 # PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
