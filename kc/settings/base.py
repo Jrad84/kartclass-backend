@@ -232,7 +232,7 @@ STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 DATABASES = {
     'default': config(
         'DATABASE_URL',
-        default='postgres://USER:PASSWORD@HOST:PORT/NAME',
+        default='postgres://jarben:good_password@localhost:kartclass',
         cast=db_url
     ),
     #  'dev': {
