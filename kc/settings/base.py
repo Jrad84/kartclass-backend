@@ -232,17 +232,17 @@ STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 DATABASES = {
     'default': config(
         'DATABASE_URL',
-        default='postgres://USER:PASSWORD@HOST:PORT/NAME'
-        # cast=db_url
+        default='postgres://USER:PASSWORD@HOST:PORT/NAME',
+        cast=db_url
     ),
-     'dev': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DEV_NAME'),
-        'USER': os.environ.get('DEV_USER'),
-        'PASSWORD': os.environ.get('DEV_PASSWORD'),
-        'HOST': os.environ.get('DEV_HOST'),
-        'PORT': '',
-    }
+    #  'dev': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': os.environ.get('DEV_NAME'),
+    #     'USER': os.environ.get('DEV_USER'),
+    #     'PASSWORD': os.environ.get('DEV_PASSWORD'),
+    #     'HOST': os.environ.get('DEV_HOST'),
+    #     'PORT': '',
+    # }
 }
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
