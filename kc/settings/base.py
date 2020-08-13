@@ -228,24 +228,29 @@ CORS_ALLOW_CREDENTIALS = True
 STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
-
+DATABASES = { 'default' : dj_database_url.config()}
 DATABASES = {
-    'default': config(
-        'DATABASE_URL',
-        default='postgres://jarben:good_password@localhost:kartclass',
-        cast=db_url
-    ),
-    #  'dev': {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
+# DATABASES = {
+#     'default': config(
+#         'DB_URL',
+#         default='postgres://jarben:good_password@localhost:kartclass',
+#         cast=db_url
+#     ),
+    #  'default': {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': os.environ.get('DEV_NAME'),
-    #     'USER': os.environ.get('DEV_USER'),
-    #     'PASSWORD': os.environ.get('DEV_PASSWORD'),
-    #     'HOST': os.environ.get('DEV_HOST'),
+    #     'NAME': config('DEV_NAME'),
+    #     'USER': config('DEV_USER'),
+    #     'PASSWORD': config('DEV_PASSWORD'),
+    #     'HOST': config('DEV_HOST'),
     #     'PORT': '',
     # }
-}
+# }
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 
