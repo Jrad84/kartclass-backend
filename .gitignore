@@ -2,5 +2,6 @@ kartclass
 kartclass
 kc/media/
 .env
+.vscode
 kc/kc/settings/.env
 kc/kc/__pycache__/*
