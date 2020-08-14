@@ -43,6 +43,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='driver',
-            field=models.ForeignKey(default='unknown', on_delete=django.db.models.deletion.SET_DEFAULT, to='core.Driver'),
+            field=models.ForeignKey(default='1', on_delete=django.db.models.deletion.SET_DEFAULT, to='core.Driver'),
         ),
     ]
