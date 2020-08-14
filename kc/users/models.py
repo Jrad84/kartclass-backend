@@ -7,18 +7,14 @@ from django.db.models.signals import pre_delete, post_save, pre_save
 from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from kc.accounts.managers import CustomUserManager
-# from pinax.stripe.actions import customers
-# from pinax.stripe.models import Customer
+from kc.users.managers import CustomUserManager
 import jwt
-from kc.settings.base import STRIPE_SECRET_KEY
-from kc.core.models import Category, Customer, Base, Uuid
 
+from kc.core.models import Category, Customer, Base
 from django.conf import settings
 import stripe
 import decimal
 
-stripe.api_key = STRIPE_SECRET_KEY
 
 class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     """Custom user model that extends `AbstractUser`, `Base`, `Uuid`.
@@ -63,7 +59,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         on_delete=models.SET_NULL,
         help_text=_("Designates what category a user is in")
     )
-    # category = models.IntegerField(null=True)
+    
     stripe_id = models.CharField(
         max_length=300,
         null = True,

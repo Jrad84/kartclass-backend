@@ -13,8 +13,9 @@ from rest_framework import permissions
 import datetime
 import kc.settings.base as app_settings
 from kc.settings.base import STRIPE_SECRET_KEY
-from kc.accounts.models import CustomUser
 from kc.core.models import Category
+from kc.users.models import CustomUser
+
 from kc.api.v1.serializers.payments import (
     SubscriptionSerializer,
     CurrentCustomerSerializer,
@@ -30,14 +31,7 @@ from kc.api.v1.serializers.payments import (
     PlanSerializer
 )
 
-# from pinax.stripe.models import (
-#     Event,
-#     Customer,
-#     Subscription,
-#     EventProcessingException,
-#     Plan,
-#     Card
-# )
+
 from kc.core.models import (
     Customer,
     Subscription,

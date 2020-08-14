@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'kc.core',
     'kc.api',
-    'kc.accounts',
+    'kc.users',
     'corsheaders',
     'django_filters',
     'rest_registration',
@@ -218,7 +218,7 @@ WEBPACK_LOADER = {
     }
 }
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True

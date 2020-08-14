@@ -1,20 +1,7 @@
 from rest_framework import serializers
 import kc.settings.base as app_settings
 from django.contrib.auth import get_user_model
-# from pinax.stripe.models import (
-#     EventProcessingException,
-#     Event,
-#     Transfer,
-#     TransferChargeFee,
-#     TransferChargeFee,
-#     Customer,
-#     Subscription,
-#     Invoice,
-#     InvoiceItem,
-#     Charge,
-#     Plan,
-#     Card
-# )
+
 from kc.core.models import (
     Customer,
     Subscription,

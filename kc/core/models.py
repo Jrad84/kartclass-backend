@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
-from kc.accounts.managers import ChargeManager, CustomerManager
+from kc.users.managers import ChargeManager, CustomerManager
 from django.utils.translation import gettext_lazy as _
 import uuid
 import stripe
@@ -9,7 +9,8 @@ from django.utils import timezone
 from jsonfield.fields import JSONField
 from kc.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
-from kc.settings.base import STRIPE_SECRET_KEY, AUTH_USER_MODEL as custom_user
+from kc.settings.base import STRIPE_SECRET_KEY, AUTH_USER_MODEL as auth_user
+
 
 stripe.api_key = STRIPE_SECRET_KEY
 
@@ -176,7 +177,7 @@ class Plan(models.Model):
 
 class Customer(models.Model):
 
-    user = models.OneToOneField(custom_user, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(auth_user, null=True, blank=True, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=191)
     currency = models.CharField(max_length=10, default="aud", blank=True)
     delinquent = models.BooleanField(default=False)
@@ -430,3 +431,92 @@ class Charge(models.Model):
     @property
     def card(self):
         return Card.objects.filter(stripe_id=self.source).first()
+
+# from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+# from django.core.exceptions import PermissionDenied, ValidationError
+# from django.core.validators import EmailValidator
+
+# import django.dispatch
+# from django.db.models.signals import pre_delete, post_save, pre_save
+# from django.dispatch.dispatcher import receiver
+
+# from django.utils.translation import gettext_lazy as _
+# from kc.accounts.managers import CustomUserManager
+# import jwt
+
+
+
+# import decimal
+
+
+# class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
+#     """Custom user model that extends `AbstractUser`, `Base`, `Uuid`.
+#     Contains fields:
+#     - `email: str`
+#     - `name: str`
+#     - `is_staff: bool`
+#     - `is_active: bool`
+#     """
+
+#     email_validator = EmailValidator()
+
+#     username = None
+#     email = models.EmailField(
+#         _("email address"),
+#         unique=True,
+#         validators=[email_validator],
+#         error_messages={"unique": _("A user with that email already exists.")}, 
+#     )
+#     name = models.CharField(_("full name"), max_length=80)
+#     is_staff = models.BooleanField(
+#         _("staff status"),
+#         default=False,
+#         help_text=_("Designates whether the user can log into this admin site."),
+#     )
+#     is_active = models.BooleanField(
+#         _("active"),
+#         default=True,
+#         help_text=_(
+#             "Designates whether this user should be treated as active. "
+#             "Unselect this instead of deleting accounts."
+#         ),
+#     )
+#     is_member = models.BooleanField(
+#         _("member"),
+#         default=False,  
+#         help_text=_("Designates whether a user is a paid member or not"),
+#     )
+#     # Need to test this
+#     category = models.ForeignKey(
+#         Category, null=True, 
+#         on_delete=models.SET_NULL,
+#         help_text=_("Designates what category a user is in")
+#     )
+#     # category = models.IntegerField(null=True)
+#     stripe_id = models.CharField(
+#         max_length=300,
+#         null = True,
+#         blank = True,
+#         help_text=_("Stripe user id")
+#     )
+#     USERNAME_FIELD = "email"
+#     REQUIRED_FIELDS = []
+#     objects = CustomUserManager()
+
+#     class Meta:
+#         verbose_name = _("custom user")
+#         verbose_name_plural = _("custom users")
+
+#     def clean(self):
+#         super().clean()
+#         self.email = self.__class__.objects.normalize_email(self.email)
+
+#     def __str__(self):
+#         return self.email
+
+# # Make sure superuser can't be deleted
+# @receiver(pre_delete, sender=CustomUser)
+# def delete_user(sender, instance, **kwargs):
+#     # Prevent superuser deletion.
+#     if instance.is_superuser:
+#         raise PermissionDenied
