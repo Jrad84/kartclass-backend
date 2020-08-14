@@ -235,23 +235,23 @@ STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 #     }
 # }
 DATABASES = {
-#     'default': config(
-#         'DB_URL',
-#         default='postgres://jarben:good_password@localhost:kartclass',
-#         cast=db_url
-#     ),
-     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DEV_NAME'),
-        'USER': config('DEV_USER'),
-        'PASSWORD': config('DEV_PASSWORD'),
-        'HOST': config('DEV_HOST'),
-        'PORT': '',
-    }
+    'default': dj_database_url.config(
+        # 'DB_URL',
+        default='postgres://jarben:good_password@localhost/kartclass',
+        # cast=db_url
+    ),
+    #  'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': config('DEV_NAME'),
+    #     'USER': config('DEV_USER'),
+    #     'PASSWORD': config('DEV_PASSWORD'),
+    #     'HOST': config('DEV_HOST'),
+    #     'PORT': '',
+    # }
 }
-db_from_env =  dj_database_url.config(conn_max_age=600, ssl_require=True)
-
-DATABASES['default'].update(db_from_env)
+# db_from_env =  dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'] = dj_database_url.config(default='postgres://jarben:good_password@localhost/kartclass')
+# DATABASES['default'].update(db_from_env)
 
 
 
