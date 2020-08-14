@@ -1,6 +1,6 @@
-kartclass/Lib/
-kartclass/Scripts/
+kartclass
+kartclass
 kc/media/
-kc/.env
+.env
 kc/kc/settings/.env
 kc/kc/__pycache__/*
