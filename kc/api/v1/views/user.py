@@ -5,7 +5,7 @@ from kc.api.v1.permissions.user import UserPermission
 from kc.api.v1.serializers.user import UserCreateSerializer, UserRetrieveSerializer
 from kc.api.v1.serializers.category import CategorySerializer
 from rest_framework.response import Response
-import stripe
+
 
 
 class UserViewSet(

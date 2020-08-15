@@ -46,7 +46,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=1000, null=True)
     image = models.ImageField(upload_to='documents/', null=True)
-    amount = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     trailer = models.FileField(upload_to='documents/', blank=True, null=True)
 
     class Meta:

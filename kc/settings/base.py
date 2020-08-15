@@ -184,8 +184,6 @@ PASSWORD_HASHERS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
 STATIC_URL = '/static/'
 
-CSRF_COOKIE_SECURE=True
-SESSION_COOKIE_SECURE=True
 
 WEBPACK_LOADER = {
     'DEFAULT': {
