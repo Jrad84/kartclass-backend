@@ -66,15 +66,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'rest_framework',
     'kc.core',
     'kc.api',
     'kc.users',
     'corsheaders',
     'django_filters',
-    'rest_registration',
     'stripe',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -115,7 +115,6 @@ WSGI_APPLICATION = 'kc.wsgi.application'
 
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -134,15 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# EMAIL settings
-# EMAIL_HOST=config('EMAIL_HOST')
-# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# EMAIL_PORT=config('EMAIL_PORT')
-# EMAIL_USE_TLS=config('EMAIL_USE_TLS')
-# EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-
-
 
 # DRF stuff.
 REST_FRAMEWORK = {
@@ -159,20 +149,6 @@ REST_FRAMEWORK = {
 }
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
-REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': True,
-    'REGISTER_EMAIL_VERIFICATION_ENABLED': True,
-    'RESET_PASSWORD_VERIFICATION_ENABLED': True,
-    'REGISTER_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-user/',
-    'RESET_PASSWORD_VERIFICATION_URL': 'https://127.0.0.1:3000/reset-password/',
-    'REGISTER_EMAIL_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-email/',
-
-    'VERIFICATION_FROM_EMAIL': 'jaredtaback@gmail.com',
-    
-    "USER_DETAILS_SERIALIZER": "api.v1.serializers.user.UserRetrieveSerializer",
-    'REGISTER_SERIALIZER_CLASS': 'api.v1.serializers.user.UserCreateSerializer',
-}
-
 
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
@@ -228,32 +204,14 @@ CORS_ALLOW_CREDENTIALS = True
 STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#     }
-# }
 DATABASES = {
     'default': dj_database_url.config(
-        # 'DB_URL',
         default='postgres://jarben:good_password@localhost/kartclass',
-        # cast=db_url
     ),
-    #  'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': config('DEV_NAME'),
-    #     'USER': config('DEV_USER'),
-    #     'PASSWORD': config('DEV_PASSWORD'),
-    #     'HOST': config('DEV_HOST'),
-    #     'PORT': '',
-    # }
+
 }
-# db_from_env =  dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'] = dj_database_url.config(default='postgres://jarben:good_password@localhost/kartclass')
-# DATABASES['default'].update(db_from_env)
 
-
+# DATABASES['default'] = dj_database_url.config(default='postgres://jarben:good_password@localhost/kartclass')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
