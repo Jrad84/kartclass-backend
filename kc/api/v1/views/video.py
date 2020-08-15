@@ -4,9 +4,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
-from api.v1.serializers.video import VideoSerializer
-from api.v1.serializers.category import CategorySerializer
-from core.models import Video, Category
+from kc.api.common import exceptions
+from kc.api.v1.serializers.video import VideoSerializer
+from kc.api.v1.serializers.category import CategorySerializer
+from kc.core.models import Video, Category
 
 class VideoView(
         mixins.ListModelMixin,
@@ -28,11 +29,18 @@ class VideoListView(mixins.ListModelMixin,
                     viewsets.GenericViewSet,
                     # generics.GenericAPIView
                     ):
+
     serializer_class = VideoSerializer
     category = CategorySerializer
-    permission_classes = [permissions.AllowAny]
-    # categories = Category.objects.all()
+    permission_classes = [permissions.IsAuthenticated,]
+    
     queryset = Video.objects.all()
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('id', 'category__id')
+
+    # def get(self, request):
+    #     user = request.user
+    #     category = user.category_id
+    #     videos = Video.objects.filter(category__id=category)
+    #     return videos
 

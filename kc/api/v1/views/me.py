@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from api.v1.serializers.me import MeRetrieveSerializer, MeUpdateSerializer
+from kc.api.v1.serializers.me import MeRetrieveSerializer, MeUpdateSerializer
 
 
 class MeView(generics.RetrieveUpdateAPIView):

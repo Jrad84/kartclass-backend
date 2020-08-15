@@ -20,6 +20,7 @@ class MeRetrieveSerializer(serializers.ModelSerializer):
             "name",
             "is_staff",
             "date_created",
+            "category"
         )
 
 class MeUpdateSerializer(serializers.ModelSerializer):
@@ -36,4 +37,5 @@ class MeUpdateSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "name",
+            "category"
         )

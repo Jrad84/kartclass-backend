@@ -1,7 +1,7 @@
 from rest_framework import viewsets, generics, mixins
-from api.v1.serializers.category import CategorySerializer
+from kc.api.v1.serializers.category import CategorySerializer
 from rest_framework import permissions
-from core.models import Category
+from kc.core.models import Category
 
 class CategoryView(viewsets.GenericViewSet,
                     mixins.RetrieveModelMixin,

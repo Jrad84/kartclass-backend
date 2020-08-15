@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from api.common import exceptions
+from kc.api.common import exceptions
 
 
 class UserPermission(permissions.BasePermission):
@@ -19,5 +19,9 @@ class UserPermission(permissions.BasePermission):
                 raise exceptions.UserCreationNotAllowed
 
             return True
+
+        # # Control user access to content according to current category
+        # if request.method == "GET":
+        #     if request.user.category
 
         return False

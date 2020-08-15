@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model, hashers
 from rest_framework import serializers
-from core.models import Category
-from api.v1.serializers.category import CategorySerializer
-from pinax.stripe.models import Customer
+from kc.core.models import Category
+from kc.api.v1.serializers.category import CategorySerializer
+
 import stripe
 
 
@@ -56,5 +56,4 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
-        # stripe.Customer.create(name=validated_data['name'], email=validated_data['email'])
         return super(UserCreateSerializer, self).create(validated_data)

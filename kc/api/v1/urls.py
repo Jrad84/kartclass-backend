@@ -2,15 +2,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework import routers
-from api.v1.views.article import ArticleView
-from api.v1.views.testimonial import TestimonialView
-from api.v1.views.video import VideoListView, VideoView
-from api.v1.views.category import CategoryView
-from api.v1.views.driver import DriverView
+from kc.api.v1.views.article import ArticleView
+from kc.api.v1.views.testimonial import TestimonialView
+from kc.api.v1.views.video import VideoListView, VideoView
+from kc.api.v1.views.category import CategoryView
+from kc.api.v1.views.driver import DriverView
+
 from rest_framework_simplejwt import views as jwt_views
-from api.v1.views.user import UserViewSet
-from api.v1.views.me import MeView
-from api.v1.views.stripe import *
+from kc.api.v1.views.user import UserViewSet
+from kc.api.v1.views.registration import RegistrationView
+from kc.api.v1.views.me import MeView
+from kc.api.v1.views.payments import *
 
 
 urlpatterns = [
@@ -24,9 +26,9 @@ urlpatterns = [
     path('create-subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
     path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),
     path('charges/', ChargeListView.as_view(), name='stripe-charges'),
-    path('invoices/', InvoiceListView.as_view(), name='stripe-invoices'),
+#     path('invoices/', InvoiceListView.as_view(), name='stripe-invoices'),
     path('plans/', PlanListView.as_view(), name='stripe-plans'),
-    path('events/', EventListView.as_view(), name='stripe-events'),
+#     path('events/', EventListView.as_view(), name='stripe-events'),
     path('webhook/', CancelView.as_view(), name='stripe-cancel'),
     path('customer/',CurrentCustomerDetailView.as_view(), name='stripe-customer'),
     path('create-customer/', CurrentCustomerDetailView.as_view(), name='create-stripe-customer'),
@@ -40,6 +42,8 @@ router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'drivers', DriverView)
 router.register(r'accounts', UserViewSet)
+router.register(r'registration', RegistrationView)
+
 
 
 urlpatterns.extend(router.urls)

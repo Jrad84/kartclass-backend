@@ -6,5 +6,10 @@ admin.site.register(Testimonial)
 admin.site.register(Category)
 admin.site.register(Article)
 admin.site.register(Driver)
+admin.site.register(Registration)
+
+admin.site.register(Customer)
+admin.site.register(Invoice)
+
 
 
