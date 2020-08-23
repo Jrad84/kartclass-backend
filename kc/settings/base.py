@@ -53,7 +53,7 @@ ALLOWED_HOSTS = [
      "81281f4fbf47.ngrok.io",
      "localhost",
      "kartclass-django/herokuapp.com",
-     "kartclass-nuxt/herokuapp.com"
+     "https://www.kartclass-nuxt/herokuapp.com"
      ]
 
 
