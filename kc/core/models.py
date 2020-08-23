@@ -45,9 +45,9 @@ class Uuid(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=1000, null=True)
-    image = models.ImageField(upload_to='documents/', null=True)
+    image = models.FileField(null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    trailer = models.FileField(upload_to='documents/', blank=True, null=True)
+    trailer = models.FileField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Category"
@@ -76,11 +76,11 @@ class Driver(models.Model):
 class Video(models.Model):
     title = models.CharField(max_length=100)
     driver = models.ForeignKey(
-        Driver, default='unknown', on_delete=models.SET_DEFAULT)
+        Driver, default=1, on_delete=models.SET_DEFAULT)
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
-    video_file = models.FileField(upload_to='documents/', null=True)
-    image_file = models.ImageField(upload_to='documents/', null=True)
+    video_file = models.FileField(null=True)
+    image_file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -94,10 +94,10 @@ class Video(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100)
     driver = models.ForeignKey(
-        Driver, default='unknown', on_delete=models.SET_DEFAULT)
+        Driver, default=1, on_delete=models.SET_DEFAULT)
     description = models.CharField(max_length=150)
     category = models.ManyToManyField(Category)
-    picture = models.ImageField(upload_to='documents/', null=True)
+    picture = models.FileField(null=True)
     text = models.TextField(default="textarea")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -112,7 +112,7 @@ class Article(models.Model):
 class Testimonial(models.Model):
     name = models.CharField(max_length=50)
     comment = models.TextField()
-    image = models.ImageField(upload_to='documents/', null=True)
+    image = models.FileField(null=True)
 
     class Meta:
         verbose_name = "Testimonial"
@@ -120,17 +120,6 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Registration(models.Model):
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-
-    class Meta:
-        verbose_name = "Registration dates"
-
-    def __str__(self):
-        return str(self.start.strftime("%d %B %Y"))
 
 
 class StripeObject(models.Model):
