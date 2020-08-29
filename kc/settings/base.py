@@ -52,11 +52,11 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
      "81281f4fbf47.ngrok.io",
      "localhost",
-     "https://www.kartclass-django.com",
-     "https://www.kartclass-nuxt.com",
-     "https://www.kartclass-nuxt.herokuapp.com",
+     "https://kartclass-django.com",
+     "https://kartclass-nuxt.com",
+     "https://kartclass-nuxt.herokuapp.com",
      "https://www.kartclass-django.com/herokuapp",
-     "https://www.kartclass-nuxt.com/herokuapp",
+     "https://kartclass-nuxt.com/herokuapp",
      "*.kartclass-django.herokuapp.com",
      "https://www.kartclass-nuxt.herokuapp.com"
      ]
