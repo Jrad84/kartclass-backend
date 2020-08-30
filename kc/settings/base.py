@@ -52,8 +52,13 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
      "81281f4fbf47.ngrok.io",
      "localhost",
-     "kartclass-django/herokuapp.com",
-     "kartclass-nuxt/herokuapp.com"
+     "https://kartclass-django.com",
+     "https://kartclass-nuxt.com",
+     "https://kartclass-nuxt.herokuapp.com",
+     "https://www.kartclass-django.com/herokuapp",
+     "https://kartclass-nuxt.com/herokuapp",
+     "*.kartclass-django.herokuapp.com",
+     "https://www.kartclass-nuxt.herokuapp.com"
      ]
 
 
@@ -66,15 +71,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'rest_framework',
     'kc.core',
     'kc.api',
     'kc.users',
     'corsheaders',
     'django_filters',
-    'rest_registration',
     'stripe',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -115,7 +120,6 @@ WSGI_APPLICATION = 'kc.wsgi.application'
 
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -134,15 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# EMAIL settings
-# EMAIL_HOST=config('EMAIL_HOST')
-# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# EMAIL_PORT=config('EMAIL_PORT')
-# EMAIL_USE_TLS=config('EMAIL_USE_TLS')
-# EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-
-
 
 # DRF stuff.
 REST_FRAMEWORK = {
@@ -159,20 +154,6 @@ REST_FRAMEWORK = {
 }
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
-REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': True,
-    'REGISTER_EMAIL_VERIFICATION_ENABLED': True,
-    'RESET_PASSWORD_VERIFICATION_ENABLED': True,
-    'REGISTER_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-user/',
-    'RESET_PASSWORD_VERIFICATION_URL': 'https://127.0.0.1:3000/reset-password/',
-    'REGISTER_EMAIL_VERIFICATION_URL': 'https://127.0.0.1:3000/verify-email/',
-
-    'VERIFICATION_FROM_EMAIL': 'jaredtaback@gmail.com',
-    
-    "USER_DETAILS_SERIALIZER": "api.v1.serializers.user.UserRetrieveSerializer",
-    'REGISTER_SERIALIZER_CLASS': 'api.v1.serializers.user.UserCreateSerializer',
-}
-
 
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
@@ -205,11 +186,37 @@ PASSWORD_HASHERS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
-STATIC_URL = '/static/'
 
-CSRF_COOKIE_SECURE=True
-SESSION_COOKIE_SECURE=True
+
+# USE_S3 = os.getenv('USE_S3') == 'True'
+
+# if USE_S3:
+        
+AWS_ACCESS_KEY_ID = config('S3_ID')
+AWS_SECRET_ACCESS_KEY = config('S3_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('S3_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+AWS_DEFAULT_ACL = None
+
+# s3 static settings
+STATIC_LOCATION = 'static'
+STATIC_URL =f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/"
+STATICFILES_STORAGE = 'kc.storage_backends.StaticStorage'
+# s3 public media settings
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+DEFAULT_FILE_STORAGE = 'kc.storage_backends.PublicMediaStorage'
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
+#     STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -228,32 +235,14 @@ CORS_ALLOW_CREDENTIALS = True
 STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#     }
-# }
 DATABASES = {
     'default': dj_database_url.config(
-        # 'DB_URL',
         default='postgres://jarben:good_password@localhost/kartclass',
-        # cast=db_url
     ),
-    #  'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': config('DEV_NAME'),
-    #     'USER': config('DEV_USER'),
-    #     'PASSWORD': config('DEV_PASSWORD'),
-    #     'HOST': config('DEV_HOST'),
-    #     'PORT': '',
-    # }
+
 }
-# db_from_env =  dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'] = dj_database_url.config(default='postgres://jarben:good_password@localhost/kartclass')
-# DATABASES['default'].update(db_from_env)
 
-
+# DATABASES['default'] = dj_database_url.config(default='postgres://jarben:good_password@localhost/kartclass')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

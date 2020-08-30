@@ -10,7 +10,7 @@ from kc.api.v1.views.driver import DriverView
 
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import UserViewSet
-from kc.api.v1.views.registration import RegistrationView
+
 from kc.api.v1.views.me import MeView
 from kc.api.v1.views.payments import *
 
@@ -42,7 +42,7 @@ router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'drivers', DriverView)
 router.register(r'accounts', UserViewSet)
-router.register(r'registration', RegistrationView)
+
 
 
 
