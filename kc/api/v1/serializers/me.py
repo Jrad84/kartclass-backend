@@ -36,6 +36,6 @@ class MeUpdateSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "email",
-            "name",
-            "category"
+            "password"
+           
         )
