@@ -44,6 +44,7 @@ class Uuid(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.FileField(null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
@@ -75,8 +76,7 @@ class Driver(models.Model):
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
-    driver = models.ForeignKey(
-        Driver, default=1, on_delete=models.SET_DEFAULT)
+    longdescription = models.TextField(max_length=1000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
     video_file = models.FileField(null=True)
@@ -91,14 +91,12 @@ class Video(models.Model):
         return self.title
 
 
+
 class Article(models.Model):
     title = models.CharField(max_length=100)
-    driver = models.ForeignKey(
-        Driver, default=1, on_delete=models.SET_DEFAULT)
     description = models.CharField(max_length=150)
-    category = models.ManyToManyField(Category)
-    picture = models.FileField(null=True)
-    text = models.TextField(default="textarea")
+    image = models.ImageField(null=True)
+    document = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
