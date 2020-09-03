@@ -32,7 +32,7 @@ class VideoListView(mixins.ListModelMixin,
 
     serializer_class = VideoSerializer
     category = CategorySerializer
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.AllowAny,]
     
     queryset = Video.objects.all()
     filter_backends = (DjangoFilterBackend,)

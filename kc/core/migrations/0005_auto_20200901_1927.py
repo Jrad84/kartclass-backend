@@ -10,9 +10,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='Registration',
-        ),
+      
         migrations.RenameField(
             model_name='article',
             old_name='picture',
