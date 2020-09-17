@@ -9,29 +9,31 @@ from kc.api.v1.views.category import CategoryView
 from kc.api.v1.views.driver import DriverView
 
 from rest_framework_simplejwt import views as jwt_views
-from kc.api.v1.views.user import UserViewSet, PasswordResetView
+from kc.api.v1.views.user import *
 
 from kc.api.v1.views.me import MeView
 from kc.api.v1.views.payments import *
 
 
 urlpatterns = [
-     path('auth/token/', jwt_views.TokenObtainPairView.as_view(),
+    path('auth/token/', jwt_views.TokenObtainPairView.as_view(),
          name='auth-token-obtain-pair'),
-     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
+    path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='auth-token-refresh'),
-     path('auth/token/verify', jwt_views.TokenVerifyView.as_view(),
+    path('auth/token/verify', jwt_views.TokenVerifyView.as_view(),
           name='auth-token-verify'),
-     path('me/', MeView.as_view(), name='me'),   
-     path('current-user/', CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),
-     path('create-subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
-     path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),
-     path('charges/', ChargeListView.as_view(), name='stripe-charges'),
-     path('plans/', PlanListView.as_view(), name='stripe-plans'),
-     path('webhook/', CancelView.as_view(), name='stripe-cancel'),
-     path('customer/',CurrentCustomerDetailView.as_view(), name='stripe-customer'),
-     path('create-customer/', CurrentCustomerDetailView.as_view(), name='create-stripe-customer'),
-     path('reset-password/', PasswordResetView.as_view(), name='reset-password')
+    path('auth/logout/', LogoutView, name='logout'),
+    path('me/', MeView.as_view(), name='me'),   
+#     path('edit-user/', UpdateUserView.as_view(), name='edit-user'),
+    path('current-user/', CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),
+    path('create-subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
+    path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),
+    path('charges/', ChargeListView.as_view(), name='stripe-charges'),
+    path('plans/', PlanListView.as_view(), name='stripe-plans'),
+    path('webhook/', CancelView.as_view(), name='stripe-cancel'),
+    path('customer/',CurrentCustomerDetailView.as_view(), name='stripe-customer'),
+    path('create-customer/', CurrentCustomerDetailView.as_view(), name='create-stripe-customer'),
+   
      
 ]
 
@@ -42,6 +44,7 @@ router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'drivers', DriverView)
 router.register(r'accounts', UserViewSet)
+router.register(r'edit-user', UpdateUserView, basename='edit-user')
 
 
 

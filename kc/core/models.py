@@ -73,12 +73,22 @@ class Driver(models.Model):
          return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+    def __str__(self):
+        return self.name
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
     longdescription = models.TextField(max_length=1000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
+    tag = models.ManyToManyField(Tag, related_name='tag')
     video_file = models.FileField(null=True)
     image_file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)

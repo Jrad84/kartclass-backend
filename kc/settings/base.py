@@ -19,6 +19,7 @@ from decouple import config
 from unipath import Path
 
 
+
 # root = environ.Path(__file__) - 3  
 
 
@@ -71,7 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -148,6 +149,7 @@ REST_FRAMEWORK = {
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
+       
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 
@@ -156,9 +158,11 @@ REST_FRAMEWORK = {
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 
 JWT_AUTH = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
-    # 'JWT_ALLOW_REFRESH': True,
+    "ROTATE_REFRESH_TOKENS": True, 
+    "BLACKLIST_AFTER_ROTATION": True,
+    'JWT_ALLOW_REFRESH': True,
     # 'JWT_EXPIRATION_DELTA': timedelta(hours=1),
     # 'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
     # 'AUTH_HEADER_TYPES': ('JWT',),
