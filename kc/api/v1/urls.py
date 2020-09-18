@@ -11,7 +11,7 @@ from kc.api.v1.views.driver import DriverView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
 
-from kc.api.v1.views.me import MeView
+from kc.api.v1.views.me import MeView, ChangePasswordView
 from kc.api.v1.views.payments import *
 
 
@@ -24,7 +24,7 @@ urlpatterns = [
           name='auth-token-verify'),
     path('auth/logout/', LogoutView, name='logout'),
     path('me/', MeView.as_view(), name='me'),   
-#     path('edit-user/', UpdateUserView.as_view(), name='edit-user'),
+    path('edit-password/', ChangePasswordView.as_view(), name='edit-password'),
     path('current-user/', CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),
     path('create-subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
     path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),

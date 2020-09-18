@@ -1,11 +1,11 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
-from kc.api.v1.serializers.me import MeRetrieveSerializer, MeUpdateSerializer
+from kc.api.v1.serializers.me import *
 from kc.users.models import CustomUser
 from rest_framework.response import Response
 
-class MeView(generics.RetrieveUpdateAPIView):
+class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
     """Authenticated user view."""
 
     """
@@ -25,9 +25,44 @@ class MeView(generics.RetrieveUpdateAPIView):
 
     @csrf_exempt
     def patch(self, request):
-        
-        user = self.request.user
-        serializer = self.get_serializer(data=self.request.data, partial=True)
+        uid = request.data['id']
+        user = self.get_object()
+        print(user)
+        serializer = MeUpdateSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        # serializer.save()
+        serializer.save()
         return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+
+class ChangePasswordView(generics.UpdateAPIView):
+        """
+        An endpoint for changing password.
+        """
+        serializer_class = ChangePasswordSerializer
+        model = CustomUser
+        permission_classes = (IsAuthenticated,)
+
+        def get_object(self, queryset=None):
+            obj = self.request.user
+            return obj
+
+        def patch(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            serializer = self.get_serializer(data=request.data, partial=True)
+            print(serializer)
+            if serializer.is_valid():
+                # Check old password
+                if not self.object.check_password(serializer.data.get("oldPassword")):
+                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
+                self.object.set_password(serializer.data.get("newPassword"))
+                self.object.save()
+                response = {
+                    'status': 'success',
+                    'code': status.HTTP_200_OK,
+                    'message': 'Password updated successfully',
+                    'data': []
+                }
+
+                return Response(response)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -83,7 +83,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         try:
             user = CustomUser.objects.get(id=self.request.user)
-            print(user)
+            
             password = attrs.get('password')
             token = attrs.get('token')
             user = get_user_model()
