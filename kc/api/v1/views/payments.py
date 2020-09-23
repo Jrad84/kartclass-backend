@@ -189,10 +189,10 @@ class ChargeListView(StripeView, generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
 
-    def get_queryset(self):
-        customer = self.get_customer()
-        charges = customer.charges.all()
-        return charges
+    # def get_queryset(self):
+    #     customer = self.get_customer()
+    #     charges = customer.charges.all()
+    #     return charges
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)

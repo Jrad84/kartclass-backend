@@ -97,38 +97,14 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
     
     def update(self, instance, validated_data):
-        print(validated_data)
+        
         instance.email = validated_data.get('email', instance.email)
         instance.password = validated_data.get('password', instance.content)
         instance.save()
         return instance
 
-class ResetPasswordSerializer(serializers.Serializer):
-    serializer = UserRetrieveSerializer()
-    password = serializers.CharField(
-        min_length=8, max_length=68, write_only=True)
-    token = serializers.CharField(
-        min_length=1, write_only=True)
 
-    class Meta:
-        fields = ['password', 'token']
 
-    def validate(self, attrs):
-        try:
-            password = attrs.get('password')
-            token = attrs.get('token')
-            user = get_user_model()
-            user = user.objects.get(attrs.user) 
-            if not PasswordResetTokenGenerator().check_token(user, token):
-                raise AuthenticationFailed('Something is wrong', 401)
-            
-            user.set_password(password)
-            user.save()
-
-            return (user)
-        except Exception as e:
-            raise AuthenticationFailed('Authentication failed', 401)
-        return super().validate(attrs)
 
 from django.utils.text import gettext_lazy as _
 

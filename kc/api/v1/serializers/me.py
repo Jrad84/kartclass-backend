@@ -37,7 +37,9 @@ class MeUpdateSerializer(serializers.ModelSerializer):
         fields = (
             "pk",
             "email",
-            "password"
+            "password",
+            "category",
+            "videos"
            
         )
 
@@ -50,3 +52,12 @@ class ChangePasswordSerializer(serializers.Serializer):
     oldPassword = serializers.CharField(required=True)
         
     newPassword = serializers.CharField(required=True )
+
+class ChangeEmailSerializer(serializers.Serializer):
+    # class Meta:
+    model = CustomUser
+
+    oldEmail = serializers.EmailField(required=True)
+    newEmail = serializers.EmailField(required=True)
+
+       

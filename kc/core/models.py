@@ -89,6 +89,8 @@ class Video(models.Model):
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
     tag = models.ManyToManyField(Tag, related_name='tag')
+    likes = models.IntegerField(default=0)
+    views = models.IntegerField(default=0)
     video_file = models.FileField(null=True)
     image_file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)

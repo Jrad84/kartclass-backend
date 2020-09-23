@@ -49,7 +49,7 @@ class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
 
     @csrf_exempt
     def patch(self, request):
-        print(request)
+       
         user = CustomUser.objects.get(email=request.user)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -69,7 +69,8 @@ class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
 class LogoutView(generics.GenericAPIView):
     serializer_class = RefreshTokenSerializer
     permission_classes = (permissions.IsAuthenticated, )
-
+    
+    @csrf_exempt
     def post(self, request, *args):
         sz = self.get_serializer(data=request.data)
         sz.is_valid(raise_exception=True)

@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from kc.users.managers import CustomUserManager
 import jwt
 
-from kc.core.models import Category, Customer, Base
+from kc.core.models import Category, Customer, Base, Video
 from django.conf import settings
 import stripe
 import decimal
@@ -60,6 +60,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         help_text=_("Designates what category a user is in")
     )
     
+    videos = models.ManyToManyField(
+        Video, 
+        related_name="video",
+        help_text=_("List of users favourite videos")
+        )
+        
     stripe_id = models.CharField(
         max_length=300,
         null = True,

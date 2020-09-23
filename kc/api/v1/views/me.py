@@ -25,13 +25,46 @@ class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
 
     @csrf_exempt
     def patch(self, request):
-        uid = request.data['id']
+        # uid = request.data['id']
         user = self.get_object()
-        print(user)
         serializer = MeUpdateSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+
+class ChangeEmailView(generics.UpdateAPIView):
+
+    serializer_class = ChangeEmailSerializer
+    model = CustomUser
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+            obj = self.request.user
+            return obj
+
+    def patch(self, request, *args, **kwargs):
+            user = self.get_object()
+          
+            serializer = self.get_serializer(data=request.data, partial=True)
+           
+            if serializer.is_valid():
+                # Check old email
+               
+                if serializer.data.get("oldEmail") != user.email:
+                    return Response({"old_email": ["Wrong email."]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
+                user.email = serializer.data.get("newEmail")
+                user.save()
+                response = {
+                    'status': 'success',
+                    'code': status.HTTP_200_OK,
+                    'message': 'Email updated successfully',
+                    'data': []
+                }
+
+                return Response(response)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ChangePasswordView(generics.UpdateAPIView):
         """

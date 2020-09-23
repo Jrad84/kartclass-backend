@@ -9,5 +9,31 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Video
-        fields = ('id', 'title', 'longdescription', 'description',
-                  'category', 'tag', 'video_file', 'image_file')
+        fields = '__all__'
+
+class VideoLikeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Video
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        
+        instance.likes += 1
+       
+        instance.save()
+        return instance
+
+
+class VideoUnLikeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Video
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        
+        instance.likes -= 1
+       
+        instance.save()
+        return instance
