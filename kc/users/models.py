@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.validators import EmailValidator
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 import django.dispatch
 from django.db.models.signals import pre_delete, post_save, pre_save
@@ -59,12 +60,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         on_delete=models.SET_NULL,
         help_text=_("Designates what category a user is in")
     )
-    
-    videos = models.ManyToManyField(
-        Video, 
-        related_name="video",
-        help_text=_("List of users favourite videos")
-        )
+    videos = ArrayField(ArrayField(models.IntegerField()), blank=True, null=True)
         
     stripe_id = models.CharField(
         max_length=300,

@@ -20,14 +20,8 @@ from unipath import Path
 
 
 
-# root = environ.Path(__file__) - 3  
 
-
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = Path(__file__).parent
-# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 
@@ -89,7 +83,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -189,7 +183,7 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
-
+# S3
 AWS_ACCESS_KEY_ID = config('S3_ID')
 AWS_SECRET_ACCESS_KEY = config('S3_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('S3_BUCKET_NAME')

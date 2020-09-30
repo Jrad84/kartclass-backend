@@ -55,16 +55,6 @@ class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
         serializer.is_valid(raise_exception=True)
         return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
 
-# class PasswordResetView(mixins.UpdateModelMixin, generics.GenericAPIView):
-    
-#     serializer_class = ResetPasswordSerializer
-
-#     def patch(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
-
-
 
 class LogoutView(generics.GenericAPIView):
     serializer_class = RefreshTokenSerializer

@@ -44,6 +44,7 @@ import decimal
 
 
 stripe.api_key = STRIPE_SECRET_KEY
+prices = {150 : 'price_1H8GoaD9jmvAZt96jqqcy25C', 250 : 'price_1H8GpyD9jmvAZt96sQC070Pi', 350 : 'price_1H8GpTD9jmvAZt96qJojD3a6'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -60,13 +61,7 @@ class StripeView(APIView):
             return self.request.user.customer
         except ObjectDoesNotExist:
             print('Customer does not exist')
-        #     customer = customers.create(user = self.request.user)
-        #     # print(customer.stripe_id)
-        #     # self.request.user.stripe_id = customer.stripe_id
-        #     return customer
-
-
-
+      
 
 class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
     """ See the current customer/user payment details """
@@ -182,42 +177,83 @@ class PlanListView(StripeView, generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = PlanSerializer
     queryset = Plan.objects.exclude(name="Premium plan")
+
+    def get_plan(self, pk):
+        return Plan.objects.get(pk=pk)
+
+
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = self.serializer_class(data=request.data)
+           
+            if serializer.is_valid():
+                plan_id = request.data.get('id')
+                plan = self.get_plan(pk=plan_id)
+                # price = 
+                return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except stripe.StripeError as e:
+            error_data = {u'error': smart_str(e) or u'Unknown error'}
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
     
 
 
 class ChargeListView(StripeView, generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
-
-    # def get_queryset(self):
-    #     customer = self.get_customer()
-    #     charges = customer.charges.all()
-    #     return charges
-
+    queryset = ''
+    
+        
     def post(self, request):
+        # print(request.data)
         serializer = self.serializer_class(data=request.data)
-        
         user = CustomUser.objects.get(email=request.user)
-        amount = request.data['data'].get('amount')
-        
-        category = request.data['data'].get('category').get('id')
+        # user = request.data.get('email')
+        amount = request.data.get('price')
+        price = prices[amount / 100]
+        category = request.data.get('category')
+        print(category)
         # category = Category.objects.filter(pk=category)
         
-        source = request.data['data'].get('source')
-        source_id = source.get('source').get('id')
+        # source = request.data['data'].get('source')
+        # source_id = source.get('source').get('id')
         
+        checkout_session = stripe.checkout.Session.create(
+                        # customer = user,
+                        payment_method_types = ['card'],
+                        mode='payment',
+                        line_items = [{
+                            'price': price,
+                           
+                            'quantity': 1
+                        }],
+                        success_url = f'http://127.0.0.1:3000/payment-success',
+                        cancel_url = f'http://127.0.0.1:8000/cancelled/'
+            )
+
+        if (checkout_session):
+            user.is_member = True
+            user.category_id = category
+           
+            user.save(update_fields=["category", "is_member"])
+        return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
+            
+
         result = stripe.Charge.create(
             amount=amount,
             currency='aud',
             source=source_id,
             receipt_email=user.email
         )
-        if (result):
-            user.is_member = True
-            user.category_id = category
+        # if (session):
+        #     user.is_member = True
+        #     user.category_id = category
            
-            user.save(update_fields=["category", "is_member"])
-        # charges.create(user.stripe_id, amount, source_id)
+        #     user.save(update_fields=["category", "is_member"])
+
+       
+       
         if not serializer.is_valid():
             return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
         else:

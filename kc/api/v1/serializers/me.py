@@ -42,6 +42,8 @@ class MeUpdateSerializer(serializers.ModelSerializer):
             "videos"
            
         )
+class UpdateFavouritesSerializer(serializers.Serializer):
+    model = CustomUser
 
 class ChangePasswordSerializer(serializers.Serializer):
     model = CustomUser
