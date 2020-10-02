@@ -44,7 +44,8 @@ import decimal
 
 
 stripe.api_key = STRIPE_SECRET_KEY
-prices = {150 : 'price_1H8GoaD9jmvAZt96jqqcy25C', 250 : 'price_1H8GpyD9jmvAZt96sQC070Pi', 350 : 'price_1H8GpTD9jmvAZt96qJojD3a6'}
+prices = {100 : 'price_1HXiJ6D9jmvAZt96ZnsmtMNl', 120 : 'price_1HXiJwD9jmvAZt96902N9Vca',
+        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 200 : 'price_1HXiM0D9jmvAZt96Xt09e45V'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -213,7 +214,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
         amount = request.data.get('price')
         price = prices[amount / 100]
         category = request.data.get('category')
-        print(category)
+        
         # category = Category.objects.filter(pk=category)
         
         # source = request.data['data'].get('source')
