@@ -228,8 +228,8 @@ class ChargeListView(StripeView, generics.ListAPIView):
                            
                             'quantity': 1
                         }],
-                        success_url = f'http://127.0.0.1:3000/payment-success',
-                        cancel_url = f'http://127.0.0.1:8000/cancelled/'
+                        success_url = f'https://kartclass-nuxt.herokuapp.com/payment-success',
+                        cancel_url = f'https://kartclass-nuxt.herokuapp.com/cancelled/'
             )
 
         if (checkout_session):
