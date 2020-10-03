@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 from kc.users.managers import ChargeManager, CustomerManager
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import ArrayField
 import uuid
 import stripe
 from django.utils import timezone
@@ -44,6 +45,7 @@ class Uuid(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.FileField(null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
@@ -72,13 +74,24 @@ class Driver(models.Model):
          return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+    def __str__(self):
+        return self.name
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
-    driver = models.ForeignKey(
-        Driver, default=1, on_delete=models.SET_DEFAULT)
+    longdescription = models.TextField(max_length=1000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
+    tag = models.ManyToManyField(Tag, related_name='tag')
+    likes = models.IntegerField(default=0)
+    views = models.IntegerField(default=0)
     video_file = models.FileField(null=True)
     image_file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -91,14 +104,12 @@ class Video(models.Model):
         return self.title
 
 
+
 class Article(models.Model):
     title = models.CharField(max_length=100)
-    driver = models.ForeignKey(
-        Driver, default=1, on_delete=models.SET_DEFAULT)
     description = models.CharField(max_length=150)
-    category = models.ManyToManyField(Category)
-    picture = models.FileField(null=True)
-    text = models.TextField(default="textarea")
+    image = models.ImageField(null=True)
+    document = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -135,6 +146,7 @@ class Plan(models.Model):
     stripe_id = models.CharField(max_length=191)
     amount = models.DecimalField(decimal_places=2, max_digits=9)
     currency = models.CharField(max_length=15, blank=False)
+    sku = models.CharField(max_length=50, blank=True)
     interval = models.CharField(max_length=15)
     interval_count = models.IntegerField()
     name = models.CharField(max_length=150)
@@ -146,11 +158,12 @@ class Plan(models.Model):
         return "{} ({}{})".format(self.name, CURRENCY_SYMBOLS.get(self.currency, ""), self.amount)
 
     def __repr__(self):
-        return "Plan(pk={!r}, name={!r}, amount={!r}, currency={!r}, interval={!r}, interval_count={!r}, trial_period_days={!r}, stripe_id={!r})".format(
+        return "Plan(pk={!r}, name={!r}, amount={!r}, currency={!r}, sku={!r}, interval={!r}, interval_count={!r}, trial_period_days={!r}, stripe_id={!r})".format(
             self.pk,
             self.name,
             self.amount,
             self.currency,
+            self.sku,
             self.interval,
             self.interval_count,
             self.trial_period_days,
@@ -163,6 +176,28 @@ class Plan(models.Model):
             self.stripe_id,
         )
 
+class Price(models.Model):
+    stripe_id = models.CharField(max_length=191)
+    product = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    unit_amount = models.DecimalField(decimal_places=2, max_digits=9)
+    currency = models.CharField(max_length=15, default='aud', blank=False)
+
+    def __str__(self):
+        return "{} ({}{})".format(self.stripe_id, CURRENCY_SYMBOLS.get(self.currency, ""), self.unit_amount)
+
+    def __repr__(self):
+        return "Price(pk={!r}, unit_amount={!r}, currency={!r}, stripe_id={!r})".format(
+            self.pk,
+            self.unit_amount,
+            self.currency,
+            self.stripe_id,
+        )
+
+    @property
+    def stripe_price(self):
+        return stripe.Price.retrieve(
+            self.stripe_id,
+        )
 
 class Customer(models.Model):
 
@@ -203,6 +238,8 @@ class Customer(models.Model):
                 self.stripe_id,
             )
         return "Customer(pk={!r}, stripe_id={!r})".format(self.pk, self.stripe_id)
+
+
 
 
 class Card(models.Model):
@@ -369,7 +406,7 @@ class Charge(models.Model):
     fee = models.DecimalField(
         decimal_places=2, max_digits=9, null=True, blank=True
     )
-    fee_currency = models.CharField(max_length=10, null=True, blank=True)
+    fee_currency = models.CharField(max_length=10, default="aud", null=True, blank=True)
 
     transfer_group = models.TextField(null=True, blank=True)
     outcome = JSONField(null=True, blank=True)
@@ -420,6 +457,28 @@ class Charge(models.Model):
     @property
     def card(self):
         return Card.objects.filter(stripe_id=self.source).first()
+
+# class Charges(models.Model):
+
+#     object = ArrayField(models.CharField(max_length=50))
+#     data = models.ManyToManyField(Charge)
+#     has_more = models.BooleanField(default=False)
+#     url = models.CharField(max_length=100)
+
+# class PaymentIntent(models.Model):
+
+#     amount = models.IntegerField()
+#     client_secret = models.CharField(max_length=100, blank=True)
+#     charges = models.ForeignKey(Charges, null=True, blank=True, related_name="charges", on_delete=models.CASCADE)
+#     currency = models.CharField(max_length=3, default="aud")
+#     customer = models.ForeignKey(Customer, blank=True, related_name="customer", on_delete=models.CASCADE)
+#     description = models.CharField(max_length=100, blank=True)
+#     created = models.DateTimeField(null=True, blank=True)
+#     payment_method = models.ForeignKey(Card, related_name="card", on_delete=models.CASCADE)
+#     receipt_email = models.EmailField(blank=True)
+#     status = 
+
+
 
 # from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 # from django.core.exceptions import PermissionDenied, ValidationError

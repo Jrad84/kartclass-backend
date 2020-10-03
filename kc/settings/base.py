@@ -19,14 +19,9 @@ from decouple import config
 from unipath import Path
 
 
-# root = environ.Path(__file__) - 3  
 
 
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = Path(__file__).parent
-# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 
@@ -54,7 +49,7 @@ ALLOWED_HOSTS = [
      "localhost",
      "https://kartclass-django.com",
      "https://kartclass-nuxt.com",
-     "https://kartclass-nuxt.herokuapp.com",
+     "https://kartclass-nuxt.herokuapp.com/",
      "https://www.kartclass-django.com/herokuapp",
      "https://kartclass-nuxt.com/herokuapp",
      "*.kartclass-django.herokuapp.com",
@@ -71,7 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -148,6 +143,7 @@ REST_FRAMEWORK = {
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
+       
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 
@@ -156,10 +152,14 @@ REST_FRAMEWORK = {
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 
 JWT_AUTH = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+    "ROTATE_REFRESH_TOKENS": True, 
+    "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': timedelta(hours=1),
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-    'AUTH_HEADER_TYPES': ('JWT',),
+    # 'JWT_EXPIRATION_DELTA': timedelta(hours=1),
+    # 'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    # 'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 
@@ -183,15 +183,7 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-
-
-# USE_S3 = os.getenv('USE_S3') == 'True'
-
-# if USE_S3:
-        
+# S3
 AWS_ACCESS_KEY_ID = config('S3_ID')
 AWS_SECRET_ACCESS_KEY = config('S3_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('S3_BUCKET_NAME')
@@ -210,13 +202,7 @@ STATICFILES_STORAGE = 'kc.storage_backends.StaticStorage'
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'kc.storage_backends.PublicMediaStorage'
-# else:
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
-#     STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -241,8 +227,6 @@ DATABASES = {
     ),
 
 }
-
-# DATABASES['default'] = dj_database_url.config(default='postgres://jarben:good_password@localhost/kartclass')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

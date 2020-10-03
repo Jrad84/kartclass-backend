@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model, hashers
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework import serializers
 from kc.core.models import Category
 from kc.api.v1.serializers.category import CategorySerializer
@@ -57,3 +59,70 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
         return super(UserCreateSerializer, self).create(validated_data)
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+   
+    password = serializers.CharField(
+        write_only=True,
+        
+        style={'input_type': 'password', 'placeholder': 'Password'}
+    )
+
+    token = serializers.CharField(
+        min_length=1, write_only=True)
+  
+    class Meta:
+        model = get_user_model()
+        fields = (
+            "id",
+            "email",
+            "password",
+            "token",
+        )
+    
+    def validate(self, attrs):
+        try:
+            user = CustomUser.objects.get(id=self.request.user)
+            
+            password = attrs.get('password')
+            token = attrs.get('token')
+            user = get_user_model()
+            # user = user.objects.get(id=uid) 
+            user.set_password(password)
+            user.save()
+
+            return user
+        except Exception as e:
+            raise AuthenticationFailed('Authentication failed', 401)
+        return super().validate(attrs)
+    
+    def update(self, instance, validated_data):
+        
+        instance.email = validated_data.get('email', instance.email)
+        instance.password = validated_data.get('password', instance.content)
+        instance.save()
+        return instance
+
+
+
+
+from django.utils.text import gettext_lazy as _
+
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+
+class RefreshTokenSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    default_error_messages = {
+        'bad_token': _('Token is invalid or expired')
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('bad_token')

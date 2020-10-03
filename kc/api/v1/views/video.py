@@ -1,13 +1,16 @@
-from rest_framework import viewsets, generics, filters, mixins
+from rest_framework import viewsets, generics, filters, mixins, status
 from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
+from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
+from django.views.decorators.csrf import csrf_exempt
 from kc.api.common import exceptions
-from kc.api.v1.serializers.video import VideoSerializer
+from kc.api.v1.serializers.video import *
 from kc.api.v1.serializers.category import CategorySerializer
 from kc.core.models import Video, Category
+from braces.views import CsrfExemptMixin
 
 class VideoView(
         mixins.ListModelMixin,
@@ -32,15 +35,80 @@ class VideoListView(mixins.ListModelMixin,
 
     serializer_class = VideoSerializer
     category = CategorySerializer
-    permission_classes = [permissions.IsAuthenticated,]
+    authentication_classes = []
+    permission_classes = [permissions.AllowAny,]
     
     queryset = Video.objects.all()
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('id', 'category__id')
 
-    # def get(self, request):
-    #     user = request.user
-    #     category = user.category_id
-    #     videos = Video.objects.filter(category__id=category)
-    #     return videos
+   
+    @csrf_exempt
+    def patch(self, request):
+        print(request.data)
+        # uid = request.data['id']
+        
+        vid_id = request.data['id']
+        video = Video.objects.get(id=vid_id)
+        
+        serializer = VideoSerializer(video, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        
+        video.likes += 1
+        
+        serializer.save()
+        return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+        
 
+class VideoLikeView(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    # viewsets.GenericViewSet,
+                    generics.GenericAPIView
+                    ):
+    
+    def get_object(self, pk):
+        return Video.objects.get(pk=pk)
+   
+    @csrf_exempt
+    def patch(self, request):
+        
+        vid_id = request.data['id']
+        video = self.get_object(pk=vid_id)
+        
+        serializer = VideoLikeSerializer(video, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+  
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class VideoUnLikeView(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView
+                    ):
+    
+    def get_object(self, pk):
+        return Video.objects.get(pk=pk)
+   
+    @csrf_exempt
+    def patch(self, request):
+        
+        vid_id = request.data['id']
+        video = self.get_object(pk=vid_id)
+        
+        serializer = VideoUnLikeSerializer(video, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+  
+   
+   
