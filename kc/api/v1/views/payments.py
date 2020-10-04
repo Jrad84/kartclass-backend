@@ -212,13 +212,13 @@ class ChargeListView(StripeView, generics.ListAPIView):
         price = prices[amount / 100]
         category = request.data.get('category')
         
-        if os.environ.get('DJANGO_SETTINGS_MODULE') == 'kc.settings.local':
-            success = 'http://127.0.0.1:3000/payment-success'
-            cancel = 'http://127.0.0.1:3000/cancelled/'
-        else:
-            success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
-            cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
-        print(success)
+        # if os.environ.get('DJANGO_SETTINGS_MODULE') == 'kc.settings.local':
+        #     success = 'http://127.0.0.1:3000/payment-success'
+        #     cancel = 'http://127.0.0.1:3000/cancelled/'
+        # else:
+        success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
+        cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
+        
         checkout_session = stripe.checkout.Session.create(
                         # customer = user,
                         payment_method_types = ['card'],
@@ -241,24 +241,24 @@ class ChargeListView(StripeView, generics.ListAPIView):
         return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
             
 
-        result = stripe.Charge.create(
-            amount=amount,
-            currency='aud',
-            source=source_id,
-            receipt_email=user.email
-        )
-        # if (session):
-        #     user.is_member = True
-        #     user.category_id = category
+        # result = stripe.Charge.create(
+        #     amount=amount,
+        #     currency='aud',
+        #     source=source_id,
+        #     receipt_email=user.email
+        # )
+        # # if (session):
+        # #     user.is_member = True
+        # #     user.category_id = category
            
-        #     user.save(update_fields=["category", "is_member"])
+        # #     user.save(update_fields=["category", "is_member"])
 
        
        
-        if not serializer.is_valid():
-            return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # if not serializer.is_valid():
+        #     return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
+        # else:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # class InvoiceListView(StripeView, generics.ListAPIView):
 #     """ List customer invoices """
