@@ -35,7 +35,8 @@ urlpatterns = [
     path('create-customer/', CurrentCustomerDetailView.as_view(), name='create-stripe-customer'),
     path('like-video/', VideoLikeView.as_view(), name='like-video'),
     path('unlike-video/', VideoUnLikeView.as_view(), name='unlike-video'),
-    path('checkout/', ChargeListView.as_view(), name='checkout')
+    path('checkout/', ChargeListView.as_view(), name='checkout'),
+    
    
      
 ]

@@ -18,7 +18,8 @@ class MeRetrieveSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "email",
-            "name",
+            "fname",
+            "lname",
             "is_staff",
             "date_created",
             "category"

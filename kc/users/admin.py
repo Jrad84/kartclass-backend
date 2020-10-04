@@ -15,12 +15,13 @@ class CustomUserAdmin(DjangoUserAdmin):
         "is_staff",
     )
     search_fields = (
-        "name",
+        "fname",
+        "lname",
         "email",
     )
     fieldsets = (
         (None, {"fields": ("email", "password", "id",)}),
-        (_("Personal info"), {"fields": ("name",)}),
+        (_("Personal info"), {"fields": ("fname", "lname")}),
         (
             _("Permissions"),
             {
@@ -39,13 +40,13 @@ class CustomUserAdmin(DjangoUserAdmin):
         "id",
         "date_created",
     )
-    ordering = ("name",)
+    ordering = ("lname",)
 
     def get_fieldsets(self, request, obj=None, *args, **kwargs):
         # Non superuser fieldsets.
         fieldsets = (
             (None, {"fields": ("password", "id",)}),
-            (_("Personal info"), {"fields": ("name", "email",)}),
+            (_("Personal info"), {"fields": ("fname", "lname", "email",)}),
             (_("Important dates"), {"fields": ("last_login", "date_created",)},),
         )
 
@@ -54,7 +55,7 @@ class CustomUserAdmin(DjangoUserAdmin):
                 None,
                 {
                     "classes": ("wide",),
-                    "fields": ("name", "email", "password1", "password2",),
+                    "fields": ("fname", "lname", "email", "password1", "password2",),
                 },
             ),
         )
@@ -77,7 +78,7 @@ class CustomUserAdmin(DjangoUserAdmin):
         if not request.user.is_superuser:
             # Disable fields if user is a superuser.
             if obj and obj.is_superuser:
-                readonly_fields.extend(["name", "email"])
+                readonly_fields.extend(["fname", "lname", "email"])
 
             return tuple(readonly_fields)
 

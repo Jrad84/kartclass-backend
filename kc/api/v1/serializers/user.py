@@ -20,7 +20,8 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
         category = CategorySerializer()
         fields = (
             "id",
-            "name",
+            "fname",
+            "lname",
             "category"
             "is_member",
             "category",
@@ -47,7 +48,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = (
             "id",
-            "name",
+            "fname",
+            "lname",
             "email",
             "password",
             "is_member",

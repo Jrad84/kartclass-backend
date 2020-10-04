@@ -8,8 +8,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-# from pinax.stripe.actions import customers, charges
-# from rest_framework.permissions import IsAuthenticated, AllowAny
+from kc.settings import local, prod
 import datetime
 import kc.settings.base as app_settings
 from kc.settings.base import STRIPE_SECRET_KEY
@@ -207,19 +206,20 @@ class ChargeListView(StripeView, generics.ListAPIView):
     
         
     def post(self, request):
-        # print(request.data)
+        
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-        # user = request.data.get('email')
         amount = request.data.get('price')
         price = prices[amount / 100]
         category = request.data.get('category')
-        
-        # category = Category.objects.filter(pk=category)
-        
-        # source = request.data['data'].get('source')
-        # source_id = source.get('source').get('id')
-        
+        print(local.DEBUG)
+        if local.DEBUG:
+            success = 'http://127.0.0.1:3000/payment-success'
+            cancel = 'http://127.0.0.1:3000/cancelled/'
+        else:
+            success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
+            cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
+        print(success)
         checkout_session = stripe.checkout.Session.create(
                         # customer = user,
                         payment_method_types = ['card'],
@@ -229,8 +229,9 @@ class ChargeListView(StripeView, generics.ListAPIView):
                            
                             'quantity': 1
                         }],
-                        success_url = f'https://kartclass-nuxt.herokuapp.com/payment-success',
-                        cancel_url = f'https://kartclass-nuxt.herokuapp.com/cancelled/'
+                        success_url = success,
+                        cancel_url = cancel
+                        
             )
 
         if (checkout_session):
