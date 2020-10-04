@@ -1,16 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
-from django.conf import settings
+# from django.conf import settings
+import os
 from django.utils.encoding import smart_str
 from rest_framework import mixins, viewsets
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-from kc.settings import local, prod
 import datetime
-import kc.settings.base as app_settings
 from kc.settings.base import STRIPE_SECRET_KEY
 from kc.core.models import Category
 from kc.users.models import CustomUser
@@ -212,8 +211,8 @@ class ChargeListView(StripeView, generics.ListAPIView):
         amount = request.data.get('price')
         price = prices[amount / 100]
         category = request.data.get('category')
-        print(settings.DEBUG)
-        if settings.DEBUG:
+        
+        if os.environ.get('DJANGO_SETTINGS_MODULE') == 'kc.settings.local':
             success = 'http://127.0.0.1:3000/payment-success'
             cancel = 'http://127.0.0.1:3000/cancelled/'
         else:
