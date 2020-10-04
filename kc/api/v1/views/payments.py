@@ -212,8 +212,8 @@ class ChargeListView(StripeView, generics.ListAPIView):
         amount = request.data.get('price')
         price = prices[amount / 100]
         category = request.data.get('category')
-        print(local.DEBUG)
-        if local.DEBUG:
+        print(settings.DEBUG)
+        if settings.DEBUG:
             success = 'http://127.0.0.1:3000/payment-success'
             cancel = 'http://127.0.0.1:3000/cancelled/'
         else:
