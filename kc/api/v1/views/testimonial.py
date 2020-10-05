@@ -6,5 +6,6 @@ from kc.core.models import Testimonial
 
 class TestimonialView(viewsets.ModelViewSet):
     serializer_class = TestimonialSerializer
+    permission_classes = (permissions.AllowAny,)
     queryset = Testimonial.objects.all()
-    permission_classes = [permissions.AllowAny]
+   

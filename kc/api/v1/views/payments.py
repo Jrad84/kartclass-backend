@@ -1,17 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
-from django.conf import settings
+# from django.conf import settings
+import os
 from django.utils.encoding import smart_str
 from rest_framework import mixins, viewsets
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-# from pinax.stripe.actions import customers, charges
-# from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
-import kc.settings.base as app_settings
 from kc.settings.base import STRIPE_SECRET_KEY
 from kc.core.models import Category
 from kc.users.models import CustomUser
@@ -207,18 +205,19 @@ class ChargeListView(StripeView, generics.ListAPIView):
     
         
     def post(self, request):
-        # print(request.data)
+        
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-        # user = request.data.get('email')
         amount = request.data.get('price')
         price = prices[amount / 100]
         category = request.data.get('category')
         
-        # category = Category.objects.filter(pk=category)
-        
-        # source = request.data['data'].get('source')
-        # source_id = source.get('source').get('id')
+        # if os.environ.get('DJANGO_SETTINGS_MODULE') == 'kc.settings.local':
+        #     success = 'http://127.0.0.1:3000/payment-success'
+        #     cancel = 'http://127.0.0.1:3000/cancelled/'
+        # else:
+        success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
+        cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
         
         checkout_session = stripe.checkout.Session.create(
                         # customer = user,
@@ -229,8 +228,9 @@ class ChargeListView(StripeView, generics.ListAPIView):
                            
                             'quantity': 1
                         }],
-                        success_url = f'https://kartclass-nuxt.herokuapp.com/payment-success',
-                        cancel_url = f'https://kartclass-nuxt.herokuapp.com/cancelled/'
+                        success_url = success,
+                        cancel_url = cancel
+                        
             )
 
         if (checkout_session):
@@ -241,24 +241,24 @@ class ChargeListView(StripeView, generics.ListAPIView):
         return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
             
 
-        result = stripe.Charge.create(
-            amount=amount,
-            currency='aud',
-            source=source_id,
-            receipt_email=user.email
-        )
-        # if (session):
-        #     user.is_member = True
-        #     user.category_id = category
+        # result = stripe.Charge.create(
+        #     amount=amount,
+        #     currency='aud',
+        #     source=source_id,
+        #     receipt_email=user.email
+        # )
+        # # if (session):
+        # #     user.is_member = True
+        # #     user.category_id = category
            
-        #     user.save(update_fields=["category", "is_member"])
+        # #     user.save(update_fields=["category", "is_member"])
 
        
        
-        if not serializer.is_valid():
-            return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # if not serializer.is_valid():
+        #     return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
+        # else:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # class InvoiceListView(StripeView, generics.ListAPIView):
 #     """ List customer invoices """

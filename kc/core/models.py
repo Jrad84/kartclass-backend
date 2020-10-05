@@ -90,6 +90,7 @@ class Video(models.Model):
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
     tag = models.ManyToManyField(Tag, related_name='tag')
+    duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     video_file = models.FileField(null=True)
@@ -108,7 +109,7 @@ class Video(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=150)
-    image = models.ImageField(null=True)
+    image = models.FileField(null=True)
     document = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

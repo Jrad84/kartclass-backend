@@ -3,3 +3,4 @@ import os
 import environ
 
 DEBUG = True
+LOCAL = True
