@@ -9,20 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from kc.api.common import exceptions
 from kc.api.v1.serializers.video import *
 from kc.api.v1.serializers.category import CategorySerializer
-from kc.core.models import Video, Category
+from kc.api.v1.serializers.tag import TagSerializer
+from kc.core.models import Video, Category, Tag
 from braces.views import CsrfExemptMixin
-
-class VideoView(
-        mixins.ListModelMixin,
-        mixins.RetrieveModelMixin,
-        mixins.CreateModelMixin,
-        mixins.UpdateModelMixin,
-        mixins.DestroyModelMixin,
-        viewsets.GenericViewSet):
-
-    serializer_class = VideoSerializer
-    queryset = Video.objects.all()
-
 
 class VideoListView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
@@ -106,9 +95,29 @@ class VideoUnLikeView(mixins.ListModelMixin,
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
-        print(serializer.data)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-  
+class VideoUploadView(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.CreateModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    
+    serializer_class = VideoUploadSerializer
+    permission_classes = (permissions.AllowAny,)
+    queryset = ''
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+
+                   
+
    
    

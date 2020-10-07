@@ -2,6 +2,7 @@ from rest_framework import serializers
 from kc.api.v1.serializers.category import CategorySerializer
 from kc.api.v1.serializers.tag import TagSerializer
 from kc.core.models import Video, Category, Tag
+from django.contrib.postgres.fields import ArrayField
 
 class VideoSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True)
@@ -26,7 +27,7 @@ class VideoLikeSerializer(serializers.ModelSerializer):
 
 
 class VideoUnLikeSerializer(serializers.ModelSerializer):
-
+   
     class Meta:
         model = Video
         fields = '__all__'
@@ -37,3 +38,10 @@ class VideoUnLikeSerializer(serializers.ModelSerializer):
        
         instance.save()
         return instance
+
+class VideoUploadSerializer(serializers.ModelSerializer):
+    category = ArrayField(serializers.CharField(max_length=50))
+    tag = ArrayField(serializers.CharField(max_length=50))
+    class Meta:
+        model = Video
+        fields = '__all__'
