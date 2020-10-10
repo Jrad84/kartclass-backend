@@ -59,7 +59,8 @@ class ChangeEmailView(generics.UpdateAPIView):
                     'status': 'success',
                     'code': status.HTTP_200_OK,
                     'message': 'Email updated successfully',
-                    'data': []
+                    'data': [],
+                    'user': user
                 }
 
                 return Response(response)
@@ -93,7 +94,8 @@ class ChangePasswordView(generics.UpdateAPIView):
                     'status': 'success',
                     'code': status.HTTP_200_OK,
                     'message': 'Password updated successfully',
-                    'data': []
+                    'data': [],
+                    'user': user
                 }
 
                 return Response(response)

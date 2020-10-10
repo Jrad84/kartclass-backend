@@ -17,6 +17,7 @@ import dj_database_url
 from dj_database_url import parse as db_url
 from decouple import config
 from unipath import Path
+from corsheaders.defaults import default_headers
 
 
 
@@ -158,9 +159,7 @@ JWT_AUTH = {
     "ROTATE_REFRESH_TOKENS": True, 
     "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
-    # 'JWT_EXPIRATION_DELTA': timedelta(hours=1),
-    # 'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-    # 'AUTH_HEADER_TYPES': ('JWT',),
+
 }
 
 
@@ -217,6 +216,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # CORS stuff.
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
 # STRIPE 
 STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')

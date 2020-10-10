@@ -4,6 +4,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
+from rest_framework.exceptions import ParseError
+from rest_framework.parsers import FileUploadParser
 from rest_framework.decorators import action
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.common import exceptions
@@ -34,7 +36,6 @@ class VideoListView(mixins.ListModelMixin,
    
     @csrf_exempt
     def patch(self, request):
-        print(request.data)
         # uid = request.data['id']
         
         vid_id = request.data['id']
@@ -105,17 +106,27 @@ class VideoUploadView(mixins.ListModelMixin,
                     mixins.DestroyModelMixin,
                     generics.GenericAPIView):
     
-    serializer_class = VideoUploadSerializer
+    serializer_class = VideoSerializer
+    # categorySerializer = CategorySerializer
+    # tagSerializer = TagSerializer
     permission_classes = (permissions.AllowAny,)
-    queryset = ''
+    parser_class = (FileUploadParser,)
+    queryset = Video.objects.all()
 
     def post(self, request):
+        
+        video_file = request.FILES.get('video_file', 'kart.mp4')
+        image_file = request.FILES.get('image_file', 'brad.jpg')
         serializer = self.serializer_class(data=request.data)
+        
+
         if serializer.is_valid():
+           
             serializer.save()
 
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+        # print('not valid')
+        return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
                    
 

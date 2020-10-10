@@ -9,7 +9,7 @@ from kc.api.v1.views.category import CategoryView
 from kc.api.v1.views.driver import DriverView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
-
+from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.views.me import *
 from kc.api.v1.views.payments import *
 
@@ -36,7 +36,7 @@ urlpatterns = [
     path('like-video/', VideoLikeView.as_view(), name='like-video'),
     path('unlike-video/', VideoUnLikeView.as_view(), name='unlike-video'),
     path('checkout/', ChargeListView.as_view(), name='checkout'),
-    path('upload-video/', VideoUploadView.as_view(), name='upload-video'),
+    path('upload-video/', csrf_exempt(VideoUploadView.as_view()), name='upload-video'),
     
    
      
