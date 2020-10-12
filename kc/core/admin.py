@@ -8,7 +8,7 @@ admin.site.register(Article)
 admin.site.register(Driver)
 admin.site.register(Customer)
 admin.site.register(Invoice)
-admin.site.register(Tag)
+# admin.site.register(Tag)
 
 
 

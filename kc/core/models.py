@@ -11,6 +11,7 @@ from jsonfield.fields import JSONField
 from kc.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
 from kc.settings.base import STRIPE_SECRET_KEY, AUTH_USER_MODEL as auth_user
+import json
 
 
 stripe.api_key = STRIPE_SECRET_KEY
@@ -47,9 +48,9 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
-    image = models.FileField(null=True)
+    image = models.CharField(max_length=100, null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    trailer = models.FileField(null=True, blank=True)
+    trailer = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         verbose_name = "Category"
@@ -74,27 +75,27 @@ class Driver(models.Model):
          return self.name
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
+# class Tag(models.Model):
+#     name = models.CharField(max_length=50)
 
-    class Meta:
-        verbose_name = "Tag"
-        verbose_name_plural = "Tags"
+#     class Meta:
+#         verbose_name = "Tag"
+#         verbose_name_plural = "Tags"
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
     longdescription = models.TextField(max_length=1000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
-    tag = models.ManyToManyField(Tag, related_name='tag')
+    # tag = models.ManyToManyField(Tag, related_name='tag')
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
-    video_file = models.FileField(null=True)
-    image_file = models.FileField(null=True)
+    video_file = models.CharField(max_length=100, null=True)
+    image_file = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -103,6 +104,10 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
 
 
 

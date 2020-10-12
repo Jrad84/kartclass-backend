@@ -25,7 +25,7 @@ class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
 
     @csrf_exempt
     def patch(self, request):
-        # uid = request.data['id']
+       
         user = self.get_object()
         serializer = MeUpdateSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -59,7 +59,8 @@ class ChangeEmailView(generics.UpdateAPIView):
                     'status': 'success',
                     'code': status.HTTP_200_OK,
                     'message': 'Email updated successfully',
-                    'data': []
+                    'data': [],
+                    'user': user
                 }
 
                 return Response(response)
@@ -93,7 +94,8 @@ class ChangePasswordView(generics.UpdateAPIView):
                     'status': 'success',
                     'code': status.HTTP_200_OK,
                     'message': 'Password updated successfully',
-                    'data': []
+                    'data': [],
+                    'user': user
                 }
 
                 return Response(response)

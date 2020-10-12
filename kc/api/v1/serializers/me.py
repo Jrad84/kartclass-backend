@@ -22,7 +22,9 @@ class MeRetrieveSerializer(serializers.ModelSerializer):
             "lname",
             "is_staff",
             "date_created",
-            "category"
+            "category",
+            "is_member",
+            "videos"
         )
 
 class MeUpdateSerializer(serializers.ModelSerializer):
@@ -40,6 +42,7 @@ class MeUpdateSerializer(serializers.ModelSerializer):
             "email",
             "password",
             "category",
+            "is_member",
             "videos"
            
         )
