@@ -13,18 +13,6 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
         model = Video
        
         fields = '__all__'
-            
-       
-
-    # def create(self, validated_data):
-    #     # print(validated_data)
-    #     # category_data = validated_data.pop('category')
-    #     # # print(category_data) 
-    #     return Video.objects.create(**validated_data)
-    #     # Video.objects.create(**category_data)
-    #     # return video
-        
-       
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.email)

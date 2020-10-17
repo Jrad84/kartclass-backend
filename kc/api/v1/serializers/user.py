@@ -5,8 +5,6 @@ from rest_framework import serializers
 from kc.core.models import Category
 from kc.api.v1.serializers.category import CategorySerializer
 
-import stripe
-
 
 class UserRetrieveSerializer(serializers.ModelSerializer):
     """Retrieve serializer for `Users`.
@@ -17,15 +15,16 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        category = CategorySerializer()
+        # category = CategorySerializer()
         fields = (
             "id",
             "fname",
             "lname",
-            "category"
+            "category",
             "is_member",
             "category",
-            "stripe_id"
+            "date_created"
+           
         )
 
 

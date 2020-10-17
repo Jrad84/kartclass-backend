@@ -37,6 +37,7 @@ urlpatterns = [
     path('unlike-video/', VideoUnLikeView.as_view(), name='unlike-video'),
     path('checkout/', ChargeListView.as_view(), name='checkout'),
     path('upload-video/', csrf_exempt(VideoUploadView.as_view()), name='upload-video'),
+#     path('accounts/', UserViewSet, name='accounts')
     
    
      

@@ -53,9 +53,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     is_member = models.BooleanField(
         _("member"),
         default=False,  
-        help_text=_("Designates whether a user is a paid member or not"),
+        help_text=_("Designates whether a user is a paid member or not")
     )
-    # Need to test this
+    
     category = models.ForeignKey(
         Category, null=True, 
         on_delete=models.SET_NULL,

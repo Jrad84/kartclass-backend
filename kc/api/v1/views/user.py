@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets, filters, generics, status, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from kc.api.v1.permissions.user import UserPermission
+from django.http import JsonResponse
 from kc.api.v1.serializers.user import (
     UserCreateSerializer, 
     UserRetrieveSerializer, 
@@ -28,7 +29,7 @@ class UserViewSet(
 
     queryset = get_user_model().objects.filter(is_active=True).all()
     permission_classes = (UserPermission,)
-    category = CategorySerializer
+    # category = CategorySerializer
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('id', 'category__id')
 
@@ -36,10 +37,14 @@ class UserViewSet(
     def get_serializer_class(self):
         if self.action == "create":
             return UserCreateSerializer
-
         return UserRetrieveSerializer
 
+    def get(self, request):
+        
+        users = get_user_model().objects.filter(is_active=True).all().values()
 
+        return JsonResponse({"users": list(users)})
+      
 class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
     mixins.UpdateModelMixin, generics.GenericAPIView, CsrfExemptMixin):
 
