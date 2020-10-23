@@ -213,11 +213,11 @@ class ChargeListView(StripeView, generics.ListAPIView):
         category = request.data.get('category')
         
         # if os.environ.get('DJANGO_SETTINGS_MODULE') == 'kc.settings.local':
-        # success = 'http://127.0.0.1:3000/payment-success'
-        # cancel = 'http://127.0.0.1:3000/cancelled/'
+        success = 'http://127.0.0.1:3000/payment-success'
+        cancel = 'http://127.0.0.1:3000/cancelled/'
         # else:
-        success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
-        cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
+        # success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
+        # cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
         
         checkout_session = stripe.checkout.Session.create(
                         # customer = user,

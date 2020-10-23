@@ -47,15 +47,11 @@ SECRET_KEY = config('SECRET_KEY')
 ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
-     "81281f4fbf47.ngrok.io",
      "localhost",
      "https://kartclass-django.com",
      "https://kartclass-nuxt.com",
      "https://kartclass-nuxt.herokuapp.com/",
-     "https://www.kartclass-django.herokuapp.com",
-     "https://kartclass-nuxt.com/herokuapp",
      "*.kartclass-django.herokuapp.com",
-     "https://www.kartclass-nuxt.herokuapp.com"
      ]
 
 
@@ -77,6 +73,7 @@ INSTALLED_APPS = [
     'django_filters',
     'stripe',
     'storages',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -154,13 +151,20 @@ REST_FRAMEWORK = {
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 
 JWT_AUTH = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True, 
     "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
 
 }
+
+# EMAIL
+EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 # Internationalization

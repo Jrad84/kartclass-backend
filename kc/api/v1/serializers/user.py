@@ -1,9 +1,14 @@
 from django.contrib.auth import get_user_model, hashers
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_str,force_str,smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import serializers
 from kc.core.models import Category
 from kc.api.v1.serializers.category import CategorySerializer
+from kc.users.models import CustomUser
 
 
 class UserRetrieveSerializer(serializers.ModelSerializer):
@@ -105,10 +110,48 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         return instance
 
 
+class SetNewPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(
+        min_length=6, max_length=68, write_only=True)
+    
+    class Meta:
+        fields = ['email', 'password']
+
+    def validate(self, attrs):
+        try:
+            email = attrs.get('email')
+            password = attrs.get('password')
+            print('attra: ', attrs)
+            user = CustomUser.objects.get(email=email)
+            
+            user.set_password(password)
+            user.save()
+
+            return (user)
+        except Exception as e:
+            raise AuthenticationFailed('The reset link is invalid', 401)
+        return super().validate(attrs)
+
+
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(max_length=555)
+
+    class Meta:
+        model = CustomUser
+        fields = ['token']
+
+
+class ResetPasswordEmailRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(min_length=2)
+
+    redirect_url = serializers.CharField(max_length=500, required=False)
+
+    class Meta:
+        fields = ['email']
 
 
 from django.utils.text import gettext_lazy as _
-
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 class RefreshTokenSerializer(serializers.Serializer):

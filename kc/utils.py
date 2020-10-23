@@ -2,9 +2,16 @@ from __future__ import unicode_literals
 
 import datetime
 import decimal
-
+from django.core.mail import EmailMessage
 from django.conf import settings
 from django.utils import timezone
+
+
+def send_email(data):
+    print(data)
+    email = EmailMessage(subject=data['email_subject'], 
+                body=data['email_body'], to=data['to_email'])
+    email.send()
 
 
 def convert_tstamp(response, field_name=None):
