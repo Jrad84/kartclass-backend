@@ -87,7 +87,7 @@ class Driver(models.Model):
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
-    longdescription = models.TextField(max_length=1000, null=True)    
+    longdescription = models.TextField(max_length=9000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
     # tag = models.ManyToManyField(Tag, related_name='tag')
