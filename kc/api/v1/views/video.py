@@ -106,86 +106,29 @@ class VideoUploadView(mixins.ListModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
                     generics.GenericAPIView):
-    
-    # serializer_class = VideoSerializer
+
     permission_classes = (permissions.AllowAny,)
-    # parser_class = (FileUploadParser,)
-    # queryset = ''
 
     def get_object(self, uid):
-        return Category.objects.get(id=uid)
+        return Video.objects.get(id=uid)
 
     def post(self, request):
-        
-        # categories = []
-        # i = 0
-        # while i < len(request.data['category']):
-        #     categories.append(self.get_object(name=request.data['category'][i]))
-        #     i+=1
-        
         data=request.data
-        # category = self.get_object(uid=data['category']['id'])
-        # data['category'] = list(data['category'].items())
-        
-        # category = {
-        #             'id': category.id,
-        #             'name': category.name,
-        #             'tier': category.tier,
-        #             'description': category.description,
-        #             'image': category.image,
-        #             'amount': category.amount,
-        #             'trailer': category.trailer
-        #         }
-        # data['category'] = category
         serializer = VideoSerializer(data=data)
-        print(serializer)
+        
         serializer.is_valid(raise_exception=True)
        
         serializer.save()
-        # v = json.dumps(video.__dict__)
-        # print(v)
-        # video.add(category)
+     
         return Response(serializer.data, status=status.HTTP_200_OK)
-        # print(serializer.errors)
-        # return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
-        # uid = request.data['category']['id']
-        # category = self.get_object(uid)
-        # # serializer.category.set(category)
-        # video = Video.create(validated_data=request.data)
-        # if video:
-        #     video.category.set(category)
-        #     return Response(video, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        data=request.data
+        video = self.get_object(uid=data['id'])
+        serializer = VideoSerializer(video, data=data)
+        serializer.is_valid(raise_exception=True)
        
-        # return Response(status=status.HTTP_401_UNAUTHORIZED)
-        # video.category = category
-        # video.save()
-        # serializer.category = category
-        # print(serializer)
-        # for c in categories:
-        #     cat = {}
-        #     x = self.get_object(c.name)
-        #     # cat['name'] = x.name
-        #     cat['id'] = x.id
-        #     # cat['amount'] = x.amount
-        #     # cat['tier'] = x.tier
-        #     # cat['description'] = x.description
-        #     # cat['image'] = x.image
-        #     # cat['trailer'] = x.trailer
-
-        #     serializer.category = x.id
-        #     print(serializer.category)
-       
-        
-
-        # if serializer.is_valid():
-           
-        #     serializer.save()
-
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
-        # print(serializer.errors)
-        # return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
-
-                   
-
-   
-   
+        serializer.save()
+     
+        return Response(serializer.data, status=status.HTTP_200_OK)
+      

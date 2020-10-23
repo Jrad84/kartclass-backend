@@ -37,6 +37,14 @@ urlpatterns = [
     path('unlike-video/', VideoUnLikeView.as_view(), name='unlike-video'),
     path('checkout/', ChargeListView.as_view(), name='checkout'),
     path('upload-video/', csrf_exempt(VideoUploadView.as_view()), name='upload-video'),
+#     path('password-reset/', RequestPasswordResetView.as_view(), name='request-password'),
+    path('request-reset-email/', RequestPasswordResetView.as_view(),
+         name="request-reset-email"),
+    path('password-reset/<uidb64>/<token>/',
+         PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
+    path('password-reset-complete', SetNewPasswordAPIView.as_view(),
+         name='password-reset-complete')
+#     path('accounts/', UserViewSet, name='accounts')
     
    
      
