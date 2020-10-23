@@ -115,7 +115,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=150)
     image = models.CharField(max_length=100, null=True)
-    document = models.CharField(max_length=100, null=True)
+    document = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
