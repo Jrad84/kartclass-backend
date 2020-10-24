@@ -94,8 +94,8 @@ class Video(models.Model):
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
-    video_file = models.CharField(max_length=100, null=True)
-    image_file = models.CharField(max_length=100, null=True)
+    video_file = models.CharField(max_length=150, null=True)
+    image_file = models.CharField(max_length=150, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
