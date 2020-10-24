@@ -43,12 +43,11 @@ class VideoListView(mixins.ListModelMixin,
         video = Video.objects.get(id=vid_id)
         
         serializer = VideoSerializer(video, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        
-        video.likes += 1
-        
-        serializer.save()
-        return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            video.likes += 1
+            serializer.save()
+            return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 class VideoLikeView(mixins.ListModelMixin,
@@ -70,11 +69,10 @@ class VideoLikeView(mixins.ListModelMixin,
         video = self.get_object(pk=vid_id)
         
         serializer = VideoLikeSerializer(video, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-  
-        serializer.save()
-        
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VideoUnLikeView(mixins.ListModelMixin,
@@ -89,16 +87,15 @@ class VideoUnLikeView(mixins.ListModelMixin,
    
     @csrf_exempt
     def patch(self, request):
-        
+       
         vid_id = request.data['id']
         video = self.get_object(pk=vid_id)
         
         serializer = VideoUnLikeSerializer(video, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-
-        serializer.save()
-        
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VideoUploadView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
@@ -107,7 +104,7 @@ class VideoUploadView(mixins.ListModelMixin,
                     mixins.DestroyModelMixin,
                     generics.GenericAPIView):
 
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAdminUser,)
 
     def get_object(self, uid):
         return Video.objects.get(id=uid)
@@ -115,20 +112,20 @@ class VideoUploadView(mixins.ListModelMixin,
     def post(self, request):
         data=request.data
         serializer = VideoSerializer(data=data)
-        
-        serializer.is_valid(raise_exception=True)
-       
-        serializer.save()
-     
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        categories = list(data['category']['id'])
+        print(categories)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request):
         data=request.data
+      
         video = self.get_object(uid=data['id'])
         serializer = VideoSerializer(video, data=data)
-        serializer.is_valid(raise_exception=True)
-       
-        serializer.save()
-     
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
       
