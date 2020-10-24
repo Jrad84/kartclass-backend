@@ -94,8 +94,8 @@ class Video(models.Model):
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
-    video_file = models.CharField(max_length=100, null=True)
-    image_file = models.CharField(max_length=100, null=True)
+    video_file = models.CharField(max_length=150, null=True)
+    image_file = models.CharField(max_length=150, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -114,8 +114,8 @@ class Video(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=150)
-    image = models.FileField(null=True)
-    document = models.FileField(null=True)
+    image = models.CharField(max_length=100, null=True)
+    document = models.CharField(max_length=500, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
