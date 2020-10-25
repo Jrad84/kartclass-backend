@@ -74,28 +74,36 @@ class RequestPasswordResetView(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
+       
         serializer = self.serializer_class(data=request.data)
         
         email = request.data.get('email', '')
-        
-        if CustomUser.objects.filter(email=email).exists():
-            user = CustomUser.objects.get(email=email)
-            uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
-            token = PasswordResetTokenGenerator().make_token(user)
-            current_site = get_current_site(
-                request=request).domain
-            relativeLink = reverse(
-                'password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
-
-            redirect_url = request.data.get('redirect_url')
+        if serializer.is_valid():
             
-            absurl = 'http://'+current_site + relativeLink
-            email_body = 'Hello, \n Use link below to reset your password  \n' + \
-                absurl+"?redirect_url="+redirect_url
-            data = {'email_body': email_body, 'to_email': (user.email, ''),
-                    'email_subject': 'Reset your passsword'}
-            send_email(data)
-        return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+            if CustomUser.objects.filter(email=email).exists():
+               
+                user = CustomUser.objects.get(email=email)
+                uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
+                token = PasswordResetTokenGenerator().make_token(user)
+                current_site = get_current_site(
+                    request=request).domain
+                relativeLink = reverse(
+                    'password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
+
+                redirect_url = request.data.get('redirect_url')
+                
+                absurl = 'http://'+current_site + relativeLink
+                email_body = 'Hello, \n Use link below to reset your password  \n' + \
+                    absurl+"?redirect_url="+redirect_url
+                data = {'email_body': email_body, 'to_email': (user.email, ''),
+                        'email_subject': 'Reset your passsword'}
+                send_email(data)
+               
+               
+                return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+            error = "No user found with that email address"
+                
+        return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
@@ -104,22 +112,24 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
     def get(self, request, uidb64, token):
 
         redirect_url = request.GET.get('redirect_url')
-        url = 'http://127.0.0.1:3000/reset-password'
+        
+        # url = 'http://127.0.0.1:3000/reset-password'
+        url = 'https://kartclass-nuxt.herokuapp.com/reset-password'
 
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
             user = CustomUser.objects.get(id=id)
-
+            print(user)
             if not PasswordResetTokenGenerator().check_token(user, token):
                 if len(redirect_url) > 3:
                     return CustomRedirect(redirect_url+'?token_valid=False')
                 else:
-                    return CustomRedirect(config('FRONTEND_URL', '')+'?token_valid=False')
+                    return CustomRedirect(url +'?token_valid=False')
 
             if redirect_url and len(redirect_url) > 3:
                 return CustomRedirect(redirect_url+'?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
             else:
-                return CustomRedirect(config('FRONTEND_URL', '')+'?token_valid=False')
+                return CustomRedirect(url +'?token_valid=False')
 
         except DjangoUnicodeDecodeError as identifier:
             try:

@@ -148,7 +148,7 @@ class ResetPasswordEmailRequestSerializer(serializers.Serializer):
     redirect_url = serializers.CharField(max_length=500, required=False)
 
     class Meta:
-        fields = ['email']
+        fields = ['email', 'redirect_url']
 
 
 from django.utils.text import gettext_lazy as _
