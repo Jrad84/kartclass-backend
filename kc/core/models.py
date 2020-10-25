@@ -114,7 +114,7 @@ class Article(models.Model):
 class Testimonial(models.Model):
     name = models.CharField(max_length=50)
     comment = models.TextField()
-    image = models.FileField(null=True)
+    image = models.CharField(max_length=500, null=True)
 
     class Meta:
         verbose_name = "Testimonial"
