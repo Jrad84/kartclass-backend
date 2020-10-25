@@ -72,7 +72,7 @@ class Driver(models.Model):
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
-    longdescription = models.TextField(max_length=4000, null=True)    
+    longdescription = models.TextField(max_length=5000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
