@@ -240,28 +240,9 @@ class ChargeListView(StripeView, generics.ListAPIView):
                 user.save(update_fields=["category", "is_member"])
             return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
         
-        user.category.append(category)
-        user.save(update_fields=["category", "is_member"])
+        # user.category.append(category)
+        user.save(update_fields=[ "is_member"])
         return Response(status=status.HTTP_202_ACCEPTED)
-
-# class InvoiceListView(StripeView, generics.ListAPIView):
-#     """ List customer invoices """
-#     serializer_class = InvoiceSerializer
-
-#     def get_queryset(self):
-#         customer = self.get_customer()
-#         invoices = customer.invoices.all()
-#         return invoices
-
-
-# class EventListView(StripeView, generics.ListAPIView):
-#     """ List customer events """
-#     serializer_class = EventSerializer
-
-#     def get_queryset(self):
-#         customer = self.get_customer()
-#         events = customer.event_set.all()
-#         return events
 
 
 class WebhookView(StripeView):
