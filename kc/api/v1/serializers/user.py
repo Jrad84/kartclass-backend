@@ -25,7 +25,6 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "id",
             "fname",
             "lname",
-            "category",
             "is_member",
             "category",
             "date_created"
@@ -58,7 +57,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "password",
             "is_member",
             "category",
-            "stripe_id"
+          
         )
 
 

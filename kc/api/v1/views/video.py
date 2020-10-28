@@ -12,7 +12,6 @@ from kc.api.common import exceptions
 import json
 from kc.api.v1.serializers.video import *
 from kc.api.v1.serializers.category import CategorySerializer
-# from kc.api.v1.serializers.tag import TagSerializer
 from kc.core.models import Video, Category
 from braces.views import CsrfExemptMixin
 

@@ -43,7 +43,7 @@ import decimal
 
 stripe.api_key = STRIPE_SECRET_KEY
 prices = {100 : 'price_1HXiJ6D9jmvAZt96ZnsmtMNl', 120 : 'price_1HXiJwD9jmvAZt96902N9Vca',
-        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 200 : 'price_1HXiM0D9jmvAZt96Xt09e45V'}
+        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 250 : 'price_1HXiM0D9jmvAZt96Xt09e45V'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -209,56 +209,40 @@ class ChargeListView(StripeView, generics.ListAPIView):
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
         amount = request.data.get('price')
-        price = prices[amount / 100]
+        if amount > 0:
+            price = prices[amount / 100]
         category = request.data.get('category')
-        
-        # if os.environ.get('DJANGO_SETTINGS_MODULE') == 'kc.settings.local':
+        # print(request.data)
         # success = 'http://127.0.0.1:3000/payment-success'
         # cancel = 'http://127.0.0.1:3000/cancelled/'
-        # else:
+        user.is_member = True
         success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
         cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
         
-        checkout_session = stripe.checkout.Session.create(
-                        # customer = user,
-                        payment_method_types = ['card'],
-                        mode='payment',
-                        line_items = [{
-                            'price': price,
-                           
-                            'quantity': 1
-                        }],
-                        success_url = success,
-                        cancel_url = cancel
-                        
-            )
+        if amount > 0:
+            checkout_session = stripe.checkout.Session.create(
+                            # customer = user,
+                            payment_method_types = ['card'],
+                            mode='payment',
+                            line_items = [{
+                                'price': price,
+                            
+                                'quantity': 1
+                            }],
+                            success_url = success,
+                            cancel_url = cancel
+                            
+                )
 
-        if (checkout_session):
-            user.is_member = True
-            user.category_id = category
-           
-            user.save(update_fields=["category", "is_member"])
-        return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
+            if (checkout_session):
+                user.category.append(category)
             
-
-        # result = stripe.Charge.create(
-        #     amount=amount,
-        #     currency='aud',
-        #     source=source_id,
-        #     receipt_email=user.email
-        # )
-        # # if (session):
-        # #     user.is_member = True
-        # #     user.category_id = category
-           
-        # #     user.save(update_fields=["category", "is_member"])
-
-       
-       
-        # if not serializer.is_valid():
-        #     return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
-        # else:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                user.save(update_fields=["category", "is_member"])
+            return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
+        
+        user.category.append(category)
+        user.save(update_fields=["category", "is_member"])
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 # class InvoiceListView(StripeView, generics.ListAPIView):
 #     """ List customer invoices """

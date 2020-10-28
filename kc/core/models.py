@@ -59,16 +59,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Driver(models.Model):
-    name = models.CharField(max_length=50)
-
-    class Meta:
-        verbose_name = "Driver"
-        verbose_name_plural = "Drivers"
-
-    def __str__(self):
-         return self.name
-
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
@@ -78,8 +68,10 @@ class Video(models.Model):
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
-    video_file = models.CharField(max_length=150, null=True)
-    image_file = models.CharField(max_length=150, null=True)
+    video_url = models.CharField(max_length=150, null=True)
+    image_url_1 = models.CharField(max_length=150, null=True)
+    image_url_2 = models.CharField(max_length=150, null=True)
+    image_url_3 = models.CharField(max_length=150, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

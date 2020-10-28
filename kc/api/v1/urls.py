@@ -6,7 +6,7 @@ from kc.api.v1.views.article import ArticleView
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
 from kc.api.v1.views.category import CategoryView
-from kc.api.v1.views.driver import DriverView
+
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
 from django.views.decorators.csrf import csrf_exempt
@@ -25,14 +25,14 @@ urlpatterns = [
     path('me/', MeView.as_view(), name='me'),   
     path('edit-password/', ChangePasswordView.as_view(), name='edit-password'),
     path('edit-email/', ChangeEmailView.as_view(), name='edit-email'),
-    path('current-user/', CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),
-    path('create-subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
-    path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),
-    path('charges/', ChargeListView.as_view(), name='stripe-charges'),
-    path('plans/', PlanListView.as_view(), name='stripe-plans'),
-    path('webhook/', CancelView.as_view(), name='stripe-cancel'),
-    path('customer/',CurrentCustomerDetailView.as_view(), name='stripe-customer'),
-    path('create-customer/', CurrentCustomerDetailView.as_view(), name='create-stripe-customer'),
+#     path('current-user/', CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),
+#     path('create-subscription/', SubscriptionView.as_view(), name='stripe-subscription'),
+#     path('change-card/', ChangeCardView.as_view(), name='stripe-change-card'),
+#     path('charges/', ChargeListView.as_view(), name='stripe-charges'),
+#     path('plans/', PlanListView.as_view(), name='stripe-plans'),
+#     path('webhook/', CancelView.as_view(), name='stripe-cancel'),
+#     path('customer/',CurrentCustomerDetailView.as_view(), name='stripe-customer'),
+#     path('create-customer/', CurrentCustomerDetailView.as_view(), name='create-stripe-customer'),
     path('like-video/', VideoLikeView.as_view(), name='like-video'),
     path('unlike-video/', VideoUnLikeView.as_view(), name='unlike-video'),
      path('like-article/', VideoLikeView.as_view(), name='like-article'),
@@ -40,17 +40,14 @@ urlpatterns = [
     path('checkout/', ChargeListView.as_view(), name='checkout'),
     path('upload-video/', csrf_exempt(VideoUploadView.as_view()), name='upload-video'),
     path('upload-article/', csrf_exempt(VideoUploadView.as_view()), name='upload-article'),
-#     path('password-reset/', RequestPasswordResetView.as_view(), name='request-password'),
+
     path('request-reset-email/', RequestPasswordResetView.as_view(),
          name="request-reset-email"),
     path('password-reset/<uidb64>/<token>/',
          PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
     path('password-reset-complete', SetNewPasswordAPIView.as_view(),
          name='password-reset-complete')
-#     path('accounts/', UserViewSet, name='accounts')
-    
-   
-     
+
 ]
 
 router = routers.DefaultRouter()
@@ -58,7 +55,6 @@ router.register(r'videos', VideoListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
-router.register(r'drivers', DriverView)
 router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
 

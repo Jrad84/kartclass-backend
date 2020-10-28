@@ -12,10 +12,7 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
     
     class Meta:
         model = Video   
-        fields = (
-            'id', 'title', 'description', 'longdescription', 'category', 'duration',
-            'video_file', 'image_file', 'likes', 'views', 'created_at'
-        )
+        fields = '__all__'
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
@@ -23,8 +20,10 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
         instance.longdescription = validated_data.get('longdescription', instance.longdescription)
         instance.categories = validated_data.get('category', instance.category)
         instance.duration = validated_data.get('duration', instance.duration)
-        instance.video_file = validated_data.get('video_file', instance.video_file)
-        instance.image_file = validated_data.get('image_file', instance.image_file)
+        instance.video_url = validated_data.get('video_url', instance.video_url)
+        instance.image_url_1 = validated_data.get('image_url_1', instance.image_url_1)
+        instance.image_url_2 = validated_data.get('image_url_2', instance.image_url_2)
+        instance.image_url_3 = validated_data.get('image_url_3', instance.image_url_3)
         instance.save()
         return instance
 
