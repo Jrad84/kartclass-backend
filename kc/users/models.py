@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from kc.users.managers import CustomUserManager
 import jwt
-from kc.core.models import Category, Customer, Base, Video
+from kc.core.models import Category, Base, Video
 from django.conf import settings
 import stripe
 import decimal
