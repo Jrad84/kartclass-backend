@@ -77,7 +77,9 @@ class ChargeListView(StripeView, generics.ListAPIView):
         success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
         cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
         
-        
+        # Prevent user from buying category they already own
+        if (category in user.category):
+            return Response({'You already bought this category'}, status=status.HTTP_400_BAD_REQUEST)
         if amount > 0:
             checkout_session = stripe.checkout.Session.create(
                             payment_method_types = ['card'],
