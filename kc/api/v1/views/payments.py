@@ -71,11 +71,11 @@ class ChargeListView(StripeView, generics.ListAPIView):
             price = prices[amount / 100]
         category = request.data.get('category')
        
-        success = 'http://127.0.0.1:3000/payment-success'
-        cancel = 'http://127.0.0.1:3000/cancelled/'
+        # success = 'http://127.0.0.1:3000/payment-success'
+        # cancel = 'http://127.0.0.1:3000/cancelled/'
         user.is_member = True
-        # success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
-        # cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
+        success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
+        cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
         
         
         if amount > 0:
