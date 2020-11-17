@@ -111,7 +111,8 @@ class VideoUploadView(mixins.ListModelMixin,
     def post(self, request):
         data=request.data
         serializer = VideoSerializer(data=data)
-        categories = list(data['category']['id'])
+        print(serializer)
+        categories = [i for i in data['category']]
         print(categories)
         if serializer.is_valid():
             serializer.save()

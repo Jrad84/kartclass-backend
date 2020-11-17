@@ -121,7 +121,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
         try:
             email = attrs.get('email')
             password = attrs.get('password')
-            print('attra: ', attrs)
+            # print('attra: ', attrs)
             user = CustomUser.objects.get(email=email)
             
             user.set_password(password)
