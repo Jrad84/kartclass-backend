@@ -10,8 +10,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from kc.users.managers import CustomUserManager
 import jwt
-
-from kc.core.models import Category, Customer, Base, Video
+from kc.core.models import Category, Base, Video
 from django.conf import settings
 import stripe
 import decimal
@@ -56,19 +55,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         help_text=_("Designates whether a user is a paid member or not")
     )
     
-    category = models.ForeignKey(
-        Category, null=True, 
-        on_delete=models.SET_NULL,
-        help_text=_("Designates what category a user is in")
-    )
-    videos = ArrayField(ArrayField(models.IntegerField()), blank=True, null=True)
+    category = ArrayField(models.IntegerField(), default=list, null=True)
+
+    # category = models.ForeignKey(
+    #     Category, null=True, 
+    #     on_delete=models.SET_NULL,
+    #     help_text=_("Designates what category a user is in")
+    # )
+    # videos = ArrayField(ArrayField(models.IntegerField()), blank=True, null=True)
         
-    stripe_id = models.CharField(
-        max_length=300,
-        null = True,
-        blank = True,
-        help_text=_("Stripe user id")
-    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
@@ -76,6 +71,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     class Meta:
         verbose_name = _("custom user")
         verbose_name_plural = _("custom users")
+
+   
 
     def clean(self):
         super().clean()

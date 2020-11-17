@@ -25,7 +25,6 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "id",
             "fname",
             "lname",
-            "category",
             "is_member",
             "category",
             "date_created"
@@ -58,7 +57,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "password",
             "is_member",
             "category",
-            "stripe_id"
+          
         )
 
 
@@ -113,7 +112,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class SetNewPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(
-        min_length=6, max_length=68, write_only=True)
+        min_length=8, max_length=68, write_only=True)
     
     class Meta:
         fields = ['email', 'password']
@@ -122,7 +121,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
         try:
             email = attrs.get('email')
             password = attrs.get('password')
-            print('attra: ', attrs)
+            # print('attra: ', attrs)
             user = CustomUser.objects.get(email=email)
             
             user.set_password(password)

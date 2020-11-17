@@ -15,17 +15,7 @@ class MeRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = (
-            "id",
-            "email",
-            "fname",
-            "lname",
-            "is_staff",
-            "date_created",
-            "category",
-            "is_member",
-            "videos"
-        )
+        fields = '__all__'
 
 class MeUpdateSerializer(serializers.ModelSerializer):
     """Update serializer for authenticated user (`Me`).
@@ -43,11 +33,9 @@ class MeUpdateSerializer(serializers.ModelSerializer):
             "password",
             "category",
             "is_member",
-            "videos"
            
         )
-class UpdateFavouritesSerializer(serializers.Serializer):
-    model = CustomUser
+
 
 class ChangePasswordSerializer(serializers.Serializer):
     model = CustomUser
