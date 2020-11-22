@@ -27,6 +27,8 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "lname",
             "is_member",
             "category",
+            "s3_key",
+            "s3_id",
             "date_created"
            
         )
@@ -57,7 +59,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "password",
             "is_member",
             "category",
-          
         )
 
 

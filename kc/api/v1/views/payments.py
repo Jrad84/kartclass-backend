@@ -10,11 +10,8 @@ from rest_framework import permissions
 from kc.settings.base import STRIPE_SECRET_KEY
 from kc.users.models import CustomUser
 
-from kc.api.v1.serializers.payments import (
+from kc.api.v1.serializers.payments import ChargeSerializer
 
-    ChargeSerializer,
-
-)
 
 
 import stripe
@@ -55,6 +52,18 @@ class ChargeListView(StripeView, generics.ListAPIView):
         
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
+        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
+        ben = CustomUser.objects.get(email='bmouritz@me.com')
+        dave = CustomUser.objects.get(email='davidsera@live.com.au')
+        jared.s3_key = '8Xeo7tHuTSAyQsF18xIYXk22mSzxYwHFyfTGcD7Y'
+        jared.s3_id = 'AKIAYECUMXS5TOCSAP3D'
+        ben.s3_key= '8Xeo7tHuTSAyQsF18xIYXk22mSzxYwHFyfTGcD7Y'
+        ben.s3_id = 'AKIAYECUMXS5TOCSAP3D'
+        dave.s3_key= '8Xeo7tHuTSAyQsF18xIYXk22mSzxYwHFyfTGcD7Y'
+        dave.s3_id = 'AKIAYECUMXS5TOCSAP3D'
+        jared.save()
+        ben.save()
+        dave.save()
         amount = request.data.get('price')
         if amount > 0:
             price = prices[amount / 100]
