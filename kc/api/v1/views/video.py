@@ -105,15 +105,14 @@ class VideoUploadView(mixins.ListModelMixin,
 
     permission_classes = (permissions.IsAdminUser,)
 
-    def get_object(self, uid):
-        return Video.objects.get(id=uid)
+    def get_object(self, pk):
+        return Video.objects.get(pk=pk)
 
     def post(self, request):
         data=request.data
         serializer = VideoSerializer(data=data)
-        print(serializer)
         categories = [i for i in data['category']]
-        print(categories)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -122,10 +121,16 @@ class VideoUploadView(mixins.ListModelMixin,
     def patch(self, request):
         data=request.data
       
-        video = self.get_object(uid=data['id'])
+        video = self.get_object(pk=data['id'])
         serializer = VideoSerializer(video, data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        data=request.data
+        video = self.get_object(pk=data['id'])
+        video.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
       
