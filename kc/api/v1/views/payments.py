@@ -96,8 +96,8 @@ class ChargeListView(StripeView, generics.ListAPIView):
                 user.save(update_fields=["category", "is_member"])
             return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
         
-        # user.category.append(category)
-        user.save(update_fields=[ "is_member"])
+        user.category.append(category)
+        user.save(update_fields=["category", "is_member"])
         return Response(status=status.HTTP_202_ACCEPTED)
 
 
