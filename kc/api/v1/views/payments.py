@@ -1,17 +1,13 @@
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
-# from django.conf import settings
-import os
 from django.utils.encoding import smart_str
 from rest_framework import mixins, viewsets
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-import datetime
 from kc.settings.base import STRIPE_SECRET_KEY
-from kc.core.models import Category
 from kc.users.models import CustomUser
 
 from kc.api.v1.serializers.payments import (
@@ -20,13 +16,6 @@ from kc.api.v1.serializers.payments import (
 
 )
 
-
-# from kc.core.models import (
-#     Customer,
-#     Subscription,
-#     Plan,
-#     Card
-# )
 
 import stripe
 import decimal
@@ -71,11 +60,11 @@ class ChargeListView(StripeView, generics.ListAPIView):
             price = prices[amount / 100]
         category = request.data.get('category')
        
-        success = 'http://127.0.0.1:3000/payment-success'
-        cancel = 'http://127.0.0.1:3000/cancelled/'
+        # success = 'http://127.0.0.1:3000/payment-success'
+        # cancel = 'http://127.0.0.1:3000/cancelled/'
         user.is_member = True
-        # success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
-        # cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
+        success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
+        cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
         
         # Prevent user from buying category they already own
         if (category in user.category):
