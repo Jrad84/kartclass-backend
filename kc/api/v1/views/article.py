@@ -54,8 +54,8 @@ class ArticleUploadView(mixins.ListModelMixin,
 
     permission_classes = (permissions.IsAdminUser,)
 
-    def get_object(self, uid):
-        return Article.objects.get(id=uid)
+    def get_object(self, pk):
+        return Article.objects.get(pk=uid)
 
     def post(self, request):
         data=request.data
@@ -68,9 +68,15 @@ class ArticleUploadView(mixins.ListModelMixin,
 
     def patch(self, request):
         data=request.data
-        article = self.get_object(uid=data['id'])
+        article = self.get_object(pk=data['id'])
         serializer = ArticleSerializer(article, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        data=request.data
+        article = self.get_object(pk=data['id'])
+        article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
