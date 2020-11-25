@@ -16,7 +16,7 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('longdescription', instance.description)
+        instance.description = validated_data.get('description', instance.description)
         instance.longdescription = validated_data.get('longdescription', instance.longdescription)
         instance.categories = validated_data.get('category', instance.category)
         instance.duration = validated_data.get('duration', instance.duration)

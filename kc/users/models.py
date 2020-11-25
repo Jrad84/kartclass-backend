@@ -57,12 +57,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     
     category = ArrayField(models.IntegerField(), default=list, null=True)
 
-    # category = models.ForeignKey(
-    #     Category, null=True, 
-    #     on_delete=models.SET_NULL,
-    #     help_text=_("Designates what category a user is in")
-    # )
-    # videos = ArrayField(ArrayField(models.IntegerField()), blank=True, null=True)
+    s3_key = models.CharField(max_length=100, null=True, blank=True)
+    s3_id = models.CharField(max_length=100, null=True, blank=True)
         
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

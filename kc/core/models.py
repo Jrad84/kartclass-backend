@@ -89,7 +89,7 @@ class Video(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=150)
+    description = models.CharField(max_length=150, null=True, blank=True)
     image = models.CharField(max_length=100, null=True)
     document = models.CharField(max_length=500, null=True)
     likes = models.IntegerField(default=0)

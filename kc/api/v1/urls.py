@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework import routers
-from kc.api.v1.views.article import ArticleView
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
 from kc.api.v1.views.category import CategoryView
 
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
+from kc.api.v1.views.article import *
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.views.me import *
 from kc.api.v1.views.payments import *
@@ -31,7 +31,7 @@ urlpatterns = [
     path('unlike-article/', VideoUnLikeView.as_view(), name='unlike-article'),
     path('checkout/', ChargeListView.as_view(), name='checkout'),
     path('upload-video/', csrf_exempt(VideoUploadView.as_view()), name='upload-video'),
-    path('upload-article/', csrf_exempt(VideoUploadView.as_view()), name='upload-article'),
+    path('upload-article/', csrf_exempt(ArticleUploadView.as_view()), name='upload-article'),
 
     path('request-reset-email/', RequestPasswordResetView.as_view(),
          name="request-reset-email"),
