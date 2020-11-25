@@ -43,7 +43,7 @@ class VideoListView(mixins.ListModelMixin,
         
         serializer = VideoSerializer(video, data=request.data, partial=True)
         if serializer.is_valid():
-            video.likes += 1
+            # video.likes += 1
             serializer.save()
             return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

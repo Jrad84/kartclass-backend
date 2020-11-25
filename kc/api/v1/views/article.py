@@ -1,6 +1,7 @@
-from rest_framework import viewsets, generics, mixins
+from rest_framework import viewsets, generics, mixins, status
 from kc.api.v1.serializers.article import ArticleSerializer
 from rest_framework import permissions
+from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from kc.core.models import Article
 
@@ -68,7 +69,7 @@ class ArticleUploadView(mixins.ListModelMixin,
     def patch(self, request):
         data=request.data
         article = self.get_object(uid=data['id'])
-        serializer = ArticleSerializer(article, data=data)
+        serializer = ArticleSerializer(article, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
