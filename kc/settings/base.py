@@ -52,6 +52,7 @@ ALLOWED_HOSTS = [
      "https://kartclass-nuxt.com",
      "https://kartclass-nuxt.herokuapp.com/",
      "*.kartclass-django.herokuapp.com",
+     "https://www.kartclass.com"
      ]
 
 
