@@ -52,18 +52,6 @@ class ChargeListView(StripeView, generics.ListAPIView):
         
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
-        ben = CustomUser.objects.get(email='bmouritz@me.com')
-        dave = CustomUser.objects.get(email='davidsera@live.com.au')
-        jared.s3_key = '8Xeo7tHuTSAyQsF18xIYXk22mSzxYwHFyfTGcD7Y'
-        jared.s3_id = 'AKIAYECUMXS5TOCSAP3D'
-        ben.s3_key= '8Xeo7tHuTSAyQsF18xIYXk22mSzxYwHFyfTGcD7Y'
-        ben.s3_id = 'AKIAYECUMXS5TOCSAP3D'
-        dave.s3_key= '8Xeo7tHuTSAyQsF18xIYXk22mSzxYwHFyfTGcD7Y'
-        dave.s3_id = 'AKIAYECUMXS5TOCSAP3D'
-        jared.save()
-        ben.save()
-        dave.save()
         amount = request.data.get('price')
         if amount > 0:
             price = prices[amount / 100]
@@ -72,8 +60,8 @@ class ChargeListView(StripeView, generics.ListAPIView):
         # success = 'http://127.0.0.1:3000/payment-success'
         # cancel = 'http://127.0.0.1:3000/cancelled/'
         user.is_member = True
-        success = 'https://kartclass-nuxt.herokuapp.com/payment-success'
-        cancel = 'https://kartclass-nuxt.herokuapp.com/cancelled/'
+        success = 'https://www.kartclass.com/payment-success'
+        cancel = 'https://www.kartclass.com/cancelled/'
         
         # Prevent user from buying category they already own
         if (category in user.category):
