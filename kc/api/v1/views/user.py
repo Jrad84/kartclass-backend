@@ -114,7 +114,7 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
         redirect_url = request.GET.get('redirect_url')
         
         # url = 'http://127.0.0.1:3000/reset-password'
-        url = 'https://kartclass-nuxt.herokuapp.com/reset-password'
+        url = 'https://www.kartclass.com/reset-password'
 
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
