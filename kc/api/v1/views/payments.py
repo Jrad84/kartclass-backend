@@ -57,11 +57,11 @@ class ChargeListView(StripeView, generics.ListAPIView):
             price = prices[amount / 100]
         category = request.data.get('category')
        
-        success = 'http://127.0.0.1:3000/payment-success'
-        cancel = 'http://127.0.0.1:3000/cancelled/'
+        # success = 'http://127.0.0.1:3000/payment-success'
+        # cancel = 'http://127.0.0.1:3000/cancelled/'
         user.is_member = True
-        # success = 'https://www.kartclass.com/payment-success'
-        # cancel = 'https://www.kartclass.com/cancelled/'
+        success = 'https://www.kartclass.com/payment-success'
+        cancel = 'https://www.kartclass.com/cancelled/'
         
         # Prevent user from buying category they already own
         if (category in user.category):
