@@ -22,7 +22,7 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 # dictionary of prices : Stripe price ids
 prices = {100 : 'price_1HXiJ6D9jmvAZt96ZnsmtMNl', 120 : 'price_1HXiJwD9jmvAZt96902N9Vca',
-        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 250 : 'price_1HXiM0D9jmvAZt96Xt09e45V'}
+        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 250 : 'price_1Hg52WD9jmvAZt96AKW4lp8W'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -57,11 +57,11 @@ class ChargeListView(StripeView, generics.ListAPIView):
             price = prices[amount / 100]
         category = request.data.get('category')
        
-        # success = 'http://127.0.0.1:3000/payment-success'
-        # cancel = 'http://127.0.0.1:3000/cancelled/'
+        success = 'http://127.0.0.1:3000/payment-success'
+        cancel = 'http://127.0.0.1:3000/cancelled/'
         user.is_member = True
-        success = 'https://www.kartclass.com/payment-success'
-        cancel = 'https://www.kartclass.com/cancelled/'
+        # success = 'https://www.kartclass.com/payment-success'
+        # cancel = 'https://www.kartclass.com/cancelled/'
         
         # Prevent user from buying category they already own
         if (category in user.category):
