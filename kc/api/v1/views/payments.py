@@ -38,7 +38,7 @@ class StripeView(APIView):
         try:
             return self.request.user.customer
         except ObjectDoesNotExist:
-            print('Customer does not exist')
+            return Response({'Customer does not exist'}, status=status.HTTP_400_BAD_REQUEST)
       
 
 

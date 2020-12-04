@@ -8,7 +8,7 @@ from django.utils import timezone
 
 
 def send_email(data):
-    print(data)
+    
     email = EmailMessage(subject=data['email_subject'], 
                 body=data['email_body'], to=data['to_email'])
     email.send()

@@ -122,8 +122,7 @@ class VideoUploadView(mixins.ListModelMixin,
         data=request.data
       
         video = self.get_object(pk=data['id'])
-        print('video: ', video)
-        print(request.data)
+       
         serializer = VideoSerializer(video, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()

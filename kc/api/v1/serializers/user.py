@@ -26,10 +26,13 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "fname",
             "lname",
             "is_member",
+            "is_active",
             "category",
+            "mail_list",
             "s3_key",
             "s3_id",
-            "date_created"
+            "date_created",
+            "last_login"
            
         )
 
@@ -52,17 +55,17 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = (
-            "id",
             "fname",
             "lname",
             "email",
             "password",
-            "is_member",
-            "category",
+            "mail_list"
         )
 
 
     def create(self, validated_data):
+        # print(validated_data)
+        # mail = validated_data['email_weekly']
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
         return super(UserCreateSerializer, self).create(validated_data)
 
@@ -93,7 +96,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             password = attrs.get('password')
             token = attrs.get('token')
             user = get_user_model()
-            # user = user.objects.get(id=uid) 
             user.set_password(password)
             user.save()
 
@@ -122,7 +124,6 @@ class SetNewPasswordSerializer(serializers.Serializer):
         try:
             email = attrs.get('email')
             password = attrs.get('password')
-            # print('attra: ', attrs)
             user = CustomUser.objects.get(email=email)
             
             user.set_password(password)
