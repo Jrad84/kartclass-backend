@@ -21,8 +21,8 @@ import decimal
 stripe.api_key = STRIPE_SECRET_KEY
 
 # dictionary of prices : Stripe price ids
-prices = {100 : 'price_1HXiJ6D9jmvAZt96ZnsmtMNl', 120 : 'price_1HXiJwD9jmvAZt96902N9Vca',
-        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 250 : 'price_1Hg52WD9jmvAZt96AKW4lp8W'}
+prices = {100 : 'price_1Hx3BUD3jYQzOC8Fcgg1oXuE', 120 : 'price_1Hx3CtD3jYQzOC8FAvKHU99k',
+        140: 'price_1Hx3DKD3jYQzOC8FuyIDTgTL', 160 : 'price_1Hx3DcD3jYQzOC8Fc95dF6rH', 250 : 'price_1Hx3DqD3jYQzOC8F3wT1sBTW'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
