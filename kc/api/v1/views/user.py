@@ -40,7 +40,6 @@ class UserViewSet(
 
     def get_serializer_class(self):
         if self.action == "create":
-            print(UserCreateSerializer)
             return UserCreateSerializer
         return UserRetrieveSerializer
 

@@ -21,8 +21,8 @@ import decimal
 stripe.api_key = STRIPE_SECRET_KEY
 
 # dictionary of prices : Stripe price ids
-prices = {100 : 'price_1Hx3BUD3jYQzOC8Fcgg1oXuE', 120 : 'price_1Hx3CtD3jYQzOC8FAvKHU99k',
-        140: 'price_1Hx3DKD3jYQzOC8FuyIDTgTL', 160 : 'price_1Hx3DcD3jYQzOC8Fc95dF6rH', 250 : 'price_1Hx3DqD3jYQzOC8F3wT1sBTW'}
+prices = {100 : 'price_1Hx4ZRD3jYQzOC8F5IXHCnF8', 120 : 'price_1Hx4ZjD3jYQzOC8FKkNLq03l',
+        140: 'price_1Hx4a6D3jYQzOC8FmF4KO6MF', 160 : 'price_1Hx4aRD3jYQzOC8FsDbO8j59', 250 : 'price_1Hx4agD3jYQzOC8FEchQeJXj'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -57,7 +57,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
             price = prices[amount / 100]
         category = request.data.get('category')
         mail_list = request.data.get('mail_list')
-        print('mail: ', mail_list)
+        print(user.category)
         if mail_list == "true":
             mail_list = True
         else:
