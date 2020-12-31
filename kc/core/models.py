@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
-from kc.users.managers import ChargeManager, CustomerManager
+# from kc.users.managers import ChargeManager, CustomerManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
 import uuid
@@ -69,9 +69,7 @@ class Video(models.Model):
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     video_url = models.CharField(max_length=150, null=True)
-    image_url_1 = models.CharField(max_length=150, null=True, blank=True)
-    image_url_2 = models.CharField(max_length=150, null=True, blank=True)
-    image_url_3 = models.CharField(max_length=150, null=True, blank=True)
+    image_url = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

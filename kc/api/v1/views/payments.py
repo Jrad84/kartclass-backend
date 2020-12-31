@@ -21,8 +21,8 @@ import decimal
 stripe.api_key = STRIPE_SECRET_KEY
 
 # dictionary of prices : Stripe price ids
-prices = {100 : 'price_1HXiJ6D9jmvAZt96ZnsmtMNl', 120 : 'price_1HXiJwD9jmvAZt96902N9Vca',
-        140: 'price_1HXiKfD9jmvAZt96sQil7iYy', 160 : 'price_1HXiLKD9jmvAZt96fEOgWA6B', 250 : 'price_1HXiM0D9jmvAZt96Xt09e45V'}
+prices = {100 : 'price_1Hx4ZRD3jYQzOC8F5IXHCnF8', 120 : 'price_1Hx4ZjD3jYQzOC8FKkNLq03l',
+        140: 'price_1Hx4a6D3jYQzOC8FmF4KO6MF', 160 : 'price_1Hx4aRD3jYQzOC8FsDbO8j59', 250 : 'price_1Hx4agD3jYQzOC8FEchQeJXj'}
 
 class StripeView(APIView):
     """ Generic API StripeView """
@@ -38,7 +38,7 @@ class StripeView(APIView):
         try:
             return self.request.user.customer
         except ObjectDoesNotExist:
-            print('Customer does not exist')
+            return Response({'Customer does not exist'}, status=status.HTTP_400_BAD_REQUEST)
       
 
 
@@ -56,7 +56,12 @@ class ChargeListView(StripeView, generics.ListAPIView):
         if amount > 0:
             price = prices[amount / 100]
         category = request.data.get('category')
-       
+        mail_list = request.data.get('mail_list')
+        print(user.category)
+        if mail_list == "true":
+            mail_list = True
+        else:
+            mail_list = False
         # success = 'http://127.0.0.1:3000/payment-success'
         # cancel = 'http://127.0.0.1:3000/cancelled/'
         user.is_member = True
@@ -66,6 +71,11 @@ class ChargeListView(StripeView, generics.ListAPIView):
         # Prevent user from buying category they already own
         if (category in user.category):
             return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.category.append(category)
+        user.mail_list = mail_list
+        user.save(update_fields=["category", "is_member", "mail_list"])
+
         if amount > 0:
             checkout_session = stripe.checkout.Session.create(
                             payment_method_types = ['card'],
@@ -80,12 +90,12 @@ class ChargeListView(StripeView, generics.ListAPIView):
                 )
 
             if (checkout_session):
-                user.category.append(category)
-                user.save(update_fields=["category", "is_member"])
-            return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
+                # user.category.append(category)
+                # user.save(update_fields=["category", "is_member"])
+                return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
         
-        user.category.append(category)
-        user.save(update_fields=["category", "is_member"])
+        # user.category.append(category)
+        # user.save(update_fields=["category", "is_member"])
         return Response(status=status.HTTP_202_ACCEPTED)
 
 

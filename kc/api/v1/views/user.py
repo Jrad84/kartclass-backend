@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import views, mixins, viewsets, filters, generics, status, permissions
-from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters.rest_framework import DjangoFilterBackend
 from kc.api.v1.permissions.user import UserPermission
 from django.http import JsonResponse
 from django.urls import reverse
@@ -8,13 +8,13 @@ from kc.api.v1.serializers.user import *
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.contrib.sites.shortcuts import get_current_site
-from kc.api.v1.serializers.category import CategorySerializer
+# from kc.api.v1.serializers.category import CategorySerializer
 from rest_framework.response import Response
 from django.http import HttpResponsePermanentRedirect
 from braces.views import CsrfExemptMixin
 from django.views.decorators.csrf import csrf_exempt
 from kc.utils import send_email
-from decouple import config
+# from decouple import config
 
 
 
@@ -37,10 +37,6 @@ class UserViewSet(
 
     queryset = get_user_model().objects.filter(is_active=True).all()
     permission_classes = (UserPermission,)
-    # category = CategorySerializer
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('id', 'category__id')
-
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -50,9 +46,12 @@ class UserViewSet(
     def get(self, request):
         
         users = get_user_model().objects.filter(is_active=True).all().values()
-
         return JsonResponse({"users": list(users)})
-      
+
+    # def post(self, request):
+    #     print(request.data)
+    #     serializer = get_serializer_class(self)
+
 class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
     mixins.UpdateModelMixin, generics.GenericAPIView, CsrfExemptMixin):
 
@@ -114,12 +113,11 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
         redirect_url = request.GET.get('redirect_url')
         
         # url = 'http://127.0.0.1:3000/reset-password'
-        url = 'https://kartclass-nuxt.herokuapp.com/reset-password'
+        url = 'https://www.kartclass.com/reset-password'
 
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
             user = CustomUser.objects.get(id=id)
-            print(user)
             if not PasswordResetTokenGenerator().check_token(user, token):
                 if len(redirect_url) > 3:
                     return CustomRedirect(redirect_url+'?token_valid=False')
