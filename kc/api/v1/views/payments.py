@@ -19,6 +19,7 @@ import decimal
 
 
 stripe.api_key = STRIPE_SECRET_KEY
+FREE = 6 # id of Free Category
 
 # dictionary of prices : Stripe price ids
 prices = {100 : 'price_1Hx4ZRD3jYQzOC8F5IXHCnF8', 120 : 'price_1Hx4ZjD3jYQzOC8FKkNLq03l',
@@ -56,24 +57,31 @@ class ChargeListView(StripeView, generics.ListAPIView):
         if amount > 0:
             price = prices[amount / 100]
         category = request.data.get('category')
+
         mail_list = request.data.get('mail_list')
-        print(user.category)
+       
         if mail_list == "true":
             mail_list = True
         else:
             mail_list = False
-        # success = 'http://127.0.0.1:3000/payment-success'
-        # cancel = 'http://127.0.0.1:3000/cancelled/'
+
+        user.mail_list = mail_list
         user.is_member = True
-        success = 'https://www.kartclass.com/payment-success'
-        cancel = 'https://www.kartclass.com/cancelled/'
+        success = 'http://127.0.0.1:3000/payment-success'
+        cancel = 'http://127.0.0.1:3000/cancelled/'
+        # success = 'https://www.kartclass.com/payment-success'
+        # cancel = 'https://www.kartclass.com/cancelled/'
+
+        # If first time checkout, add Free category
+        if (FREE not in user.category):
+            user.category.append(FREE)
         
         # Prevent user from buying category they already own
         if (category in user.category):
             return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.category.append(category)
-        user.mail_list = mail_list
+       
         user.save(update_fields=["category", "is_member", "mail_list"])
 
         if amount > 0:
@@ -90,12 +98,8 @@ class ChargeListView(StripeView, generics.ListAPIView):
                 )
 
             if (checkout_session):
-                # user.category.append(category)
-                # user.save(update_fields=["category", "is_member"])
                 return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
         
-        # user.category.append(category)
-        # user.save(update_fields=["category", "is_member"])
         return Response(status=status.HTTP_202_ACCEPTED)
 
 
