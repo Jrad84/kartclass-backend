@@ -12,6 +12,7 @@ from kc.api.v1.views.article import *
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.views.me import *
 from kc.api.v1.views.payments import *
+from kc.api.v1.views.mail_list import MailListView
 
 
 urlpatterns = [
@@ -38,7 +39,8 @@ urlpatterns = [
     path('password-reset/<uidb64>/<token>/',
          PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
     path('password-reset-complete', SetNewPasswordAPIView.as_view(),
-         name='password-reset-complete')
+         name='password-reset-complete'),
+     path('mail-list/', MailListView.as_view(), name='mail-list')
 
 ]
 
@@ -49,6 +51,7 @@ router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
+
 
 
 
