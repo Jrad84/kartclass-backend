@@ -4,4 +4,4 @@ from kc.core.models import MailList
 class MailListSerializer(serializers.ModelSerializer):
     class Meta:
         model = MailList
-        fields = '__all__'
+        fields = 'email'

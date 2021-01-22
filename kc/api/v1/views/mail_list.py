@@ -26,5 +26,5 @@ class MailListView(generics.GenericAPIView,
     def get(self, request):
         permission_classes = [permissions.IsAdminUser,]
         mail_list = MailList.objects.all().values()
-        return JsonResponse({"mail_list": list(mail_list)})
+        return JsonResponse({"emails": list(mail_list)})
         
