@@ -14,7 +14,7 @@ class ProductListView(mixins.ListModelMixin,
                     ):
 
     serializer_class = ProductSerializer
-    authentication_classes = []
+    # authentication_classes = []
     permission_classes = [permissions.AllowAny,]
     queryset = Product.objects.all()
     
@@ -32,10 +32,10 @@ class ProductUploadView(mixins.ListModelMixin,
 
     def post(self, request):
         data=request.data
-        serializer = ProductSerializer(data=data)
-        # print(request.data)
         size = str(data.get("size")[0])
-        print('size: ', size)
+        data['size'] = size
+        serializer = ProductSerializer(data=data)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

@@ -11,6 +11,7 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.price = validated_data.get('price', instance.price)
         instance.quantity += validated_data.get('quantity', instance.quantity)
+        instance.size = validated_data.get('size', instance.size)
         instance.image = validated_data.get('image', instance.image)
        
         instance.save()
