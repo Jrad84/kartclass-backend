@@ -58,6 +58,21 @@ class MailList(models.Model):
     def __str__(self):
         return self.email
 
+class Product(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField(max_length=1000, null=True)
+    image = models.CharField(max_length=100, null=True)
+    amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    quantity = models.IntegerField(null=True)
+    size = models.CharField(max_length=10)
+
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
+
+    def __str__(self):
+        return self.name
+
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
