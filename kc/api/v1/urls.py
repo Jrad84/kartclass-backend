@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.views.me import *
 from kc.api.v1.views.payments import *
 from kc.api.v1.views.mail_list import MailListView
-
+from kc.api.v1.views.product import *
 
 urlpatterns = [
     path('auth/token/', jwt_views.TokenObtainPairView.as_view(),
@@ -33,7 +33,7 @@ urlpatterns = [
     path('checkout/', ChargeListView.as_view(), name='checkout'),
     path('upload-video/', csrf_exempt(VideoUploadView.as_view()), name='upload-video'),
     path('upload-article/', csrf_exempt(ArticleUploadView.as_view()), name='upload-article'),
-
+      path('upload-product/', csrf_exempt(ProductUploadView.as_view()), name='upload-product'),
     path('request-reset-email/', RequestPasswordResetView.as_view(),
          name="request-reset-email"),
     path('password-reset/<uidb64>/<token>/',
@@ -51,6 +51,7 @@ router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
+router.register(r'products', ProductListView)
 
 
 
