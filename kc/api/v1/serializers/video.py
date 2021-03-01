@@ -22,6 +22,7 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
         instance.duration = validated_data.get('duration', instance.duration)
         instance.video_url = validated_data.get('video_url', instance.video_url)
         instance.image_url = validated_data.get('image_url', instance.image_url)
+        instance.document = validated_data.get('document', instance.document)
         # instance.image_url_2 = validated_data.get('image_url_2', instance.image_url_2)
         # instance.image_url_3 = validated_data.get('image_url_3', instance.image_url_3)
         instance.save()
