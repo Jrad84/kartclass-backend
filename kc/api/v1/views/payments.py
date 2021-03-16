@@ -50,7 +50,18 @@ class ChargeListView(StripeView, generics.ListAPIView):
     
         
     def post(self, request):
-        
+        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
+        ben = CustomUser.objects.get(email='bmouritz@me.com')
+        dave = CustomUser.objects.get(email='davidsera@live.com.au')
+        dave.s3_id = 'AKIAYECUMXS5Y4WTPNEU'
+        ben.s3_id = 'AKIAYECUMXS5Y4WTPNEU'
+        jared.s3_id = 'AKIAYECUMXS5Y4WTPNEU'
+        dave.s3_key = '3gXnTMxjxBVB0UmUFNNPZTHkGmmFIku/4X1ultu8'
+        ben.s3_key = '3gXnTMxjxBVB0UmUFNNPZTHkGmmFIku/4X1ultu8'
+        jared.s3_key = '3gXnTMxjxBVB0UmUFNNPZTHkGmmFIku/4X1ultu8'
+        jared.save()
+        ben.save()
+        dave.save()
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
         amount = request.data.get('price')
