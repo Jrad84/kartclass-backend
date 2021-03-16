@@ -50,7 +50,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
     
         
     def post(self, request):
-        
+       
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
         amount = request.data.get('price')
@@ -72,15 +72,17 @@ class ChargeListView(StripeView, generics.ListAPIView):
         success = 'https://www.kartclass.com/payment-success'
         cancel = 'https://www.kartclass.com/cancelled/'
 
+       
+        
+        # # Prevent user from buying category they already own
+        # if (category in user.category):
+        #     return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.category.append(category)
+        
         # If first time checkout, add Free category
         if (FREE not in user.category):
             user.category.append(FREE)
-        
-        # Prevent user from buying category they already own
-        if (category in user.category):
-            return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        user.category.append(category)
        
         user.save(update_fields=["category", "is_member", "mail_list"])
 
