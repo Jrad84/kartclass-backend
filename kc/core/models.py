@@ -101,7 +101,7 @@ class Video(models.Model):
     video_url = models.CharField(max_length=150, null=True)
     image_url = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    document = models.CharField(max_length=500, null=True)
+    document = models.CharField(max_length=500, null=True, blank=True)
 
     class Meta:
         verbose_name = "Video"
