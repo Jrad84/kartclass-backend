@@ -94,7 +94,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
         user.category.append(category)
 
         # If first time checkout, add Free category
-        if (FREE not in user.category):
+        if FREE not in user.category:
             user.category.append(FREE)
        
         user.save(update_fields=["category", "is_member", "mail_list"])
