@@ -54,18 +54,6 @@ class ChargeListView(StripeView, generics.ListAPIView):
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
 
-        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
-        ben = CustomUser.objects.get(email='bmouritz@me.com')
-        dave = CustomUser.objects.get(email='davidsera@live.com.au')
-        jared.s3_id = AWS_ACCESS_KEY_ID
-        ben.s3_id = AWS_ACCESS_KEY_ID
-        dave.s3_id = AWS_ACCESS_KEY_ID
-        jared.s3_key = AWS_SECRET_ACCESS_KEY
-        ben.s3_key = AWS_SECRET_ACCESS_KEY
-        dave.s3_key = AWS_SECRET_ACCESS_KEY
-        jared.save()
-        ben.save()
-        dave.save()
         amount = request.data.get('price')
         if amount > 0:
             price = prices[amount / 100]
