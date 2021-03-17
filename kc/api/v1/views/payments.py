@@ -7,7 +7,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-from kc.settings.base import STRIPE_SECRET_KEY
+from kc.settings.base import STRIPE_SECRET_KEY, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from kc.users.models import CustomUser
 
 from kc.api.v1.serializers.payments import ChargeSerializer
@@ -53,6 +53,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
        
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
+
         amount = request.data.get('price')
         if amount > 0:
             price = prices[amount / 100]
@@ -79,9 +80,9 @@ class ChargeListView(StripeView, generics.ListAPIView):
         #     return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.category.append(category)
-        
+
         # If first time checkout, add Free category
-        if (FREE not in user.category):
+        if FREE not in user.category:
             user.category.append(FREE)
        
         user.save(update_fields=["category", "is_member", "mail_list"])
