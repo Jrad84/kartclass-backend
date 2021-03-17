@@ -55,7 +55,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
         user = CustomUser.objects.get(email=request.user)
 
         jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
-        ben = CustomUser.objects.get(email='benmouritz@me.com')
+        ben = CustomUser.objects.get(email='bmouritz@me.com')
         dave = CustomUser.objects.get(email='davidsera@live.com.au')
         jared.s3_id = AWS_ACCESS_KEY_ID
         ben.s3_id = AWS_ACCESS_KEY_ID
