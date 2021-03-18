@@ -49,8 +49,6 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
      "localhost",
      "https://kartclass-django.com",
-     "https://kartclass-nuxt.com",
-     "https://kartclass-nuxt.herokuapp.com/",
      "*.kartclass-django.herokuapp.com",
      "https://www.kartclass.com"
      ]
@@ -65,7 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -155,7 +153,7 @@ JWT_AUTH = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True, 
-    "BLACKLIST_AFTER_ROTATION": True,
+    # "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
 
 }
