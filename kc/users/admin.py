@@ -4,7 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from kc.users.models import CustomUser
 
 
-
 @admin.register(CustomUser)
 class CustomUserAdmin(DjangoUserAdmin):
     """Define admin model for custom User model."""
