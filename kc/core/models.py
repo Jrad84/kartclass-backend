@@ -89,6 +89,20 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class Blog(models.Model):
+    title = models.CharField(max_length=100)
+    body = models.TextField(max_length=9000)
+    author = models.CharField(max_length=100)
+    image_url = models.CharField(max_length=150, null=True, blank=True)
+    seo_tags = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Blog"
+        verbose_name_plural = "Blogs"
+
+    def __str__(self):
+        return self.title
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
