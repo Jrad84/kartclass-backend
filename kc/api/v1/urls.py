@@ -14,6 +14,7 @@ from kc.api.v1.views.me import *
 from kc.api.v1.views.payments import *
 from kc.api.v1.views.mail_list import MailListView
 from kc.api.v1.views.product import *
+from kc.api.v1.views.blog import *
 
 urlpatterns = [
     path('auth/token/', jwt_views.TokenObtainPairView.as_view(),
@@ -40,12 +41,15 @@ urlpatterns = [
          PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
     path('password-reset-complete', SetNewPasswordAPIView.as_view(),
          name='password-reset-complete'),
-     path('mail-list/', MailListView.as_view(), name='mail-list')
+     path('mail-list/', MailListView.as_view(), name='mail-list'),
+     path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
+     # path('/videos/<str:slug>/', VideoListView.as_view(), name="video-detail")
 
 ]
 
 router = routers.DefaultRouter()
 router.register(r'videos', VideoListView)
+router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)

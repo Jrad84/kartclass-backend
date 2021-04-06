@@ -13,9 +13,15 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
     class Meta:
         model = Video   
         fields = '__all__'
+
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'}
+        }
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
+        instance.slug = validated_data.get('slug', instance.slug)
         instance.description = validated_data.get('description', instance.description)
         instance.longdescription = validated_data.get('longdescription', instance.longdescription)
         instance.categories = validated_data.get('category', instance.category)

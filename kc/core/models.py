@@ -2,19 +2,14 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 from django.core.validators import EmailValidator
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
 import uuid
-import stripe
-from django.utils import timezone
 from jsonfield.fields import JSONField
-from kc.utils import CURRENCY_SYMBOLS
 from django.utils.functional import cached_property
-from kc.settings.base import STRIPE_SECRET_KEY, AUTH_USER_MODEL as auth_user
+from kc.settings.base import AUTH_USER_MODEL as auth_user
 import json
-
-
-stripe.api_key = STRIPE_SECRET_KEY
 
 
 class Base(models.Model):
@@ -76,6 +71,7 @@ class Product(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.CharField(max_length=100, null=True)
@@ -86,12 +82,38 @@ class Category(models.Model):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
+    def save(self, *args, **kwargs):
+        value = self.name
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
+class Blog(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
+    body = models.TextField(max_length=9000)
+    author = models.CharField(max_length=100)
+    image_url = models.CharField(max_length=150, null=True, blank=True)
+    seo_tags = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Blog"
+        verbose_name_plural = "Blogs"
+    
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
     longdescription = models.TextField(max_length=9000, null=True)    
     description = models.CharField(max_length=150, null=True)
     category = models.ManyToManyField(Category, related_name='category')
@@ -107,6 +129,11 @@ class Video(models.Model):
         verbose_name = "Video"
         verbose_name_plural = "Videos"
 
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -118,6 +145,7 @@ class Video(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
     description = models.CharField(max_length=150, null=True, blank=True)
     image = models.CharField(max_length=100, null=True)
     document = models.CharField(max_length=500, null=True)
@@ -127,6 +155,11 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Article"
         verbose_name_plural = "Articles"
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

@@ -4,8 +4,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
-# from rest_framework.exceptions import ParseError
-# from rest_framework.parsers import FileUploadParser
 from rest_framework.decorators import action
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.common import exceptions
@@ -28,22 +26,19 @@ class VideoListView(mixins.ListModelMixin,
     category = CategorySerializer
     authentication_classes = []
     permission_classes = [permissions.AllowAny,]
-    
+    lookup_field = 'slug'
     queryset = Video.objects.all()
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('id', 'category__id')
-
+    # filter_backends = (DjangoFilterBackend,)
+    # filter_fields = ('id', 'category__id')
    
     @csrf_exempt
     def patch(self, request):
-        # uid = request.data['id']
-        
+       
         vid_id = request.data['id']
         video = Video.objects.get(id=vid_id)
-        
         serializer = VideoSerializer(video, data=request.data, partial=True)
+
         if serializer.is_valid():
-            # video.likes += 1
             serializer.save()
             return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -51,10 +46,8 @@ class VideoListView(mixins.ListModelMixin,
 
 class VideoLikeView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
-                    
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
-                    # viewsets.GenericViewSet,
                     generics.GenericAPIView
                     ):
     
