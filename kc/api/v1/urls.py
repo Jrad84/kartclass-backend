@@ -43,6 +43,7 @@ urlpatterns = [
          name='password-reset-complete'),
      path('mail-list/', MailListView.as_view(), name='mail-list'),
      path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
+     # path('/videos/<str:slug>/', VideoListView.as_view(), name="video-detail")
 
 ]
 

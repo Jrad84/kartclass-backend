@@ -26,11 +26,10 @@ class VideoListView(mixins.ListModelMixin,
     category = CategorySerializer
     authentication_classes = []
     permission_classes = [permissions.AllowAny,]
-    
+    lookup_field = 'slug'
     queryset = Video.objects.all()
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('id', 'category__id')
-
+    # filter_backends = (DjangoFilterBackend,)
+    # filter_fields = ('id', 'category__id')
    
     @csrf_exempt
     def patch(self, request):
@@ -47,10 +46,8 @@ class VideoListView(mixins.ListModelMixin,
 
 class VideoLikeView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
-                    
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
-                    # viewsets.GenericViewSet,
                     generics.GenericAPIView
                     ):
     
