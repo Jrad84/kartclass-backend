@@ -73,19 +73,10 @@ class ChargeListView(StripeView, generics.ListAPIView):
         success = 'https://www.kartclass.com/payment-success'
         cancel = 'https://www.kartclass.com/cancelled/'
 
-       
-        
-        # # Prevent user from buying category they already own
-        # if (category in user.category):
-        #     return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # user.category.append(category)
-
         # If first time checkout, add Free category
         if FREE not in user.category:
             user.category.append(FREE)
 
-        print("pre-checkout", user.category)
         user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
 
         if amount > 0:
@@ -98,7 +89,6 @@ class ChargeListView(StripeView, generics.ListAPIView):
                             }],
                             success_url = success,
                             cancel_url = cancel
-                            
                 )
 
             if (checkout_session):

@@ -48,10 +48,7 @@ class UserViewSet(
         users = get_user_model().objects.filter(is_active=True).all().values()
         return JsonResponse({"users": list(users)})
 
-    # def post(self, request):
-    #     print(request.data)
-    #     serializer = get_serializer_class(self)
-
+  
 class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
     mixins.UpdateModelMixin, generics.GenericAPIView, CsrfExemptMixin):
 
