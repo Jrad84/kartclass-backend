@@ -56,7 +56,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     )
     
     category = ArrayField(models.IntegerField(), default=list, null=True)
-
+    temp_cat = models.IntegerField(null=True, blank=True)
     s3_key = models.CharField(max_length=100, null=True, blank=True)
     s3_id = models.CharField(max_length=100, null=True, blank=True)
     mail_list = models.BooleanField(

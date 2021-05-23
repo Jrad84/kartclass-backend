@@ -57,7 +57,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
         amount = request.data.get('price')
         if amount > 0:
             price = prices[amount / 100]
-        category = request.data.get('category')
+        user.temp_cat = request.data.get('category')
 
         mail_list = request.data.get('mail_list')
        
@@ -68,10 +68,10 @@ class ChargeListView(StripeView, generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
-        # success = 'http://127.0.0.1:3000/payment-success'
-        # cancel = 'http://127.0.0.1:3000/cancelled/'
-        success = 'https://www.kartclass.com/payment-success'
-        cancel = 'https://www.kartclass.com/cancelled/'
+        success = 'http://127.0.0.1:3000/payment-success'
+        cancel = 'http://127.0.0.1:3000/cancelled/'
+        # success = 'https://www.kartclass.com/payment-success'
+        # cancel = 'https://www.kartclass.com/cancelled/'
 
        
         
@@ -79,13 +79,14 @@ class ChargeListView(StripeView, generics.ListAPIView):
         # if (category in user.category):
         #     return Response({'You already own this category'}, status=status.HTTP_400_BAD_REQUEST)
         
-        user.category.append(category)
+        # user.category.append(category)
 
         # If first time checkout, add Free category
         if FREE not in user.category:
             user.category.append(FREE)
-       
-        user.save(update_fields=["category", "is_member", "mail_list"])
+
+        print("pre-checkout", user.category)
+        user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
 
         if amount > 0:
             checkout_session = stripe.checkout.Session.create(

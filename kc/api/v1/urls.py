@@ -5,7 +5,7 @@ from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
 from kc.api.v1.views.category import CategoryView
-
+from kc.api.v1.views.pay_success import PaymentSuccessView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
 from kc.api.v1.views.article import *
@@ -43,7 +43,7 @@ urlpatterns = [
          name='password-reset-complete'),
      path('mail-list/', MailListView.as_view(), name='mail-list'),
      path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
-     # path('/videos/<str:slug>/', VideoListView.as_view(), name="video-detail")
+     path('pay-success/', PaymentSuccessView.as_view(), name='pay-success')
 
 ]
 
