@@ -121,7 +121,8 @@ class Video(models.Model):
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     video_url = models.CharField(max_length=150, null=True)
-    image_url = models.CharField(max_length=150, null=True, blank=True)
+    image1_url = models.CharField(max_length=150, null=True, blank=True)
+    image2_url = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     document = models.CharField(max_length=500, null=True, blank=True)
 

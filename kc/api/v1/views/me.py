@@ -17,7 +17,7 @@ class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
     def get_serializer_class(self):
         if self.request.method in ("PUT", "PATCH",):
             return MeUpdateSerializer
-        print(self.request.data)
+     
         return MeRetrieveSerializer
 
     def get_object(self):
