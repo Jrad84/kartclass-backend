@@ -68,10 +68,10 @@ class ChargeListView(StripeView, generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
-        success = 'http://127.0.0.1:3000/payment-success'
-        cancel = 'http://127.0.0.1:3000/cancelled/'
-        # success = 'https://www.kartclass.com/payment-success'
-        # cancel = 'https://www.kartclass.com/cancelled/'
+        # success = 'http://127.0.0.1:3000/payment-success'
+        # cancel = 'http://127.0.0.1:3000/cancelled/'
+        success = 'https://www.kartclass.com/payment-success'
+        cancel = 'https://www.kartclass.com/cancelled/'
 
        
         
