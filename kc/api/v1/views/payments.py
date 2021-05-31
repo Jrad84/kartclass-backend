@@ -71,7 +71,7 @@ class ChargeListView(StripeView, generics.ListAPIView):
         # success = 'http://127.0.0.1:3000/payment-success'
         # cancel = 'http://127.0.0.1:3000/cancelled/'
         success = 'https://www.kartclass.com/payment-success'
-        cancel = 'https://www.kartclass.com/cancelled/'
+        cancel = 'https://www.kartclass.com/#'
 
         # If first time checkout, add Free category
         if FREE not in user.category:
