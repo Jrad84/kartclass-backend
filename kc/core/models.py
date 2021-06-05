@@ -55,12 +55,14 @@ class MailList(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
     description = models.TextField(max_length=1000, null=True)
-    image = models.CharField(max_length=100, null=True)
-    amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    quantity = models.IntegerField(null=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    stock_level = models.IntegerField(null=True)
     size = models.CharField(max_length=10)
-
+    image1_url = models.CharField(max_length=150, null=True, blank=True)
+    image2_url = models.CharField(max_length=150, null=True, blank=True)
+    
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
@@ -141,7 +143,6 @@ class Video(models.Model):
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
-
 
 
 class Article(models.Model):

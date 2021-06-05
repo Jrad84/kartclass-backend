@@ -14,10 +14,23 @@ class ProductListView(mixins.ListModelMixin,
                     ):
 
     serializer_class = ProductSerializer
-    # authentication_classes = []
+   
     permission_classes = [permissions.AllowAny,]
     queryset = Product.objects.all()
-    
+
+class PurchaseProductVieww(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    viewsets.GenericViewSet,
+                    ):
+
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticated,]
+    queryset = Product.objects.all()
+
+    def get_object(self, pk):
+        return Product.objects.get(pk=pk)
+
 class ProductUploadView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,
@@ -34,7 +47,7 @@ class ProductUploadView(mixins.ListModelMixin,
         data=request.data
         size = str(data.get("size")[0])
         data['size'] = size
-        serializer = ProductSerializer(data=data)
+        serializer = UpdateProductSerializer(data=data)
         
         if serializer.is_valid():
             serializer.save()
@@ -46,7 +59,7 @@ class ProductUploadView(mixins.ListModelMixin,
       
         product = self.get_object(pk=data['id'])
        
-        serializer = ProductSerializer(video, data=data, partial=True)
+        serializer = UpdateProductSerializer(video, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
