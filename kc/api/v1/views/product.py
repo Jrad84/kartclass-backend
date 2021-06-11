@@ -31,6 +31,9 @@ class PurchaseProductVieww(mixins.ListModelMixin,
     def get_object(self, pk):
         return Product.objects.get(pk=pk)
 
+    def post(self, pk):
+        data = request.data
+        
 class ProductUploadView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,

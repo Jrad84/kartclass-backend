@@ -19,31 +19,31 @@ import decimal
 
 
 stripe.api_key = STRIPE_SECRET_KEY
-FREE = 6 # id of Free Category
+FREE = 6641681006801 # id of Free Category
 
 # dictionary of prices : Stripe price ids
 prices = {100 : 'price_1Hx4ZRD3jYQzOC8F5IXHCnF8', 120 : 'price_1Hx4ZjD3jYQzOC8FKkNLq03l',
         140: 'price_1Hx4a6D3jYQzOC8FmF4KO6MF', 160 : 'price_1Hx4aRD3jYQzOC8FsDbO8j59', 250 : 'price_1Hx4agD3jYQzOC8FEchQeJXj'}
 
-class StripeView(APIView):
-    """ Generic API StripeView """
-    permission_classes = (permissions.IsAuthenticated, )
+# class StripeView(APIView):
+#     """ Generic API StripeView """
+#     permission_classes = (permissions.IsAuthenticated, )
 
-    def get_current_subscription(self):
-        try:
-            return self.request.user.customer.subscription
-        except Subscription.DoesNotExist:
-            return None
+#     def get_current_subscription(self):
+#         try:
+#             return self.request.user.customer.subscription
+#         except Subscription.DoesNotExist:
+#             return None
 
-    def get_customer(self):
-        try:
-            return self.request.user.customer
-        except ObjectDoesNotExist:
-            return Response({'Customer does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+#     def get_customer(self):
+#         try:
+#             return self.request.user.customer
+#         except ObjectDoesNotExist:
+#             return Response({'Customer does not exist'}, status=status.HTTP_400_BAD_REQUEST)
       
 
 
-class ChargeListView(StripeView, generics.ListAPIView):
+class ChargeListView(generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
     queryset = ''
@@ -54,9 +54,9 @@ class ChargeListView(StripeView, generics.ListAPIView):
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
 
-        amount = request.data.get('price')
-        if amount > 0:
-            price = prices[amount / 100]
+        amount = float(request.data.get('price'))
+        # if amount > 0:
+        #     price = prices[amount / 100]
         user.temp_cat = request.data.get('category')
 
         mail_list = request.data.get('mail_list')
@@ -79,20 +79,20 @@ class ChargeListView(StripeView, generics.ListAPIView):
 
         user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
 
-        if amount > 0:
-            checkout_session = stripe.checkout.Session.create(
-                            payment_method_types = ['card'],
-                            mode='payment',
-                            line_items = [{
-                                'price': price,
-                                'quantity': 1
-                            }],
-                            success_url = success,
-                            cancel_url = cancel
-                )
+        # if amount > 0:
+        #     checkout_session = stripe.checkout.Session.create(
+        #                     payment_method_types = ['card'],
+        #                     mode='payment',
+        #                     line_items = [{
+        #                         'price': amount,
+        #                         'quantity': 1
+        #                     }],
+        #                     success_url = success,
+        #                     cancel_url = cancel
+        #         )
 
-            if (checkout_session):
-                return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
+        #     if (checkout_session):
+        #         return Response({'sessionId': checkout_session['id']},status=status.HTTP_202_ACCEPTED)
         
         return Response(status=status.HTTP_202_ACCEPTED)
 
