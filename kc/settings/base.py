@@ -50,7 +50,9 @@ ALLOWED_HOSTS = [
      "localhost",
      "https://kartclass-django.com",
      "*.kartclass-django.herokuapp.com",
-     "https://www.kartclass.com"
+     "https://www.kartclass.com",
+     "https://kart-class.myshopify.com/",
+     "https://kart-class.myshopify.com/admin/api/2021-04/application_charges.json"
      ]
 
 
@@ -70,7 +72,6 @@ INSTALLED_APPS = [
     'kc.users',
     'corsheaders',
     'django_filters',
-    'stripe',
     'storages',
     'drf_yasg',
 ]
@@ -188,6 +189,14 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
+# SHOPIFY
+API_KEY = config('SHOPIFY_KEY')
+SHOPIFY_PASSWORD = config('SHOPIFY_PW')
+SECRET = config('SHOPIFY_SHARED_SECRET')
+SHOPIFY_ACCESS_TOKEN = config('SHOPIFY_ACCESS_TOKEN')
+SHOPIFY_URL = config('SHOPIFY_URL')
+API_VERSION = config('API_VERSION')
+
 # S3
 AWS_ACCESS_KEY_ID = config('S3_ID')
 AWS_SECRET_ACCESS_KEY = config('S3_ACCESS_KEY')
@@ -223,8 +232,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
-# STRIPE 
-STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
 DATABASES = {
