@@ -39,10 +39,16 @@ class ChargeListView(generics.ListAPIView):
         jared.category = []
         ben.category = []
         dave.category = []
+        # jared.save()
+        # ben.save()
+        # dave.save()
+        # print(jared.category[0])
+        jared.categpry.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        ben.categpry.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        dave.categpry.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
         jared.save()
         ben.save()
         dave.save()
-        print(jared.category[0])
         amount = float(request.data.get('price'))
         # if amount > 0:
         #     price = prices[amount / 100]
