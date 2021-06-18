@@ -32,20 +32,20 @@ class ChargeListView(generics.ListAPIView):
         
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
+        jared = CustomUser.objects.get(email='jaredtaback.com')
         ben = CustomUser.objects.get(email='bmouritz@me.com')
         dave = CustomUser.objects.get(email='davidsera@live.com.au')
 
         jared.category = []
         ben.category = []
         dave.category = []
-        # jared.save()
-        # ben.save()
-        # dave.save()
+        jared.save()
+        ben.save()
+        dave.save()
         # print(jared.category[0])
-        jared.categpry.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        ben.categpry.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        dave.categpry.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        # jared.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        # ben.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        # dave.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
         jared.save()
         ben.save()
         dave.save()
