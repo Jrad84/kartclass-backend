@@ -47,8 +47,8 @@ class MailList(models.Model):
         error_messages={"unique": _("A user with that email already exists.")}, 
     )
 
-    class Meta:
-        verbose_name: "Mail list"
+    # class Meta:
+    #     verbose_name: "Mail list"
 
     def __str__(self):
         return self.email
@@ -73,6 +73,7 @@ class Product(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    shopify_id = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(max_length=100, null=True, unique=True)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
