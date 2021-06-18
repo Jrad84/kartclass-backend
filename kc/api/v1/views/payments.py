@@ -14,7 +14,12 @@ from kc.api.v1.serializers.payments import ChargeSerializer
 
 
 
-FREE = 6641681006801 # id of Free Category
+FREE = '6641681006801' # id of Free Category
+BEGINNER = '6641680679121'
+CLUB = '6641680679121'
+NATIONAL = '6641682219217'
+REGIONAL = '6641681531089'
+STATE = '6641681989841'
 
 
 class ChargeListView(generics.ListAPIView):
@@ -24,10 +29,20 @@ class ChargeListView(generics.ListAPIView):
     
         
     def post(self, request):
-        print(request.data)
+        
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
+        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
+        ben = CustomUser.objects.get(email='bmouritz@me.com')
+        dave = CustomUser.objects.get(email='davidsera@live.com.au')
 
+        jared.category = []
+        ben.category = []
+        dave.category = []
+        jared.save()
+        ben.save()
+        dave.save()
+        print(jared.category[0])
         amount = float(request.data.get('price'))
         # if amount > 0:
         #     price = prices[amount / 100]
