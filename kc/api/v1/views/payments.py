@@ -21,7 +21,7 @@ NATIONAL = '6641682219217'
 REGIONAL = '6641681531089'
 STATE = '6641681989841'
 
-
+cats = {FREE, BEGINNER, CLUB, NATIONAL, REGIONAL, STATE}
 class ChargeListView(generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
@@ -36,9 +36,13 @@ class ChargeListView(generics.ListAPIView):
         ben = CustomUser.objects.get(email='bmouritz@me.com')
         dave = CustomUser.objects.get(email='davidsera@live.com.au')
 
-        jared.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        ben.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        dave.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        for c in cats:
+            jared.category.append(c)
+            ben.category.append(c)
+            dave.category.append(c)
+        # jared.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        # ben.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        # dave.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
         jared.save()
         ben.save()
         dave.save()
