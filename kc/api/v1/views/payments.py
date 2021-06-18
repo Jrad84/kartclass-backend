@@ -36,16 +36,14 @@ class ChargeListView(generics.ListAPIView):
         ben = CustomUser.objects.get(email='bmouritz@me.com')
         dave = CustomUser.objects.get(email='davidsera@live.com.au')
 
-        jared.category = []
-        ben.category = []
-        dave.category = []
+        jared.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        ben.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+        dave.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
         jared.save()
         ben.save()
         dave.save()
         # print(jared.category[0])
-        # jared.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        # ben.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        # dave.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
+    
         jared.save()
         ben.save()
         dave.save()
