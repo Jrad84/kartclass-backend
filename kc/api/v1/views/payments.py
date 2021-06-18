@@ -32,7 +32,7 @@ class ChargeListView(generics.ListAPIView):
         
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-        jared = CustomUser.objects.get(email='jaredtaback.com')
+        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
         ben = CustomUser.objects.get(email='bmouritz@me.com')
         dave = CustomUser.objects.get(email='davidsera@live.com.au')
 
