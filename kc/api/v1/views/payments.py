@@ -32,29 +32,11 @@ class ChargeListView(generics.ListAPIView):
         
         serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-        jared = CustomUser.objects.get(email='jaredtaback@gmail.com')
-        ben = CustomUser.objects.get(email='bmouritz@me.com')
-        dave = CustomUser.objects.get(email='davidsera@live.com.au')
-
-        for c in cats:
-            jared.category.append(c)
-            ben.category.append(c)
-            dave.category.append(c)
-        # jared.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        # ben.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        # dave.category.append(FREE, BEGINNER, CLUB, REGIONAL, STATE, NATIONAL)
-        jared.save()
-        ben.save()
-        dave.save()
-        # print(jared.category[0])
     
-        jared.save()
-        ben.save()
-        dave.save()
-        amount = float(request.data.get('price'))
+        # amount = float(request.data.get('price'))
         # if amount > 0:
         #     price = prices[amount / 100]
-        user.temp_cat = request.data.get('category')
+        user.temp_cat = request.data.get('temp')
 
         mail_list = request.data.get('mail_list')
        
@@ -65,34 +47,53 @@ class ChargeListView(generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
-        success = 'http://127.0.0.1:3000/payment-success'
-        # cancel = 'http://127.0.0.1:3000/cancelled/'
-      
+       
         # If first time checkout, add Free category
         if FREE not in user.category:
             user.category.append(FREE)
 
         user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
 
-        if amount > 0:
-            try:
-                session = shopify.Session(SHOPIFY_URL, API_VERSION, SHOPIFY_PASSWORD)
+        # if amount > 0:
+        #     try:
+        #         session = shopify.Session(SHOPIFY_URL, API_VERSION, SHOPIFY_PASSWORD)
                 
-                shopify.ShopifyResource.activate_session(session)
-                shopify.ApplicationCharge.create({
-                    'name': 'Kart Class',
-                    'price': amount,
-                    'test': True,
-                    'return_url': success
+        #         shopify.ShopifyResource.activate_session(session)
+        #         shopify.ApplicationCharge.create({
+        #             'name': 'Kart Class',
+        #             'price': amount,
+        #             'test': True,
+        #             'return_url': success
 
-                })
+        #         })
                 
-                shopify.ShopifyResource.clear_session()
-                return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
-            except:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #         shopify.ShopifyResource.clear_session()
+        #         return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+        #     except:
+        #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
      
-        print('line 70')
+        # print('line 70')
         return Response(status=status.HTTP_202_ACCEPTED)
 
+class PaymentSuccessView(generics.ListAPIView):
+    """ List customer charges """
+    serializer_class = ChargeSerializer
+    queryset = ''
+    
+        
+    def post(self, request):
+        
+        serializer = self.serializer_class(data=request.data)
+        user = CustomUser.objects.get(email=request.user)
+    
+       
+        user.category.append(user.temp_cat)
 
+       
+
+        user.save(update_fields=["category"])
+
+      
+        return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+  
+        return Response(status=status.HTTP_202_ACCEPTED)
