@@ -1,8 +1,3 @@
-# from django.shortcuts import get_object_or_404
-# from django.core.exceptions import ObjectDoesNotExist
-# from django.contrib.auth import get_user_model
-# from django.utils.encoding import smart_str
-# from rest_framework import mixins, viewsets
 from rest_framework import status, generics
 from rest_framework.response import Response
 from kc.users.models import CustomUser
@@ -10,14 +5,8 @@ from kc.api.v1.serializers.payments import ChargeSerializer
 
 
 
-FREE = 1 # id of Free Category
-BEGINNER = 2
-CLUB = 3
-NATIONAL = 6
-REGIONAL = 4
-STATE = 5
+FREE = 6 # id of Free Category
 
-cats = {FREE, BEGINNER, CLUB, NATIONAL, REGIONAL, STATE}
 class ChargeListView(generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
@@ -25,12 +14,7 @@ class ChargeListView(generics.ListAPIView):
     
     def post(self, request):
         
-        # serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-    
-        # amount = float(request.data.get('price'))
-        # if amount > 0:
-        #     price = prices[amount / 100]
         user.temp_cat = request.data.get('temp')
 
         mail_list = request.data.get('mail_list')
@@ -57,10 +41,10 @@ class PaymentSuccessView(generics.ListAPIView):
     queryset = ''
 
     def post(self, request):
-        
-        # serializer = self.serializer_class(data=request.data)
+
         user = CustomUser.objects.get(email=request.user)
-        user.category.append(user.temp_cat)
+        if user.temp_cat not in user.category:
+            user.category.append(user.temp_cat)
         user.temp_cat = None
         user.save(update_fields=["category", "temp_cat"])
       
