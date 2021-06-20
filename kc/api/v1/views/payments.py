@@ -1,25 +1,21 @@
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import get_user_model
-from django.utils.encoding import smart_str
-from rest_framework import mixins, viewsets
+# from django.shortcuts import get_object_or_404
+# from django.core.exceptions import ObjectDoesNotExist
+# from django.contrib.auth import get_user_model
+# from django.utils.encoding import smart_str
+# from rest_framework import mixins, viewsets
 from rest_framework import status, generics
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions
-from kc.settings.base import API_VERSION, SHOPIFY_URL, SHOPIFY_PASSWORD
 from kc.users.models import CustomUser
-import shopify
 from kc.api.v1.serializers.payments import ChargeSerializer
 
 
 
-FREE = '6641681006801' # id of Free Category
-BEGINNER = '6641680679121'
-CLUB = '6641680679121'
-NATIONAL = '6641682219217'
-REGIONAL = '6641681531089'
-STATE = '6641681989841'
+FREE = 1 # id of Free Category
+BEGINNER = 2
+CLUB = 3
+NATIONAL = 6
+REGIONAL = 4
+STATE = 5
 
 cats = {FREE, BEGINNER, CLUB, NATIONAL, REGIONAL, STATE}
 class ChargeListView(generics.ListAPIView):
@@ -27,10 +23,9 @@ class ChargeListView(generics.ListAPIView):
     serializer_class = ChargeSerializer
     queryset = ''
     
-        
     def post(self, request):
         
-        serializer = self.serializer_class(data=request.data)
+        # serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
     
         # amount = float(request.data.get('price'))
@@ -54,46 +49,20 @@ class ChargeListView(generics.ListAPIView):
 
         user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
 
-        # if amount > 0:
-        #     try:
-        #         session = shopify.Session(SHOPIFY_URL, API_VERSION, SHOPIFY_PASSWORD)
-                
-        #         shopify.ShopifyResource.activate_session(session)
-        #         shopify.ApplicationCharge.create({
-        #             'name': 'Kart Class',
-        #             'price': amount,
-        #             'test': True,
-        #             'return_url': success
-
-        #         })
-                
-        #         shopify.ShopifyResource.clear_session()
-        #         return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
-        #     except:
-        #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-     
-        # print('line 70')
         return Response(status=status.HTTP_202_ACCEPTED)
 
 class PaymentSuccessView(generics.ListAPIView):
-    """ List customer charges """
+    """ Add category to user model after successful payment """
     serializer_class = ChargeSerializer
     queryset = ''
-    
-        
+
     def post(self, request):
         
-        serializer = self.serializer_class(data=request.data)
+        # serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
-    
-       
         user.category.append(user.temp_cat)
-
-       
-
-        user.save(update_fields=["category"])
-
+        user.temp_cat = None
+        user.save(update_fields=["category", "temp_cat"])
       
         return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
   
-        return Response(status=status.HTTP_202_ACCEPTED)

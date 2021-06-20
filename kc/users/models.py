@@ -54,8 +54,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         help_text=_("Designates whether a user is a paid member or not")
     )
     
-    category = ArrayField(models.CharField(max_length=200), default=list, null=True)
-    temp_cat = models.CharField(max_length=200, null=True, blank=True)
+    category = ArrayField(models.IntegerField(), default=list, null=True)
+    temp_cat = models.IntegerField(null=True, blank=True)
     s3_key = models.CharField(max_length=100, null=True, blank=True)
     s3_id = models.CharField(max_length=100, null=True, blank=True)
     mail_list = models.BooleanField(

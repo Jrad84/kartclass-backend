@@ -1,7 +1,6 @@
-from rest_framework import viewsets, generics, filters, mixins, status
+from rest_framework import viewsets, generics, mixins, status
 from rest_framework import permissions
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser
 from kc.api.v1.serializers.blog import BlogSerializer
 from kc.core.models import Blog
 
@@ -11,7 +10,6 @@ class BlogListView(mixins.ListModelMixin,
                     ):
 
     serializer_class = BlogSerializer
-    # authentication_classes = []
     permission_classes = [permissions.AllowAny,]
     
     queryset = Blog.objects.all()
