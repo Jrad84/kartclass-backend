@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -154,7 +154,7 @@ JWT_AUTH = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=9999),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=100),
     "ROTATE_REFRESH_TOKENS": True, 
-    # "BLACKLIST_AFTER_ROTATION": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
 
 }
