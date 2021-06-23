@@ -36,7 +36,8 @@ class UserViewSet(
     """
 
     queryset = get_user_model().objects.filter(is_active=True).all()
-    permission_classes = (UserPermission,)
+    permission_classes = (permissions.AllowAny,)
+    # permission_classes = (UserPermission,)
 
     def get_serializer_class(self):
         if self.action == "create":
