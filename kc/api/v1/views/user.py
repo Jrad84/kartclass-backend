@@ -36,8 +36,8 @@ class UserViewSet(
     """
 
     queryset = get_user_model().objects.filter(is_active=True).all()
-    permission_classes = (permissions.AllowAny,)
-    # permission_classes = (UserPermission,)
+    # permission_classes = (permissions.AllowAny,)
+    permission_classes = (UserPermission,)
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -177,9 +177,9 @@ class LogoutView(generics.GenericAPIView):
     @csrf_exempt
     def post(self, request, *args):
         sz = self.get_serializer(data=request.data)
-        print(sz)
         sz.is_valid(raise_exception=True)
         sz.save()
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
 
  

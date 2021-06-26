@@ -23,7 +23,7 @@ urlpatterns = [
          name='auth-token-refresh'),
     path('auth/token/verify', jwt_views.TokenVerifyView.as_view(),
           name='auth-token-verify'),
-    path('auth/logout/', LogoutView, name='logout'),
+    path('auth/logout/', LogoutView.as_view(), name='logout'),
     path('me/', MeView.as_view(), name='me'),   
     path('edit-password/', ChangePasswordView.as_view(), name='edit-password'),
     path('edit-email/', ChangeEmailView.as_view(), name='edit-email'),
