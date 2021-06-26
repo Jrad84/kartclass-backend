@@ -6,7 +6,7 @@ admin.site.register(Testimonial)
 admin.site.register(Category)
 admin.site.register(Article)
 admin.site.register(Blog)
-admin.site.register(ShopifyCategory)
+
 
 
 

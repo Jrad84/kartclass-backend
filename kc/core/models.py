@@ -75,6 +75,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     shopify_id = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(max_length=100, null=True, unique=True)
+    sort = models.IntegerField(null=True, blank=True)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.CharField(max_length=100, null=True)
@@ -135,11 +136,7 @@ class Video(models.Model):
         verbose_name = "Video"
         verbose_name_plural = "Videos"
 
-    # def save(self, *args, **kwargs):
-    #     value = self.title
-    #     self.slug = slugify(value, allow_unicode=True)
-    #     super().save(*args, **kwargs)
-
+   
     def __str__(self):
         return self.title
 
@@ -147,16 +144,6 @@ class Video(models.Model):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
-class ShopifyCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
-    shopify_id = models.CharField(max_length=100, null=True, blank=True)
-
-    class Meta:
-        verbose_name = "Shopify"
-
-    def __str__(self):
-        return self.shopify_id
 
 class Article(models.Model):
     title = models.CharField(max_length=100)

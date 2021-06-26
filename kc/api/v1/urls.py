@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
-from kc.api.v1.views.category import CategoryView, ShopifyCategoryView
+from kc.api.v1.views.category import CategoryView
 from kc.api.v1.views.pay_success import PaymentSuccessView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
@@ -52,7 +52,6 @@ router.register(r'videos', VideoListView)
 router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
-router.register(r'shopify', ShopifyCategoryView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'accounts', UserViewSet)
