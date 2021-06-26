@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.serializers.me import *
 from kc.users.models import CustomUser
@@ -12,12 +12,12 @@ class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
     TODO: Add delete.
     """
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, AllowAny, )
     
     def get_serializer_class(self):
         if self.request.method in ("PUT", "PATCH",):
             return MeUpdateSerializer
-     
+        
         return MeRetrieveSerializer
 
     def get_object(self):
