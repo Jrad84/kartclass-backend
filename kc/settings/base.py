@@ -45,12 +45,15 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 ALLOWED_HOSTS = [
+    "139.180.181.188",
+    "139.180.169.104",
     "0.0.0.0",
     "127.0.0.1",
      "localhost",
      "https://kartclass-django.com",
      "*.kartclass-django.herokuapp.com",
-     "https://www.kartclass.com",
+     "https://www.kartclass.com/",
+     "https://www.kartclass.com/login"
      "https://kart-class.myshopify.com/",
      "https://kart-class.myshopify.com/admin/api/2021-04/application_charges.json"
      ]
