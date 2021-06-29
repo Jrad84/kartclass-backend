@@ -1,12 +1,12 @@
-from django.contrib import admin
-from django.urls import path, include
-from django.views.generic import TemplateView
+
+from django.urls import path
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
 from kc.api.v1.views.category import CategoryView
 from kc.api.v1.views.pay_success import PaymentSuccessView
 from rest_framework_simplejwt import views as jwt_views
+from kc.api.v1.views.token import TokenObtainPairView
 from kc.api.v1.views.user import *
 from kc.api.v1.views.article import *
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +17,7 @@ from kc.api.v1.views.product import *
 from kc.api.v1.views.blog import *
 
 urlpatterns = [
-    path('auth/token/', jwt_views.TokenObtainPairView.as_view(),
+    path('auth/token/', TokenObtainPairView.as_view(),
          name='auth-token-obtain-pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='auth-token-refresh'),
