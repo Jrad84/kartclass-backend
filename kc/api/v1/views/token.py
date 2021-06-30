@@ -10,6 +10,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['fname'] = user.fname
         token['lname'] = user.lname
         token['email'] = user.email
+        token['category'] = user.category
         # ...
 
         return token

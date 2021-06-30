@@ -77,6 +77,8 @@ INSTALLED_APPS = [
     'django_filters',
     'storages',
     'drf_yasg',
+    'rest_framework.authtoken',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -144,7 +146,7 @@ REST_FRAMEWORK = {
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
-       
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
          'rest_framework.authentication.SessionAuthentication',
     ),
@@ -162,6 +164,22 @@ JWT_AUTH = {
 
 }
 
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+DJOSER = {
+    "USER_ID_FIELD": "id",
+    "LOGIN_FIELD": "email",
+    "TOKEN_MODEL": None,
+   
+     'SERIALIZERS': {
+         'user_create': 'kc.api.v1.serializers.user.UserCreateSerializer',
+         'user': 'kc.api.v1.serializers.user.UserRetrieveSerializer',
+         'current_user': 'kc.api.v1.serializers.me.MeRetrieveSerializer',
+         'token': 'kc.api.v1.views.token.MyTokenObtainPairSerializer'
+    }
+}
 # EMAIL
 
 EMAIL_USE_TLS = True

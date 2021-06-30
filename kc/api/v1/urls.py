@@ -1,5 +1,5 @@
 
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
@@ -17,6 +17,9 @@ from kc.api.v1.views.product import *
 from kc.api.v1.views.blog import *
 
 urlpatterns = [
+     path('auth/', include('djoser.urls')),
+     path('auth/', include('djoser.urls.authtoken')),
+     path('auth/', include('djoser.urls.jwt')),
     path('auth/token/', TokenObtainPairView.as_view(),
          name='auth-token-obtain-pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
