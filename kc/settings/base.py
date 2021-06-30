@@ -41,12 +41,9 @@ ROOT_URLCONF = 'kc.urls'
 SECRET_KEY = config('SECRET_KEY')
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
 ALLOWED_HOSTS = [
-    "139.180.181.188",
-    "139.180.169.104",
+    # "139.180.181.188",
+    # "139.180.169.104",
     "0.0.0.0",
     "127.0.0.1",
      "localhost",
@@ -55,7 +52,7 @@ ALLOWED_HOSTS = [
      "https://www.kartclass.com/",
      "https://www.kartclass.com/login"
      "https://kart-class.myshopify.com/",
-     "https://kart-class.myshopify.com/admin/api/2021-04/application_charges.json"
+    #  "https://kart-class.myshopify.com/admin/api/2021-04/application_charges.json"
      ]
 
 
@@ -68,7 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'kc.core',
     'kc.api',
