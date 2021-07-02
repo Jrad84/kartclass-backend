@@ -5,7 +5,7 @@ from rest_framework import permissions
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
    
     authentication_classes = []
-    permission_classes = [permissions.AllowAny,]
+   
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -20,4 +20,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class MyTokenObtainPairView(TokenObtainPairView):
+    permission_classes = (permissions.AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
