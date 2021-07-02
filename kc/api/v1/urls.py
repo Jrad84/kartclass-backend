@@ -6,7 +6,7 @@ from kc.api.v1.views.video import *
 from kc.api.v1.views.category import CategoryView
 from kc.api.v1.views.pay_success import PaymentSuccessView
 from rest_framework_simplejwt import views as jwt_views
-from kc.api.v1.views.token import TokenObtainPairView
+from kc.api.v1.views.token import MyTokenObtainPairView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
 from kc.api.v1.views.article import *
@@ -21,7 +21,7 @@ urlpatterns = [
      # path('auth/', include('djoser.urls')),
      # path('auth/', include('djoser.urls.authtoken')),
      # path('auth/', include('djoser.urls.jwt')),
-   path('auth/token/', csrf_exempt(TokenObtainPairView.as_view()),
+   path('auth/token/', csrf_exempt(MyTokenObtainPairView.as_view()),
          name='auth-token-obtain-pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='auth-token-refresh'),
