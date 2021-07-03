@@ -29,7 +29,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['access'] = str(refresh.access_token)
         user = CustomUser.objects.get(email=self.user.email)
         print(user)
-        user.token = data['access']
+        user.token = str(refresh.access_token)
         user.save()
         # self.user.token = data['access']
         # Add extra responses here
@@ -38,13 +38,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 class MyTokenObtainPairView(TokenObtainPairView):
-
-    # authentication_classes = [JWTAuthentication, ]
+    print('token view here')
     serializer_class = MyTokenObtainPairSerializer
-    permission_classes = (permissions.AllowAny,)
-   
-   
-    
+    print(serializer_class)
 
     # def post(self, request):
     #     print(request.data)
