@@ -58,7 +58,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     temp_cat = models.IntegerField(null=True, blank=True)
     s3_key = models.CharField(max_length=100, null=True, blank=True)
     s3_id = models.CharField(max_length=100, null=True, blank=True)
-    token = models.CharField(max_length=200, blank=True, null=True)
+    token = models.CharField(max_length=400, blank=True, null=True)
     mail_list = models.BooleanField(
                 default=False, 
                 help_text=_("Designates whether user has signed up to mailing list")

@@ -2,47 +2,68 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions, status
 from rest_framework.response import Response
+from kc.users.models import CustomUser
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-   
-    authentication_classes = []
    
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
         # Add custom claims
-        token['fname'] = user.fname
-        token['lname'] = user.lname
-        token['email'] = user.email
-        token['category'] = user.category
+        # token['fname'] = user.fname
+        # token['lname'] = user.lname
+        # token['email'] = user.email
+        # token['category'] = user.category
         # ...
 
         return token
     
     def validate(self, attrs):
         data = super().validate(attrs)
-        # print(data)
+        print(data)
         refresh = self.get_token(self.user)
         
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
-
+        user = CustomUser.objects.get(email=self.user.email)
+        print(user)
+        user.token = data['access']
+        user.save()
+        # self.user.token = data['access']
         # Add extra responses here
-        data['email'] = self.user.email
+        # data['email'] = self.user.email
         
         return data
 
 class MyTokenObtainPairView(TokenObtainPairView):
-   
+
     serializer_class = MyTokenObtainPairSerializer
+    permission_classes = (permissions.AllowAny,)
+   
+   
     
 
-    def post(self, request):
-        permission_classes = (permissions.AllowAny,)
-        serializer_class = MyTokenObtainPairSerializer
-        # serializer = self.serializer_class(data=request.data)
+    # def post(self, request):
+    #     print(request.data)
+    #     user = CustomUser.objects.get(email=request.data['email'])
+    #     print(user.token)
+        
+    #     return Response({'token': user.token}, status=status.HTTP_200_OK )
+
+        # add token to user model and return token in response so it can be added in request header to /me
+
+       
         # print(serializer)
+       
+        # if serializer.is_valid():
+        #     # user = CustomUser.objects.get(email=request.data['email'])
+        #     # print(user)
+        #     # user.token = request.data['email']
+        #     # user.save(update_fields="token")
+        #     return Response({'success': True, 'message': 'ok'}, status=status.HTTP_200_OK)
+        # # serializer = self.serializer_class(data=request.data)
+        # # print(serializer)
 
         # if serializer.is_valid():
         #     return Response({'success': True, 'message': 'ok'}, status=status.HTTP_200_OK)
