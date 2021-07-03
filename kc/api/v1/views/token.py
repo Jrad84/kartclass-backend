@@ -39,7 +39,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
 
-    authentication_classes = [JWTAuthentication, ]
+    # authentication_classes = [JWTAuthentication, ]
     serializer_class = MyTokenObtainPairSerializer
     permission_classes = (permissions.AllowAny,)
    
