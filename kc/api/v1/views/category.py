@@ -12,5 +12,5 @@ class CategoryView(viewsets.GenericViewSet,
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = [permissions.AllowAny,]
-    authentication_classes = []
+    
 

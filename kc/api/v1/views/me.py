@@ -12,7 +12,7 @@ class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
     TODO: Add delete.
     """
 
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated, )
     
     def get_serializer_class(self):
         if self.request.method in ("PUT", "PATCH",):

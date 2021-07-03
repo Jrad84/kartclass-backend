@@ -1,5 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from kc.users.models import CustomUser
@@ -38,6 +39,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
 
+    authentication_classes = [JWTAuthentication, ]
     serializer_class = MyTokenObtainPairSerializer
     permission_classes = (permissions.AllowAny,)
    

@@ -52,7 +52,7 @@ class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
     mixins.UpdateModelMixin, generics.GenericAPIView, CsrfExemptMixin):
 
     serializer = UserUpdateSerializer
-    authentication_classes = []
+    # authentication_classes = []
     permission_classes = (permissions.IsAuthenticated,)
 
     @csrf_exempt
