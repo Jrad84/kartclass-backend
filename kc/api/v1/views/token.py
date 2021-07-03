@@ -34,16 +34,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    permission_classes = (permissions.AllowAny,)
+   
     serializer_class = MyTokenObtainPairSerializer
     
 
-    # def post(self, request):
-        
-    #     serializer = self.serializer_class(data=request.data)
-    #     print(serializer)
+    def post(self, request):
+        permission_classes = (permissions.AllowAny,)
+        serializer_class = MyTokenObtainPairSerializer
+        # serializer = self.serializer_class(data=request.data)
+        # print(serializer)
 
-    #     if serializer.is_valid():
-    #         return Response({'success': True, 'message': 'ok'}, status=status.HTTP_200_OK)
-    #     return Response({'success': False, 'message': 'fuck no'}, status=status.HTTP_400_BAD_REQUEST)
+        # if serializer.is_valid():
+        #     return Response({'success': True, 'message': 'ok'}, status=status.HTTP_200_OK)
+        # return Response({'success': False, 'message': 'fuck no'}, status=status.HTTP_400_BAD_REQUEST)
     
