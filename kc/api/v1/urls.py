@@ -18,6 +18,7 @@ from kc.api.v1.views.product import *
 from kc.api.v1.views.blog import *
 
 urlpatterns = [
+    
      # path('auth/', include('djoser.urls')),
      # path('auth/', include('djoser.urls.authtoken')),
      # path('auth/', include('djoser.urls.jwt')),
