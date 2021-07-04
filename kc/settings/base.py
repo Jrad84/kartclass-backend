@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework.authtoken',
     # 'rest_auth',
-    'djoser',
+    # 'djoser',
 ]
 
 MIDDLEWARE = [
@@ -166,18 +166,18 @@ JWT_AUTH = {
 #    'AUTH_HEADER_TYPES': ('Bearer',),
 # }
 
-DJOSER = {
-    "USER_ID_FIELD": "id",
-    "LOGIN_FIELD": "email",
-    "TOKEN_MODEL": None,
+# DJOSER = {
+#     "USER_ID_FIELD": "id",
+#     "LOGIN_FIELD": "email",
+#     "TOKEN_MODEL": None,
    
-     'SERIALIZERS': {
-         'user_create': 'kc.api.v1.serializers.user.UserCreateSerializer',
-         'user': 'kc.api.v1.serializers.user.UserRetrieveSerializer',
-         'current_user': 'kc.api.v1.serializers.me.MeRetrieveSerializer',
-         'token': 'kc.api.v1.views.token.MyTokenObtainPairSerializer'
-    }
-}
+#      'SERIALIZERS': {
+#          'user_create': 'kc.api.v1.serializers.user.UserCreateSerializer',
+#          'user': 'kc.api.v1.serializers.user.UserRetrieveSerializer',
+#          'current_user': 'kc.api.v1.serializers.me.MeRetrieveSerializer',
+#          'token': 'kc.api.v1.views.token.MyTokenObtainPairSerializer'
+#     }
+# }
 # EMAIL
 
 EMAIL_USE_TLS = True
