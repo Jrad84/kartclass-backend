@@ -5,12 +5,7 @@ from kc.users.models import CustomUser
 
 class MeRetrieveSerializer(serializers.ModelSerializer):
     """Retrieve serializer for authenticated user (`Me`).
-    Contains fields:
-    - `uuid`
-    - `email`
-    - `name`
-    - `is_staff`
-    - `date_created`
+   
     """
 
     class Meta:
@@ -33,7 +28,7 @@ class MeUpdateSerializer(serializers.ModelSerializer):
             "password",
             "category",
             "is_member",
-           
+            "mail_list",
         )
 
 

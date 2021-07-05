@@ -6,8 +6,6 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import serializers
-from kc.core.models import Category
-from kc.api.v1.serializers.category import CategorySerializer
 from kc.users.models import CustomUser
 
 
@@ -22,17 +20,7 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
         model = get_user_model()
         # category = CategorySerializer()
         fields = (
-            "id",
-            "fname",
-            "lname",
-            "is_member",
-            "is_active",
-            "category",
-            "mail_list",
-            "s3_key",
-            "s3_id",
-            "date_created",
-            "last_login"
+           "__all__"
            
         )
 
@@ -59,7 +47,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "lname",
             "email",
             "password",
-            "mail_list"
+            "mail_list",
+           
         )
 
 

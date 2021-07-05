@@ -1,11 +1,12 @@
-from django.contrib import admin
+
 from django.urls import path, include
-from django.views.generic import TemplateView
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
 from kc.api.v1.views.category import CategoryView
 from kc.api.v1.views.pay_success import PaymentSuccessView
+from rest_framework_simplejwt import views as jwt_views
+from kc.api.v1.views.token import MyTokenObtainPairView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.user import *
 from kc.api.v1.views.article import *
@@ -17,13 +18,17 @@ from kc.api.v1.views.product import *
 from kc.api.v1.views.blog import *
 
 urlpatterns = [
-    path('auth/token/', jwt_views.TokenObtainPairView.as_view(),
+    
+     # path('auth/', include('djoser.urls')),
+     # path('auth/', include('djoser.urls.authtoken')),
+     # path('auth/', include('djoser.urls.jwt')),
+   path('auth/token/', csrf_exempt(MyTokenObtainPairView.as_view()),
          name='auth-token-obtain-pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='auth-token-refresh'),
     path('auth/token/verify', jwt_views.TokenVerifyView.as_view(),
           name='auth-token-verify'),
-    path('auth/logout/', LogoutView, name='logout'),
+    path('auth/logout/', LogoutView.as_view(), name='logout'),
     path('me/', MeView.as_view(), name='me'),   
     path('edit-password/', ChangePasswordView.as_view(), name='edit-password'),
     path('edit-email/', ChangeEmailView.as_view(), name='edit-email'),
@@ -51,6 +56,7 @@ router = routers.DefaultRouter()
 router.register(r'videos', VideoListView)
 router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
+router.register(r'categories', CategoryView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
 router.register(r'accounts', UserViewSet)

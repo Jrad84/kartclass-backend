@@ -1,12 +1,11 @@
 from rest_framework import serializers
 from kc.api.v1.serializers.category import CategorySerializer
-# from kc.api.v1.serializers.tag import TagSerializer
 from kc.core.models import Video, Category
 from django.contrib.postgres.fields import ArrayField
 from drf_writable_nested.serializers import WritableNestedModelSerializer, NestedCreateMixin
 
 class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
-    # category = CategorySerializer(many=True)
+   
     category = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Category.objects.all())
     
@@ -22,6 +21,8 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
         instance.slug = validated_data.get('slug', instance.slug)
+        instance.category = validated_data.get('category', instance.category)
+        # instance.shopify_id = validated_data.get.get('shopify_id', instance.shopify_id)
         instance.description = validated_data.get('description', instance.description)
         instance.longdescription = validated_data.get('longdescription', instance.longdescription)
         instance.categories = validated_data.get('category', instance.category)

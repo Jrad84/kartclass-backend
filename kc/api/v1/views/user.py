@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import views, mixins, viewsets, filters, generics, status, permissions
-# from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import views, mixins, viewsets, generics, status, permissions
 from kc.api.v1.permissions.user import UserPermission
 from django.http import JsonResponse
 from django.urls import reverse
@@ -8,13 +7,12 @@ from kc.api.v1.serializers.user import *
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.contrib.sites.shortcuts import get_current_site
-# from kc.api.v1.serializers.category import CategorySerializer
 from rest_framework.response import Response
 from django.http import HttpResponsePermanentRedirect
 from braces.views import CsrfExemptMixin
 from django.views.decorators.csrf import csrf_exempt
 from kc.utils import send_email
-# from decouple import config
+
 
 
 
@@ -36,6 +34,7 @@ class UserViewSet(
     """
 
     queryset = get_user_model().objects.filter(is_active=True).all()
+    # permission_classes = (permissions.AllowAny,)
     permission_classes = (UserPermission,)
 
     def get_serializer_class(self):
@@ -53,7 +52,7 @@ class UpdateUserView(mixins.RetrieveModelMixin, viewsets.GenericViewSet,
     mixins.UpdateModelMixin, generics.GenericAPIView, CsrfExemptMixin):
 
     serializer = UserUpdateSerializer
-    authentication_classes = []
+    # authentication_classes = []
     permission_classes = (permissions.IsAuthenticated,)
 
     @csrf_exempt
@@ -176,8 +175,13 @@ class LogoutView(generics.GenericAPIView):
     @csrf_exempt
     def post(self, request, *args):
         sz = self.get_serializer(data=request.data)
+        print(sz)
+        
         sz.is_valid(raise_exception=True)
+        refresh = sz['refresh']['0']
+        sz.refresh = str(refresh)
         sz.save()
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
 
  

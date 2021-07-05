@@ -47,20 +47,22 @@ class MailList(models.Model):
         error_messages={"unique": _("A user with that email already exists.")}, 
     )
 
-    class Meta:
-        verbose_name: "Mail list"
+    # class Meta:
+    #     verbose_name: "Mail list"
 
     def __str__(self):
         return self.email
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
     description = models.TextField(max_length=1000, null=True)
-    image = models.CharField(max_length=100, null=True)
-    amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    quantity = models.IntegerField(null=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    stock_level = models.IntegerField(null=True)
     size = models.CharField(max_length=10)
-
+    image1_url = models.CharField(max_length=150, null=True, blank=True)
+    image2_url = models.CharField(max_length=150, null=True, blank=True)
+    
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
@@ -71,7 +73,9 @@ class Product(models.Model):
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    shopify_id = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(max_length=100, null=True, unique=True)
+    sort = models.IntegerField(null=True, blank=True)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.CharField(max_length=100, null=True)
@@ -111,6 +115,8 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
+
+
 class Video(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, null=True, unique=True)
@@ -130,18 +136,13 @@ class Video(models.Model):
         verbose_name = "Video"
         verbose_name_plural = "Videos"
 
-    def save(self, *args, **kwargs):
-        value = self.title
-        self.slug = slugify(value, allow_unicode=True)
-        super().save(*args, **kwargs)
-
+   
     def __str__(self):
         return self.title
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
-
 
 
 class Article(models.Model):

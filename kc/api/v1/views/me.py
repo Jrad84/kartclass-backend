@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.serializers.me import *
 from kc.users.models import CustomUser
@@ -12,12 +12,12 @@ class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
     TODO: Add delete.
     """
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, )
     
     def get_serializer_class(self):
         if self.request.method in ("PUT", "PATCH",):
             return MeUpdateSerializer
-     
+        
         return MeRetrieveSerializer
 
     def get_object(self):
@@ -82,10 +82,11 @@ class ChangePasswordView(generics.UpdateAPIView):
         def patch(self, request, *args, **kwargs):
             self.object = self.get_object()
             serializer = self.get_serializer(data=request.data, partial=True)
-           
+            print(serializer)
             if serializer.is_valid():
                 # Check old password
                 if not self.object.check_password(serializer.data.get("oldPassword")):
+                    print('wrong password')
                     return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
                 # set_password also hashes the password that the user will get
                 self.object.set_password(serializer.data.get("newPassword"))

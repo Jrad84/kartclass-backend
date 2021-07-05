@@ -41,16 +41,18 @@ ROOT_URLCONF = 'kc.urls'
 SECRET_KEY = config('SECRET_KEY')
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
 ALLOWED_HOSTS = [
+    # "139.180.181.188",
+    # "139.180.169.104",
     "0.0.0.0",
     "127.0.0.1",
      "localhost",
      "https://kartclass-django.com",
      "*.kartclass-django.herokuapp.com",
-     "https://www.kartclass.com"
+     "https://www.kartclass.com/",
+     "https://www.kartclass.com/login"
+     "https://kart-class.myshopify.com/",
+    #  "https://kart-class.myshopify.com/admin/api/2021-04/application_charges.json"
      ]
 
 
@@ -70,9 +72,11 @@ INSTALLED_APPS = [
     'kc.users',
     'corsheaders',
     'django_filters',
-    'stripe',
     'storages',
     'drf_yasg',
+    'rest_framework.authtoken',
+    # 'rest_auth',
+    # 'djoser',
 ]
 
 MIDDLEWARE = [
@@ -112,7 +116,6 @@ WSGI_APPLICATION = 'kc.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -136,13 +139,14 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': ( 
-       
-        'rest_framework.permissions.IsAuthenticated',
+       'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticated',
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
-       
+        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        #  'rest_framework.authentication.SessionAuthentication',
     ),
 
 }
@@ -151,13 +155,29 @@ REST_FRAMEWORK = {
 # Change token expiry after launch
 JWT_AUTH = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=9999),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=100),
     "ROTATE_REFRESH_TOKENS": True, 
     # "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
 
 }
 
+# SIMPLE_JWT = {
+#    'AUTH_HEADER_TYPES': ('Bearer',),
+# }
+
+# DJOSER = {
+#     "USER_ID_FIELD": "id",
+#     "LOGIN_FIELD": "email",
+#     "TOKEN_MODEL": None,
+   
+#      'SERIALIZERS': {
+#          'user_create': 'kc.api.v1.serializers.user.UserCreateSerializer',
+#          'user': 'kc.api.v1.serializers.user.UserRetrieveSerializer',
+#          'current_user': 'kc.api.v1.serializers.me.MeRetrieveSerializer',
+#          'token': 'kc.api.v1.views.token.MyTokenObtainPairSerializer'
+#     }
+# }
 # EMAIL
 
 EMAIL_USE_TLS = True
@@ -188,6 +208,14 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
+# SHOPIFY
+API_KEY = config('SHOPIFY_KEY')
+SHOPIFY_PASSWORD = config('SHOPIFY_PW')
+SECRET = config('SHOPIFY_SHARED_SECRET')
+SHOPIFY_ACCESS_TOKEN = config('SHOPIFY_ACCESS_TOKEN')
+SHOPIFY_URL = config('SHOPIFY_URL')
+API_VERSION = config('API_VERSION')
+
 # S3
 AWS_ACCESS_KEY_ID = config('S3_ID')
 AWS_SECRET_ACCESS_KEY = config('S3_ACCESS_KEY')
@@ -208,6 +236,38 @@ PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'kc.storage_backends.PublicMediaStorage'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        }
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'testlogger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -223,8 +283,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
-# STRIPE 
-STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
 DATABASES = {
