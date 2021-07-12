@@ -1,4 +1,4 @@
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from kc.users.models import CustomUser
 from kc.api.v1.serializers.payments import ChargeSerializer
@@ -10,6 +10,7 @@ FREE = 6 # id of Free Category
 class ChargeListView(generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
+    permission_classes = (permissions.IsAuthenticated, )
     queryset = ''
     
     def post(self, request):
@@ -39,6 +40,7 @@ class PaymentSuccessView(generics.ListAPIView):
     """ Add category to user model after successful payment """
     serializer_class = ChargeSerializer
     queryset = ''
+    permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request):
 
