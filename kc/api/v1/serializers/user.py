@@ -76,6 +76,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "email",
             "password",
             "token",
+            "checkout"
         )
     
     def validate(self, attrs):
@@ -83,7 +84,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             user = CustomUser.objects.get(id=self.request.user)
             
             password = attrs.get('password')
-            token = attrs.get('token')
+            # token = attrs.get('token')
             user = get_user_model()
             user.set_password(password)
             user.save()

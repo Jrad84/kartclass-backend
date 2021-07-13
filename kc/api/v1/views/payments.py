@@ -17,6 +17,7 @@ class ChargeListView(generics.ListAPIView):
         
         user = CustomUser.objects.get(email=request.user)
         user.temp_cat = request.data.get('temp')
+        user.checkout = request.data.get('checkout')
 
         mail_list = request.data.get('mail_list')
        
