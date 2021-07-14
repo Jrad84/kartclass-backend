@@ -29,11 +29,14 @@ class ChargeListView(generics.ListAPIView):
         user.mail_list = mail_list
         user.is_member = True
        
-        # If first time checkout, add Free category
-        if FREE not in user.category:
-            user.category.append(FREE)
+        """ 
+            Add this back in if he wants the free category -- just update category id
+            If first time checkout, add Free category
+        """
+        # if FREE not in user.category:
+        #     user.category.append(FREE)
 
-        user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
+        user.save(update_fields=["checkout", "temp_cat", "is_member", "mail_list"])
 
         return Response(status=status.HTTP_202_ACCEPTED)
 

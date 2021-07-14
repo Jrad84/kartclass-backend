@@ -19,11 +19,12 @@ class PaymentSuccessView(generics.ListAPIView):
         # serializer = self.serializer_class(data=request.data)
         user = CustomUser.objects.get(email=request.user)
         temp = user.temp_cat
-        # dont add a category more than once
+        # dont add a category more than once and clear checkout
         if temp not in user.category:
             user.category.append(temp)
+            user.checkout = ''
       
-        user.save(update_fields=["category"])
+        user.save(update_fields=["category", "checkout"])
         return Response(status=status.HTTP_202_ACCEPTED)
 
 
