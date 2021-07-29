@@ -16,8 +16,11 @@ class ChargeListView(generics.ListAPIView):
     def post(self, request):
         
         user = CustomUser.objects.get(email=request.user)
-        user.temp_cat = request.data.get('temp')
-        user.checkout = request.data.get('checkout')
+
+        # only if checkout required
+        if request.data.get('temp') is not None:
+            user.temp_cat = request.data.get('temp')
+            user.checkout = request.data.get('checkout')
 
         mail_list = request.data.get('mail_list')
        
@@ -29,14 +32,10 @@ class ChargeListView(generics.ListAPIView):
         user.mail_list = mail_list
         user.is_member = True
        
-        """ 
-            Add this back in if he wants the free category -- just update category id
-            If first time checkout, add Free category
-        """
-        # if FREE not in user.category:
-        #     user.category.append(FREE)
+        if FREE not in user.category:
+            user.category.append(FREE)
 
-        user.save(update_fields=["checkout", "temp_cat", "is_member", "mail_list"])
+        user.save(update_fields=["checkout", "category", "temp_cat", "is_member", "mail_list"])
 
         return Response(status=status.HTTP_202_ACCEPTED)
 
