@@ -1,5 +1,6 @@
 from rest_framework import viewsets, mixins
 from kc.api.v1.serializers.category import CategorySerializer
+
 from rest_framework import permissions
 from kc.core.models import Category
 
@@ -12,5 +13,7 @@ class CategoryView(viewsets.GenericViewSet,
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = [permissions.AllowAny,]
+
+   
     
 

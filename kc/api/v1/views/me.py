@@ -8,9 +8,6 @@ from rest_framework.response import Response
 class MeView(generics.RetrieveUpdateAPIView, generics.GenericAPIView):
     """Authenticated user view."""
 
-    """
-    TODO: Add delete.
-    """
 
     permission_classes = (IsAuthenticated, )
     

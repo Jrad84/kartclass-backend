@@ -17,10 +17,13 @@ class ChargeListView(generics.ListAPIView):
         
         user = CustomUser.objects.get(email=request.user)
 
+        # j =  CustomUser.objects.get(id=1)
+        # b = CustomUser.objects.get(id=3)
+        # d = CustomUser.objects.get(id=176)
         # only if checkout required
-        if request.data.get('temp') is not None:
-            user.temp_cat = request.data.get('temp')
-            user.checkout = request.data.get('checkout')
+        #if request.data.get('temp') is not None:
+        user.temp_cat = request.data.get('temp')
+        user.checkout = request.data.get('checkout')
 
         mail_list = request.data.get('mail_list')
        
