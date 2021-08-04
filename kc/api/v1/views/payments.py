@@ -21,9 +21,9 @@ class ChargeListView(generics.ListAPIView):
         # b = CustomUser.objects.get(id=3)
         # d = CustomUser.objects.get(id=176)
         # only if checkout required
-        #if request.data.get('temp') is not None:
-        user.temp_cat = request.data.get('temp')
-        user.checkout = request.data.get('checkout')
+        if request.data.get('temp') is not None:
+            user.temp_cat = request.data.get('temp')
+            user.checkout = request.data.get('checkout')
 
         mail_list = request.data.get('mail_list')
        
@@ -51,8 +51,8 @@ class PaymentSuccessView(generics.ListAPIView):
     def post(self, request):
 
         user = CustomUser.objects.get(email=request.user)
-        if user.temp_cat not in user.category:
-            user.category.append(user.temp_cat)
+        #if user.temp_cat not in user.category:
+        user.category.append(user.temp_cat)
         user.temp_cat = None
         user.save(update_fields=["category", "temp_cat"])
       
