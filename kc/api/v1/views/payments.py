@@ -14,22 +14,22 @@ class ChargeListView(generics.ListAPIView):
     queryset = ''
    
     def post(self, request):
-        categories = [i for i in range(1,10)]
+       
         user = CustomUser.objects.get(email=request.user)
+        # categories = [i for i in range(1,10)]
+        # j =  CustomUser.objects.get(id=1)
+        # b = CustomUser.objects.get(id=3)
+        # d = CustomUser.objects.get(id=176)
 
-        j =  CustomUser.objects.get(id=1)
-        b = CustomUser.objects.get(id=3)
-        d = CustomUser.objects.get(id=176)
+        # for cat in categories:
+        #     if cat not in j.category:
+        #         j.category.append(cat)
+        #         b.category.append(cat)
+        #         d.category.append(cat)
 
-        for cat in categories:
-            if cat not in j.category:
-                j.categpry.append(cat)
-                b.categpry.append(cat)
-                d.categpry.append(cat)
-
-                j.save()
-                b.save()
-                d.save()
+        #         j.save()
+        #         b.save()
+        #         d.save()
 
         # only if checkout required
         if request.data.get('temp') is not None:
@@ -37,6 +37,7 @@ class ChargeListView(generics.ListAPIView):
             user.checkout = request.data.get('checkout')
 
         mail_list = request.data.get('mail_list')
+        
        
         if mail_list == "true":
             mail_list = True
