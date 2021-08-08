@@ -1,4 +1,4 @@
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from kc.users.models import CustomUser
 from kc.api.v1.serializers.payments import ChargeSerializer
@@ -10,14 +10,34 @@ FREE = 6 # id of Free Category
 class ChargeListView(generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
+    permission_classes = (permissions.IsAuthenticated, )
     queryset = ''
-    
+   
     def post(self, request):
-        
+       
         user = CustomUser.objects.get(email=request.user)
-        user.temp_cat = request.data.get('temp')
+        # categories = [i for i in range(1,10)]
+        # j =  CustomUser.objects.get(id=1)
+        # b = CustomUser.objects.get(id=3)
+        # d = CustomUser.objects.get(id=176)
+
+        # for cat in categories:
+        #     if cat not in j.category:
+        #         j.category.append(cat)
+        #         b.category.append(cat)
+        #         d.category.append(cat)
+
+        #         j.save()
+        #         b.save()
+        #         d.save()
+
+        # only if checkout required
+        if request.data.get('temp') is not None:
+            user.temp_cat = request.data.get('temp')
+            user.checkout = request.data.get('checkout')
 
         mail_list = request.data.get('mail_list')
+        
        
         if mail_list == "true":
             mail_list = True
@@ -26,12 +46,11 @@ class ChargeListView(generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
-       
-        # If first time checkout, add Free category
+  
         if FREE not in user.category:
             user.category.append(FREE)
 
-        user.save(update_fields=["category", "temp_cat", "is_member", "mail_list"])
+        user.save(update_fields=["checkout", "category", "temp_cat", "is_member", "mail_list"])
 
         return Response(status=status.HTTP_202_ACCEPTED)
 
@@ -39,12 +58,13 @@ class PaymentSuccessView(generics.ListAPIView):
     """ Add category to user model after successful payment """
     serializer_class = ChargeSerializer
     queryset = ''
+    permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request):
 
         user = CustomUser.objects.get(email=request.user)
-        if user.temp_cat not in user.category:
-            user.category.append(user.temp_cat)
+        #if user.temp_cat not in user.category:
+        user.category.append(user.temp_cat)
         user.temp_cat = None
         user.save(update_fields=["category", "temp_cat"])
       

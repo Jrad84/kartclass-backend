@@ -42,8 +42,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 ALLOWED_HOSTS = [
-    # "139.180.181.188",
-    # "139.180.169.104",
+
     "0.0.0.0",
     "127.0.0.1",
      "localhost",
@@ -52,7 +51,7 @@ ALLOWED_HOSTS = [
      "https://www.kartclass.com/",
      "https://www.kartclass.com/login"
      "https://kart-class.myshopify.com/",
-    #  "https://kart-class.myshopify.com/admin/api/2021-04/application_charges.json"
+  
      ]
 
 
@@ -65,7 +64,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -75,8 +73,7 @@ INSTALLED_APPS = [
     'storages',
     'drf_yasg',
     'rest_framework.authtoken',
-    # 'rest_auth',
-    # 'djoser',
+  
 ]
 
 MIDDLEWARE = [
@@ -140,13 +137,10 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': ( 
        'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.IsAuthenticated',
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        #  'rest_framework.authentication.SessionAuthentication',
     ),
 
 }
@@ -154,10 +148,9 @@ REST_FRAMEWORK = {
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
 JWT_AUTH = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=9999),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=100),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
     "ROTATE_REFRESH_TOKENS": True, 
-    # "BLACKLIST_AFTER_ROTATION": True,
     'JWT_ALLOW_REFRESH': True,
 
 }
@@ -166,19 +159,6 @@ JWT_AUTH = {
 #    'AUTH_HEADER_TYPES': ('Bearer',),
 # }
 
-# DJOSER = {
-#     "USER_ID_FIELD": "id",
-#     "LOGIN_FIELD": "email",
-#     "TOKEN_MODEL": None,
-   
-#      'SERIALIZERS': {
-#          'user_create': 'kc.api.v1.serializers.user.UserCreateSerializer',
-#          'user': 'kc.api.v1.serializers.user.UserRetrieveSerializer',
-#          'current_user': 'kc.api.v1.serializers.me.MeRetrieveSerializer',
-#          'token': 'kc.api.v1.views.token.MyTokenObtainPairSerializer'
-#     }
-# }
-# EMAIL
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = config('EMAIL_HOST')

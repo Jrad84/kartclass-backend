@@ -76,6 +76,7 @@ class Category(models.Model):
     shopify_id = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(max_length=100, null=True, unique=True)
     sort = models.IntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.CharField(max_length=100, null=True)

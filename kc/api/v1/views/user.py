@@ -34,7 +34,7 @@ class UserViewSet(
     """
 
     queryset = get_user_model().objects.filter(is_active=True).all()
-    # permission_classes = (permissions.AllowAny,)
+   
     permission_classes = (UserPermission,)
 
     def get_serializer_class(self):
@@ -43,7 +43,7 @@ class UserViewSet(
         return UserRetrieveSerializer
 
     def get(self, request):
-        
+        permission_classes = (permissions.IsAdminUser, )
         users = get_user_model().objects.filter(is_active=True).all().values()
         return JsonResponse({"users": list(users)})
 
@@ -108,8 +108,8 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 
         redirect_url = request.GET.get('redirect_url')
         
-        # url = 'http://127.0.0.1:3000/reset-password'
-        url = 'https://www.kartclass.com/reset-password'
+        url = 'http://127.0.0.1:3000/reset-password'
+        # url = 'https://www.kartclass.com/reset-password'
 
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
