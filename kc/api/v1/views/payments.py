@@ -46,7 +46,7 @@ class ChargeListView(generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
-       
+  
         if FREE not in user.category:
             user.category.append(FREE)
 
