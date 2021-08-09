@@ -16,6 +16,9 @@ class ChargeListView(generics.ListAPIView):
     def post(self, request):
        
         user = CustomUser.objects.get(email=request.user)
+        user.email = (request.user).lower()
+       
+
         # categories = [i for i in range(1,10)]
         # j =  CustomUser.objects.get(id=1)
         # b = CustomUser.objects.get(id=3)
@@ -46,11 +49,11 @@ class ChargeListView(generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
-  
+       
         if FREE not in user.category:
             user.category.append(FREE)
 
-        user.save(update_fields=["checkout", "category", "temp_cat", "is_member", "mail_list"])
+        user.save(update_fields=["checkout", "category", "email", "temp_cat", "is_member", "mail_list"])
 
         return Response(status=status.HTTP_202_ACCEPTED)
 
