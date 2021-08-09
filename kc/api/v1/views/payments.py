@@ -16,7 +16,7 @@ class ChargeListView(generics.ListAPIView):
     def post(self, request):
        
         user = CustomUser.objects.get(email=request.user)
-        user.email = (request.user).lower()
+        user.email = (request.user.email).lower()
        
 
         # categories = [i for i in range(1,10)]
