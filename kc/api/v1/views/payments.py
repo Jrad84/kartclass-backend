@@ -16,24 +16,7 @@ class ChargeListView(generics.ListAPIView):
     def post(self, request):
        
         user = CustomUser.objects.get(email=request.user)
-        # user.email = (request.user.email).lower()
-       
-
-        # categories = [i for i in range(1,10)]
-        # j =  CustomUser.objects.get(id=1)
-        # b = CustomUser.objects.get(id=3)
-        # d = CustomUser.objects.get(id=176)
-
-        # for cat in categories:
-        #     if cat not in j.category:
-        #         j.category.append(cat)
-        #         b.category.append(cat)
-        #         d.category.append(cat)
-
-        #         j.save()
-        #         b.save()
-        #         d.save()
-
+      
         # only if checkout required
         if request.data.get('temp') is not None:
             user.temp_cat = request.data.get('temp')
@@ -66,10 +49,11 @@ class PaymentSuccessView(generics.ListAPIView):
     def post(self, request):
 
         user = CustomUser.objects.get(email=request.user)
-        #if user.temp_cat not in user.category:
-        user.category.append(user.temp_cat)
-        user.temp_cat = None
-        user.save(update_fields=["category", "temp_cat"])
+        if user.temp_cat not in user.category:
+            user.category.append(user.temp_cat)
+            user.temp_cat = None
+            user.checkout = None
+            user.save(update_fields=["category", "temp_cat", "checkout"])
       
         return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
   
