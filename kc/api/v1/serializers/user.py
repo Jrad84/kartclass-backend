@@ -53,8 +53,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        # print(validated_data)
-        # mail = validated_data['email_weekly']
+       
+       
         validated_data['password'] = hashers.make_password(validated_data.get('password'))
         return super(UserCreateSerializer, self).create(validated_data)
 
