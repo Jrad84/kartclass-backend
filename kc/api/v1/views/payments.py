@@ -54,6 +54,12 @@ class PaymentSuccessView(generics.ListAPIView):
             user.temp_cat = None
             user.checkout = None
             user.save(update_fields=["category", "temp_cat", "checkout"])
+
+            return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+        
+        error = "Failed to update category"
+                
+        return Response(error, status=status.HTTP_400_BAD_REQUEST)
       
-        return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+       
   
