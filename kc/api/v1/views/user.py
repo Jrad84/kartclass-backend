@@ -71,7 +71,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
     def post(self, request):
        
         serializer = self.serializer_class(data=request.data)
-        print(request.data)
+       
         email = request.data.get('email', '')
         if serializer.is_valid():
             
@@ -108,8 +108,8 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 
         redirect_url = request.GET.get('redirect_url')
         
-        url = 'http://127.0.0.1:3000/reset-password'
-        # url = 'https://www.kartclass.com/reset-password'
+        #url = 'http://127.0.0.1:3000/reset-password'
+        url = 'https://www.kartclass.com/reset-password'
 
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
@@ -140,6 +140,7 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def patch(self, request):
+        
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
