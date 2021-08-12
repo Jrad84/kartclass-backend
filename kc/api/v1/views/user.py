@@ -71,7 +71,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
     def post(self, request):
        
         serializer = self.serializer_class(data=request.data)
-        
+        print(request.data)
         email = request.data.get('email', '')
         if serializer.is_valid():
             
@@ -87,11 +87,11 @@ class RequestPasswordResetView(generics.GenericAPIView):
 
                 redirect_url = request.data.get('redirect_url')
                 
-                absurl = 'http://'+current_site + relativeLink
-                email_body = 'Hello, \n Use the link below to reset your password  \n' + \
+                absurl = 'https://'+current_site + relativeLink
+                email_body = 'Hey ' + user.fname +', \n Use the link below to reset your password  \n' + \
                     absurl+"?redirect_url="+redirect_url
                 data = {'email_body': email_body, 'to_email': (user.email, ''),
-                        'email_subject': 'Reset your password'}
+                        'email_subject': 'Reset your KartClass password'}
                 send_email(data)
                
                

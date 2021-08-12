@@ -7,6 +7,7 @@ from kc.api.v1.serializers.payments import ChargeSerializer
 
 FREE = 6 # id of Free Category
 
+
 class ChargeListView(generics.ListAPIView):
     """ List customer charges """
     serializer_class = ChargeSerializer
