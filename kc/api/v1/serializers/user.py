@@ -111,17 +111,17 @@ class SetNewPasswordSerializer(serializers.Serializer):
         fields = ['email', 'password']
 
     def validate(self, attrs):
-        try:
-            email = attrs.get('email')
-            password = attrs.get('password')
-            user = CustomUser.objects.get(email=email)
+        # try:
+        email = attrs.get('email')
+        password = attrs.get('password')
+        user = CustomUser.objects.get(email=email)
             
-            user.set_password(password)
-            user.save()
+        user.set_password(password)
+        user.save()
 
-            return (user)
-        except Exception as e:
-            raise AuthenticationFailed('The reset link is invalid', 401)
+        # return (user)
+        # except Exception as e:
+        #     raise AuthenticationFailed('The reset link is invalid', 401)
         return super().validate(attrs)
 
 

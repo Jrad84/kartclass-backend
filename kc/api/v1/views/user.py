@@ -87,7 +87,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
 
                 redirect_url = request.data.get('redirect_url')
                 
-                absurl = 'https://'+current_site + relativeLink
+                absurl = 'http://'+current_site + relativeLink
                 email_body = 'Hey ' + user.fname +', \n Use the link below to reset your password  \n' + \
                     absurl+"?redirect_url="+redirect_url
                 data = {'email_body': email_body, 'to_email': (user.email, ''),
@@ -140,7 +140,7 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def patch(self, request):
-        
+
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
