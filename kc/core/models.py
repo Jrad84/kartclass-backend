@@ -79,7 +79,6 @@ class Category(models.Model):
     is_active = models.BooleanField(default=True)
     tier = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
-    longdescription = models.TextField(max_length=1000, null=True)
     image = models.CharField(max_length=100, null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     trailer = models.CharField(max_length=100, null=True, blank=True)
