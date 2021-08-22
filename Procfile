@@ -1,1 +1,1 @@
-web: gunicorn kc.wsgi
+web: gunicorn wsgi

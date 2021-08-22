@@ -87,6 +87,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
 
                 redirect_url = request.data.get('redirect_url')
                 
+                # CHANGE HERE FOR DEV / PROD
                 absurl = 'https://'+current_site + relativeLink
                 email_body = 'Hey ' + user.fname +', \n Use the link below to reset your password  \n' + \
                     absurl+"?redirect_url="+redirect_url

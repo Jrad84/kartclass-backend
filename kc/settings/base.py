@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 from datetime import timedelta
 import os
-import django_heroku
-import dj_database_url
-from dj_database_url import parse as db_url
+
 from decouple import config
 from unipath import Path
 from corsheaders.defaults import default_headers
@@ -45,9 +43,9 @@ ALLOWED_HOSTS = [
 
     "0.0.0.0",
     "127.0.0.1",
-     "localhost",
-     "https://kartclass-django.com",
-     "*.kartclass-django.herokuapp.com",
+    "http://127.0.0.1:3000/",
+    "104.156.232.113",
+    "https://kartclass-engine.xyz",
      "https://www.kartclass.com/",
      "https://www.kartclass.com/login"
      "https://kart-class.myshopify.com/",
@@ -106,7 +104,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'kc.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database
@@ -266,11 +264,18 @@ CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
 # Heroku: Update database configuration from $DATABASE_URL.
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://jarben:good_password@localhost/kartclass',
-    ),
-
+    'default': {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PW'),
+        "HOST": config('DB_HOST'),
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "verify-ca",
+            "sslrootcert": os.path.join(BASE_DIR, "amazon-rds-ca-cert.pem")
+        },
+    }
 }
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
+
