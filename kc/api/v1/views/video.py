@@ -23,7 +23,7 @@ class VideoListView(mixins.ListModelMixin,
 
     serializer_class = VideoSerializer
     category = CategorySerializer
-   
+    
     permission_classes = [permissions.AllowAny,]
     lookup_field = 'slug'
     queryset = Video.objects.all()

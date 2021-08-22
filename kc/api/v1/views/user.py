@@ -83,17 +83,18 @@ class RequestPasswordResetView(generics.GenericAPIView):
                 user = CustomUser.objects.get(email=email)
                 uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
                 token = PasswordResetTokenGenerator().make_token(user)
-                current_site = get_current_site(
-                    request=request).domain
+                # current_site = get_current_site(
+                #     request=request).domain
                 relativeLink = reverse(
                     'password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
 
                 redirect_url = request.data.get('redirect_url')
                 
                 # CHANGE HERE FOR DEV / PROD
-                absurl = 'https://'+current_site + relativeLink
+                absurl = 'https://kartclass-engine.xyz/' + relativeLink
+               
                 email_body = 'Hey ' + user.fname +', \n Use the link below to reset your password  \n' + \
-                    absurl+"?redirect_url="+redirect_url
+                    absurl+"?redirect_url="+redirect_url + 'url = ' + absurl
                 data = {'email_body': email_body, 'to_email': (user.email, ''),
                         'email_subject': 'Reset your KartClass password'}
                 send_email(data)
