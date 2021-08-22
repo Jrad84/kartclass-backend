@@ -12,6 +12,9 @@ from django.http import HttpResponsePermanentRedirect
 from braces.views import CsrfExemptMixin
 from django.views.decorators.csrf import csrf_exempt
 from kc.utils import send_email
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 

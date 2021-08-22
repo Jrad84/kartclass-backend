@@ -229,12 +229,17 @@ LOGGING = {
         }
     },
     'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '../debug.log',
+        },
         'null': {
             'level': 'DEBUG',
             'class': 'logging.NullHandler',
         },
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         }
@@ -243,7 +248,12 @@ LOGGING = {
         'testlogger': {
             'handlers': ['console'],
             'level': 'INFO',
-        }
+        },
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
     }
 }
 
