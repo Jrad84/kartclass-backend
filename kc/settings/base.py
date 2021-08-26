@@ -48,45 +48,6 @@ sentry_sdk.init(
     # something more human-readable.
     # release="myapp@1.0.0",
 )
-# LOGGING_CONFIG = None
-# LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
-# logging.config.dictConfig({
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'console': {
-#             # exact format is not important, this is the minimum information
-#             'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-#         },
-#          'django.server': DEFAULT_LOGGING['formatters']['django.server'],
-#     },
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'console',
-#         },
-#         'django.server': DEFAULT_LOGGING['handlers']['django.server'],
-#         # Add Handler for Sentry for `warning` and above
-#         # 'sentry': {
-#         #     'level': 'WARNING',
-#         #     'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-#         # },
-#     },
-#     'loggers': {
-#     # root logger
-#         '': {
-#             'level': 'WARNING',
-#             'handlers': ['console', 'sentry'],
-#         },
-#          'kc': {
-#             'level': LOGLEVEL,
-#             'handlers': ['console', 'sentry'],
-#             # required to avoid double logging with root logger
-#             'propagate': False,
-#         },
-#          'django.server': DEFAULT_LOGGING['loggers']['django.server'],
-#     },
-# })
 
 BASE_DIR = Path(__file__).parent
 
@@ -138,7 +99,7 @@ INSTALLED_APPS = [
     'django_filters',
     'storages',
     'drf_yasg',
-    'rest_framework.authtoken',
+  
   
 ]
 

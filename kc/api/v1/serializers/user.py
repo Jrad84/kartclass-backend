@@ -75,7 +75,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "password",
-            "token",
+            # "token",
             "checkout"
         )
     
@@ -103,25 +103,33 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class SetNewPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField()
     password = serializers.CharField(
-        min_length=8, max_length=68, write_only=True)
-    
+        min_length=6, max_length=68, write_only=True)
+    token = serializers.CharField(
+        min_length=1, write_only=True)
+    uidb64 = serializers.CharField(
+        min_length=1, write_only=True)
+
     class Meta:
-        fields = ['email', 'password']
+        fields = ['password', 'token', 'uidb64']
 
     def validate(self, attrs):
-        # try:
-        email = attrs.get('email')
-        password = attrs.get('password')
-        user = CustomUser.objects.get(email=email)
-            
-        user.set_password(password)
-        user.save()
+        try:
+            password = attrs.get('password')
+            token = attrs.get('token')
+            uidb64 = attrs.get('uidb64')
 
-        # return (user)
-        # except Exception as e:
-        #     raise AuthenticationFailed('The reset link is invalid', 401)
+            id = force_str(urlsafe_base64_decode(uidb64))
+            user = CustomUser.objects.get(id=id)
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise AuthenticationFailed('The reset link is invalid', 401)
+
+            user.set_password(password)
+            user.save()
+
+            return (user)
+        except Exception as e:
+            raise AuthenticationFailed('The reset link is invalid', 401)
         return super().validate(attrs)
 
 
