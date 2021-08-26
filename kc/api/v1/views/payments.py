@@ -2,7 +2,9 @@ from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from kc.users.models import CustomUser
 from kc.api.v1.serializers.payments import ChargeSerializer
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 FREE = 6 # id of Free Category
@@ -20,6 +22,7 @@ class ChargeListView(generics.ListAPIView):
       
         # only if checkout required
         if request.data.get('temp') is not None:
+         
             user.temp_cat = request.data.get('temp')
             user.checkout = request.data.get('checkout')
 
@@ -37,6 +40,7 @@ class ChargeListView(generics.ListAPIView):
         if FREE not in user.category:
             user.category.append(FREE)
 
+       
         user.save(update_fields=["checkout", "category", "temp_cat", "is_member", "mail_list"])
 
         return Response(status=status.HTTP_202_ACCEPTED)
@@ -50,13 +54,15 @@ class PaymentSuccessView(generics.ListAPIView):
     def post(self, request):
 
         user = CustomUser.objects.get(email=request.user)
-        if user.temp_cat not in user.category:
-            user.category.append(user.temp_cat)
-            user.temp_cat = None
-            user.checkout = None
-            user.save(update_fields=["category", "temp_cat", "checkout"])
+        
+        # if user.temp_cat not in user.category:
+        user.category.append(user.temp_cat)
+        # list(set(user.category))
+        user.temp_cat = None
+        user.checkout = None
+        user.save(update_fields=["category", "temp_cat", "checkout"])
 
-            return Response({'success': True, 'message': 'Update details successful'}, status=status.HTTP_200_OK)
+        return Response({'temp_cat': user.temp_cat, 'category': user.category}, status=status.HTTP_200_OK)
         
         error = "Failed to update category"
                 

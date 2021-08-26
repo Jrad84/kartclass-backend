@@ -1,19 +1,15 @@
 from rest_framework import viewsets, generics, mixins, status
-# from django.views.generic import ListView
-# from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.response import Response
-# from rest_framework.permissions import IsAdminUser
-# from rest_framework.decorators import action
 from django.views.decorators.csrf import csrf_exempt
-# from kc.api.common import exceptions
-# import json
 from kc.api.v1.serializers.video import *
 from kc.api.v1.serializers.category import CategorySerializer
 from kc.core.models import Video
-# from braces.views import CsrfExemptMixin
+import logging
 
-from itertools import chain
+logger = logging.getLogger(__name__)
+
+
 
 class VideoListView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
@@ -21,49 +17,17 @@ class VideoListView(mixins.ListModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
                     viewsets.GenericViewSet,
-                    # generics.GenericAPIView
+                  
                     ):
-    # videos = [{i.title : i.category} for i in Video.objects.all()]
-    # print(videos)
-    
-
-    # def to_dict(instance):
-    #     opts = instance._meta
-    #     data = {}
-    #     for f in chain(opts.concrete_fields, opts.private_fields):
-    #         data[f.name] = f.value_from_object(instance)
-    #     for f in opts.many_to_many:
-    #         data[f.name] = [i.id for i in f.value_from_object(instance)]
-    #     return data
+ 
 
     serializer_class = VideoSerializer
     category = CategorySerializer
-    # authentication_classes = []
+    
     permission_classes = [permissions.AllowAny,]
     lookup_field = 'slug'
     queryset = Video.objects.all()
-    # videos = []
-    # for i in Video.objects.all():
-    #     videos.append(to_dict(i))
-
-    # for v in videos:
-        
-        
-    #     video = Video.objects.get(id=v['id'])
-    #     cats = [c for c in v['category']]
-    #     v['category'] = [cats_dict[x] for x in cats]
-    #     v['category'] = dict.fromkeys(cats, "category")
-       
-        # serializer = VideoSerializer(video, data=v['category'], partial=True)
-        # # v = Video()
-        # # # print(serializer)
-        # if serializer.is_valid():
-        #     print('ok')
-        #     serializer.save()
-            
-        # else:
-        #     print(serializer.errors)
-    # print(videos)
+  
     @csrf_exempt
     def patch(self, request):
        
@@ -97,7 +61,9 @@ class VideoLikeView(mixins.ListModelMixin,
         serializer = VideoLikeSerializer(video, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+           
             return Response(serializer.data, status=status.HTTP_200_OK)
+      
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -138,7 +104,7 @@ class VideoUploadView(mixins.ListModelMixin,
     def post(self, request):
         data=request.data
         serializer = VideoSerializer(data=data)
-        categories = [i for i in data['category']]
+       
         
         if serializer.is_valid():
             serializer.save()

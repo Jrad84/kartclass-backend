@@ -12,15 +12,42 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 from datetime import timedelta
 import os
-import django_heroku
-import dj_database_url
-from dj_database_url import parse as db_url
+
 from decouple import config
 from unipath import Path
 from corsheaders.defaults import default_headers
+from django.utils.log import DEFAULT_LOGGING
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+import logging.config
 
+# sentry_sdk.init(
+#     "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
 
+#     # Set traces_sample_rate to 1.0 to capture 100%
+#     # of transactions for performance monitoring.
+#     # We recommend adjusting this value in production.
+#     traces_sample_rate=1.0
+# )
+sentry_sdk.init(
+    dsn= "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
+    integrations=[DjangoIntegration()],
 
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+
+    # By default the SDK will try to use the SENTRY_RELEASE
+    # environment variable, or infer a git commit
+    # SHA as release, however you may want to set
+    # something more human-readable.
+    # release="myapp@1.0.0",
+)
 
 BASE_DIR = Path(__file__).parent
 
@@ -45,9 +72,9 @@ ALLOWED_HOSTS = [
 
     "0.0.0.0",
     "127.0.0.1",
-     "localhost",
-     "https://kartclass-django.com",
-     "*.kartclass-django.herokuapp.com",
+    "http://127.0.0.1:3000/",
+    "104.156.232.113",
+    "https://kartclass-engine.xyz",
      "https://www.kartclass.com/",
      "https://www.kartclass.com/login"
      "https://kart-class.myshopify.com/",
@@ -72,7 +99,7 @@ INSTALLED_APPS = [
     'django_filters',
     'storages',
     'drf_yasg',
-    'rest_framework.authtoken',
+  
   
 ]
 
@@ -106,7 +133,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'kc.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database
@@ -216,6 +243,7 @@ PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'kc.storage_backends.PublicMediaStorage'
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -231,21 +259,32 @@ LOGGING = {
         }
     },
     'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '../debug.log',
+            'formatter': 'verbose',
+        },
         'null': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.NullHandler',
         },
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         }
     },
     'loggers': {
         'testlogger': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'level': 'INFO',
-        }
+        },
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     }
 }
 
@@ -266,11 +305,18 @@ CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
 # Heroku: Update database configuration from $DATABASE_URL.
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://jarben:good_password@localhost/kartclass',
-    ),
-
+    'default': {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PW'),
+        "HOST": config('DB_HOST'),
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "verify-ca",
+            "sslrootcert": os.path.join(BASE_DIR, "amazon-rds-ca-cert.pem")
+        },
+    }
 }
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
+

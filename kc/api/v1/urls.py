@@ -18,9 +18,6 @@ from kc.api.v1.views.blog import *
 
 urlpatterns = [
     
-     # path('auth/', include('djoser.urls')),
-     # path('auth/', include('djoser.urls.authtoken')),
-     # path('auth/', include('djoser.urls.jwt')),
    path('auth/token/', csrf_exempt(MyTokenObtainPairView.as_view()),
          name='auth-token-obtain-pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
@@ -47,7 +44,8 @@ urlpatterns = [
          name='password-reset-complete'),
      path('mail-list/', MailListView.as_view(), name='mail-list'),
      path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
-     path('pay-success/', PaymentSuccessView.as_view(), name='pay-success')
+     path('pay-success/', PaymentSuccessView.as_view(), name='pay-success'),
+     
 
 ]
 
