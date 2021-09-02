@@ -49,10 +49,13 @@ class PaymentSuccessView(generics.ListAPIView):
     def post(self, request):
 
         user = CustomUser.objects.get(email=request.user)
-
+        print(user)
+        print(user.category)
         if user.temp_cat not in user.category:
             user.category.append(user.temp_cat)
-
+        print(user.category)
+        user.category = []
+        user.temp_cat = None
         user.save(update_fields=["category"])
  
         return Response({'temp_cat': user.temp_cat, 'category': user.category}, status=status.HTTP_200_OK)
