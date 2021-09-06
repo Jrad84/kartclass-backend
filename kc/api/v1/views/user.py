@@ -106,7 +106,6 @@ class RequestPasswordResetView(generics.GenericAPIView):
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
-    permission_classes = (permissions.AllowAny,)
 
     def get(self, request, uidb64, token):
 
@@ -141,7 +140,6 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 
 class SetNewPasswordAPIView(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
-    permission_classes = (permissions.AllowAny,)
 
     def patch(self, request):
 

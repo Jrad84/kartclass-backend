@@ -20,6 +20,9 @@ from django.utils.log import DEFAULT_LOGGING
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 import logging.config
+# import django_heroku
+# import dj_database_url
+# from dj_database_url import parse as db_url
 
 # sentry_sdk.init(
 #     "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
@@ -72,6 +75,7 @@ ALLOWED_HOSTS = [
 
     "0.0.0.0",
     "127.0.0.1",
+    "localhost",
     "http://127.0.0.1:3000/",
     "104.156.232.113",
     "https://kartclass-engine.xyz",
@@ -163,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': ( 
-       'rest_framework.permissions.AllowAny',
+       'rest_framework.permissions.IsAuthenticated',
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -304,6 +308,15 @@ CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
 
 # Heroku: Update database configuration from $DATABASE_URL.
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://jarben:good_password@localhost/kartclass',
+#     ),
+
+# }
+
+# Activate Django-Heroku.
+# django_heroku.settings(locals())
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
