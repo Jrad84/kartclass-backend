@@ -160,6 +160,7 @@ class Article(models.Model):
     description = models.CharField(max_length=150, null=True, blank=True)
     image = models.CharField(max_length=100, null=True)
     document = models.CharField(max_length=500, null=True)
+    category = models.ManyToManyField(Category, related_name='category')
     likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
