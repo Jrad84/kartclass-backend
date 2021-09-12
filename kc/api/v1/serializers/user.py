@@ -75,7 +75,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "password",
-            "popup",
+         
             "checkout"
         )
     

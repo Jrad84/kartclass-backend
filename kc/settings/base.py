@@ -20,9 +20,9 @@ from django.utils.log import DEFAULT_LOGGING
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 import logging.config
-import django_heroku
-import dj_database_url
-from dj_database_url import parse as db_url
+# import django_heroku
+# import dj_database_url
+# from dj_database_url import parse as db_url
 
 # sentry_sdk.init(
 #     "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
@@ -308,28 +308,28 @@ CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
 
 # Heroku: Update database configuration from $DATABASE_URL.
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://jarben:good_password@localhost/kartclass',
-    ),
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://jarben:good_password@localhost/kartclass',
+#     ),
 
-}
+# }
 
 #Activate Django-Heroku.
-django_heroku.settings(locals())
-# DATABASES = {
-#     'default': {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": config('DB_NAME'),
-#         "USER": config('DB_USER'),
-#         "PASSWORD": config('DB_PW'),
-#         "HOST": config('DB_HOST'),
-#         "PORT": "5432",
-#         "OPTIONS": {
-#             "sslmode": "verify-ca",
-#             "sslrootcert": os.path.join(BASE_DIR, "amazon-rds-ca-cert.pem")
-#         },
-#     }
-# }
+# django_heroku.settings(locals())
+DATABASES = {
+    'default': {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PW'),
+        "HOST": config('DB_HOST'),
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "verify-ca",
+            "sslrootcert": os.path.join(BASE_DIR, "amazon-rds-ca-cert.pem")
+        },
+    }
+}
 
 
