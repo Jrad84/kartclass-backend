@@ -45,9 +45,8 @@ urlpatterns = [
      path('mail-list/', MailListView.as_view(), name='mail-list'),
      path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
      path('pay-success/', PaymentSuccessView.as_view(), name='pay-success'),
-     path('popup', PopupView.as_view(), name='popup')
+     path('popup/', PopupView.as_view(), name='popup'),
      
-
 ]
 
 router = routers.DefaultRouter()
@@ -60,7 +59,6 @@ router.register(r'articles', ArticleView)
 router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
 router.register(r'products', ProductListView)
-
 
 
 

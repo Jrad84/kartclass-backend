@@ -197,6 +197,7 @@ class PopupView(generics.ListAPIView):
     def post(self, request):
 
         user = CustomUser.objects.get(email=request.user)
+
         try:
             user.popup = request.data['popup']
             user.save()
