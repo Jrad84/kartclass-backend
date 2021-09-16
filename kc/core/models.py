@@ -146,6 +146,10 @@ class Video(models.Model):
         verbose_name = "Video"
         verbose_name_plural = "Videos"
 
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
    
     def __str__(self):
         return self.title
@@ -188,6 +192,31 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Podcast(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
+    category = models.IntegerField(default=0)
+    description = models.CharField(max_length=150, null=True, blank=True)
+    duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
+    image = models.CharField(max_length=100, null=True)
+    document = models.CharField(max_length=500, null=True)
+    likes = models.IntegerField(default=0)
+    listens = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Article"
+        verbose_name_plural = "Articles"
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 
 class Charge(models.Model):

@@ -1,17 +1,17 @@
-from rest_framework import viewsets, generics, mixins, status, permissions
-
+from rest_framework import viewsets, generics, mixins, status
+from rest_framework import permissions
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
-from kc.api.v1.serializers.video import *
+from kc.api.v1.serializers.podcast import *
 from kc.api.v1.serializers.category import CategorySerializer
-from kc.core.models import Video
+from kc.core.models import Podcast
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 
-class VideoListView(mixins.ListModelMixin,
+class PodcastListView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
@@ -21,19 +21,19 @@ class VideoListView(mixins.ListModelMixin,
                     ):
  
 
-    serializer_class = VideoSerializer
+    serializer_class = PodcastSerializer
     category = CategorySerializer
     
     permission_classes = [permissions.AllowAny,]
     lookup_field = 'slug'
-    queryset = Video.objects.all()
+    queryset = Podcast.objects.all()
   
     @csrf_exempt
     def patch(self, request):
        
-        vid_id = request.data['id']
-        video = Video.objects.get(id=vid_id)
-        serializer = VideoSerializer(video, data=request.data, partial=True)
+        pod_id = request.data['id']
+        podcast = Podcast.objects.get(id=pod_id)
+        serializer = PodcastSerializer(podcast, data=request.data, partial=True)
        
 
         if serializer.is_valid():
@@ -42,7 +42,7 @@ class VideoListView(mixins.ListModelMixin,
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-class VideoLikeView(mixins.ListModelMixin,
+class PodcastLikeView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -50,15 +50,15 @@ class VideoLikeView(mixins.ListModelMixin,
                     ):
     
     def get_object(self, pk):
-        return Video.objects.get(pk=pk)
+        return Podcast.objects.get(pk=pk)
    
     @csrf_exempt
     def patch(self, request):
         
-        vid_id = request.data['id']
-        video = self.get_object(pk=vid_id)
+        podcast_id = request.data['id']
+        podcast = self.get_object(pk=podcast_id)
         
-        serializer = VideoLikeSerializer(video, data=request.data, partial=True)
+        serializer = PodcastLikeSerializer(podcast, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
            
@@ -67,7 +67,7 @@ class VideoLikeView(mixins.ListModelMixin,
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VideoUnLikeView(mixins.ListModelMixin,
+class PodcastUnLikeView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -75,21 +75,21 @@ class VideoUnLikeView(mixins.ListModelMixin,
                     ):
     
     def get_object(self, pk):
-        return Video.objects.get(pk=pk)
+        return Podcast.objects.get(pk=pk)
    
     @csrf_exempt
     def patch(self, request):
        
-        vid_id = request.data['id']
-        video = self.get_object(pk=vid_id)
+        podcast_id = request.data['id']
+        podcast = self.get_object(pk=podcast_id)
         
-        serializer = VideoUnLikeSerializer(video, data=request.data, partial=True)
+        serializer = PodcastUnLikeSerializer(podcast, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class VideoUploadView(mixins.ListModelMixin,
+class PodcastUploadView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
@@ -99,11 +99,11 @@ class VideoUploadView(mixins.ListModelMixin,
     permission_classes = (permissions.IsAdminUser,)
 
     def get_object(self, pk):
-        return Video.objects.get(pk=pk)
+        return Podcast.objects.get(pk=pk)
 
     def post(self, request):
         data=request.data
-        serializer = VideoSerializer(data=data)
+        serializer = PodcastSerializer(data=data)
        
         
         if serializer.is_valid():
@@ -114,9 +114,9 @@ class VideoUploadView(mixins.ListModelMixin,
     def patch(self, request):
         data=request.data
       
-        video = self.get_object(pk=data['id'])
+        podcast = self.get_object(pk=data['id'])
        
-        serializer = VideoSerializer(video, data=data, partial=True)
+        serializer = PodcastSerializer(podcast, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -124,7 +124,7 @@ class VideoUploadView(mixins.ListModelMixin,
 
     def delete(self, request):
         data=request.data
-        video = self.get_object(pk=data['id'])
-        video.delete()
+        podcast = self.get_object(pk=data['id'])
+        podcast.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
       

@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
+from kc.api.v1.views.podcast import *
 from kc.api.v1.views.category import CategoryView
 from rest_framework_simplejwt import views as jwt_views
 from kc.api.v1.views.token import MyTokenObtainPairView
@@ -30,6 +31,8 @@ urlpatterns = [
     path('edit-email/', ChangeEmailView.as_view(), name='edit-email'),
     path('like-video/', VideoLikeView.as_view(), name='like-video'),
     path('unlike-video/', VideoUnLikeView.as_view(), name='unlike-video'),
+     path('like-podcast/', PodcastLikeView.as_view(), name='like-podcast'),
+    path('unlike-podcast/', PodcastUnLikeView.as_view(), name='unlike-podcast'),
      path('like-article/', VideoLikeView.as_view(), name='like-article'),
     path('unlike-article/', VideoUnLikeView.as_view(), name='unlike-article'),
     path('checkout/', ChargeListView.as_view(), name='checkout'),
@@ -51,6 +54,7 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register(r'videos', VideoListView)
+router.register(r'podcast', PodcastListView)
 router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
