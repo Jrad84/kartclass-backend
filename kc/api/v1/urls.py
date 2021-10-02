@@ -54,7 +54,7 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register(r'videos', VideoListView)
-router.register(r'podcast', PodcastListView)
+router.register(r'podcasts', PodcastListView)
 router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
