@@ -106,7 +106,6 @@ class RequestPasswordResetView(generics.GenericAPIView):
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
-    permission_classes = (permissions.AllowAny,)
 
     def get(self, request, uidb64, token):
 
@@ -141,7 +140,6 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 
 class SetNewPasswordAPIView(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
-    permission_classes = (permissions.AllowAny,)
 
     def patch(self, request):
 
@@ -191,4 +189,22 @@ class LogoutView(generics.GenericAPIView):
 
  
 
+class PopupView(generics.ListAPIView):
+
+    serializer_class = UserUpdateSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request):
+
+        user = CustomUser.objects.get(email=request.user)
+
+        try:
+            user.popup = request.data['popup']
+            user.save()
+
+            return Response(status=status.HTTP_200_OK)
         
+        except:
+
+            return Response(status=status.HTTP_501_NOT_IMPLEMENTED)
+       

@@ -131,11 +131,12 @@ class Video(models.Model):
     slug = models.SlugField(max_length=100, null=True, unique=True)
     longdescription = models.TextField(max_length=9000, null=True)    
     description = models.CharField(max_length=150, null=True)
-    category = models.ManyToManyField(Category, related_name='category')
+    category = models.ManyToManyField(Category, related_name='video_category')
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
-    video_url = models.CharField(max_length=150, null=True)
+    video_high_url = models.CharField(max_length=150, null=True)
+    video_low_url = models.CharField(max_length=150, null=True)
     image1_url = models.CharField(max_length=150, null=True, blank=True)
     image2_url = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -145,6 +146,10 @@ class Video(models.Model):
         verbose_name = "Video"
         verbose_name_plural = "Videos"
 
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
    
     def __str__(self):
         return self.title
@@ -156,6 +161,7 @@ class Video(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
+    category = models.ManyToManyField(Category, related_name='article_category')
     slug = models.SlugField(max_length=100, null=True, unique=True)
     description = models.CharField(max_length=150, null=True, blank=True)
     image = models.CharField(max_length=100, null=True)
@@ -187,6 +193,32 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Podcast(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
+    category = models.ManyToManyField(Category, related_name='podcast_category')
+    longdescription = models.TextField(max_length=9000, null=True)    
+    description = models.CharField(max_length=150, null=True)
+    duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
+    image = models.CharField(max_length=100, null=True)
+    podcast_link = models.CharField(max_length=500, null=True)
+    likes = models.IntegerField(default=0)
+    listens = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Podcast"
+        verbose_name_plural = "Podcasts"
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 
 class Charge(models.Model):
