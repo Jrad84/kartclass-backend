@@ -131,7 +131,7 @@ class Video(models.Model):
     slug = models.SlugField(max_length=100, null=True, unique=True)
     longdescription = models.TextField(max_length=9000, null=True)    
     description = models.CharField(max_length=150, null=True)
-    category = models.ManyToManyField(Category, related_name='category')
+    category = models.ManyToManyField(Category, related_name='video_category')
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
@@ -161,6 +161,7 @@ class Video(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
+    category = models.ManyToManyField(Category, related_name='article_category')
     slug = models.SlugField(max_length=100, null=True, unique=True)
     description = models.CharField(max_length=150, null=True, blank=True)
     image = models.CharField(max_length=100, null=True)
@@ -197,7 +198,7 @@ class Testimonial(models.Model):
 class Podcast(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, null=True, unique=True)
-    category = models.IntegerField(default=0)
+    category = models.ManyToManyField(Category, related_name='podcast_category')
     longdescription = models.TextField(max_length=9000, null=True)    
     description = models.CharField(max_length=150, null=True)
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)

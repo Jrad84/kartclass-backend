@@ -6,8 +6,8 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer, Neste
 
 class PodcastSerializer(WritableNestedModelSerializer, NestedCreateMixin):
    
-    # category = serializers.PrimaryKeyRelatedField(
-    #     many=True, queryset=Category.objects.all())
+    category = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Category.objects.all())
     
     class Meta:
         model = Podcast   
@@ -21,6 +21,7 @@ class PodcastSerializer(WritableNestedModelSerializer, NestedCreateMixin):
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
         instance.slug = validated_data.get('slug', instance.slug)
+        instance.category = validated_data.get('category', instance.category)
         instance.category = validated_data.get('category', instance.category)
         instance.description = validated_data.get('description', instance.description)
         instance.duration = validated_data.get('duration', instance.duration)
