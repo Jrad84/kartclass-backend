@@ -31,6 +31,7 @@ class VideoSerializer(WritableNestedModelSerializer, NestedCreateMixin):
         instance.image1_url = validated_data.get('image1_url', instance.image1_url)
         instance.image2_url = validated_data.get('image2_url', instance.image2_url)
         instance.document = validated_data.get('document', instance.document)
+        instance.views = validated_data.get('views', instance.views)
         
         instance.save()
         return instance
@@ -58,6 +59,19 @@ class VideoUnLikeSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         
         instance.likes -= 1
+       
+        instance.save()
+        return instance
+
+class VideoViewSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Video
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        
+        instance.views += 1
        
         instance.save()
         return instance

@@ -27,6 +27,7 @@ class PodcastSerializer(WritableNestedModelSerializer, NestedCreateMixin):
         instance.duration = validated_data.get('duration', instance.duration)
         instance.image1_url = validated_data.get('image1_url', instance.image1_url)
         instance.podcast_link = validated_data.get('podcast_link', instance.podcast_link)
+        instance.listens = validated_data.get('listens', instance.listens)
         
         instance.save()
         return instance
@@ -54,6 +55,19 @@ class PodcastUnLikeSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         
         instance.likes -= 1
+       
+        instance.save()
+        return instance
+
+class PodcastListenSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Podcast
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        
+        instance.listens += 1
        
         instance.save()
         return instance
