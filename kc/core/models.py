@@ -198,17 +198,18 @@ class Podcast(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, null=True, unique=True)
     category = models.IntegerField(default=0)
-    description = models.CharField(max_length=150, null=True, blank=True)
+    longdescription = models.TextField(max_length=9000, null=True)    
+    description = models.CharField(max_length=150, null=True)
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     image = models.CharField(max_length=100, null=True)
-    document = models.CharField(max_length=500, null=True)
+    podcast_link = models.CharField(max_length=500, null=True)
     likes = models.IntegerField(default=0)
     listens = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Article"
-        verbose_name_plural = "Articles"
+        verbose_name = "Podcast"
+        verbose_name_plural = "Podcasts"
 
     def save(self, *args, **kwargs):
         value = self.title

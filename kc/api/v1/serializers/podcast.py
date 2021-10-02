@@ -22,10 +22,11 @@ class PodcastSerializer(WritableNestedModelSerializer, NestedCreateMixin):
         instance.title = validated_data.get('title', instance.title)
         instance.slug = validated_data.get('slug', instance.slug)
         instance.category = validated_data.get('category', instance.category)
+        instance.longdescription = validated_data.get('longdescription', instance.longdescription)
         instance.description = validated_data.get('description', instance.description)
         instance.duration = validated_data.get('duration', instance.duration)
-        instance.image1_url = validated_data.get('image1_url', instance.image1_url)
-        instance.document = validated_data.get('document', instance.document)
+        instance.image = validated_data.get('image', instance.image)
+        instance.podcast_link = validated_data.get('podcast_link', instance.podcast_link)
         
         instance.save()
         return instance
