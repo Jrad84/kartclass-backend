@@ -89,42 +89,69 @@ class PodcastUnLikeView(mixins.ListModelMixin,
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PodcastUploadView(mixins.ListModelMixin,
+class PodcastListenView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
-                    mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
-                    generics.GenericAPIView):
-
-    permission_classes = (permissions.IsAdminUser,)
-
+                    generics.GenericAPIView
+                    ):
+    
     def get_object(self, pk):
         return Podcast.objects.get(pk=pk)
+   
+    @csrf_exempt
+    def patch(self, request):
+        
+        podcast_id = request.data['id']
+        podcast = self.get_object(pk=podcast_id)
+        
+        serializer = PodcastListenSerializer(podcast, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+           
+            return Response(serializer.data, status=status.HTTP_200_OK)
+      
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request):
-        data=request.data
-        serializer = PodcastSerializer(data=data)
+
+
+
+# class PodcastUploadView(mixins.ListModelMixin,
+#                     mixins.RetrieveModelMixin,
+#                     mixins.CreateModelMixin,
+#                     mixins.UpdateModelMixin,
+#                     mixins.DestroyModelMixin,
+#                     generics.GenericAPIView):
+
+#     permission_classes = (permissions.IsAdminUser,)
+
+#     def get_object(self, pk):
+#         return Podcast.objects.get(pk=pk)
+
+#     def post(self, request):
+#         data=request.data
+#         serializer = PodcastSerializer(data=data)
        
         
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request):
-        data=request.data
+#     def patch(self, request):
+#         data=request.data
       
-        podcast = self.get_object(pk=data['id'])
+#         podcast = self.get_object(pk=data['id'])
        
-        serializer = PodcastSerializer(podcast, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = PodcastSerializer(podcast, data=data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request):
-        data=request.data
-        podcast = self.get_object(pk=data['id'])
-        podcast.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request):
+#         data=request.data
+#         podcast = self.get_object(pk=data['id'])
+#         podcast.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
       

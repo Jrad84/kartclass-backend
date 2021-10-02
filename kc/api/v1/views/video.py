@@ -89,6 +89,32 @@ class VideoUnLikeView(mixins.ListModelMixin,
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class VideoWatchView(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView
+                    ):
+    
+    def get_object(self, pk):
+        return Video.objects.get(pk=pk)
+   
+    @csrf_exempt
+    def patch(self, request):
+        
+        vid_id = request.data['id']
+        video = self.get_object(pk=vid_id)
+        
+        serializer = VideoViewSerializer(video, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+           
+            return Response(serializer.data, status=status.HTTP_200_OK)
+      
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class VideoUploadView(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,
