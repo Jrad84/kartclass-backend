@@ -201,7 +201,7 @@ class Podcast(models.Model):
     description = models.CharField(max_length=150, null=True, blank=True)
     duration = models.DecimalField(decimal_places=2, max_digits=9, null=True)
     image = models.CharField(max_length=100, null=True)
-    document = models.CharField(max_length=500, null=True)
+    # document = models.CharField(max_length=500, null=True)
     likes = models.IntegerField(default=0)
     listens = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
