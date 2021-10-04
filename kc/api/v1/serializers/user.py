@@ -48,6 +48,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "email",
             "password",
             "mail_list",
+            "popupMyChron",
            
         )
 
@@ -75,7 +76,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "password",
-         
+            
             "checkout"
         )
     

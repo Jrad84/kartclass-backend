@@ -60,6 +60,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     s3_id = models.CharField(max_length=100, null=True, blank=True)
     token = models.CharField(max_length=400, blank=True, null=True)
     checkout = models.CharField(max_length=250, blank=True, null=True)
+    popupMyChron = models.IntegerField(null=True, default=0, blank=True)
   
     mail_list = models.BooleanField(
                 default=False, 
