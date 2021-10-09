@@ -97,6 +97,8 @@ class VideoWatchView(mixins.ListModelMixin,
                     generics.GenericAPIView
                     ):
     
+    serializer_class = VideoViewSerializer
+
     def get_object(self, pk):
         return Video.objects.get(pk=pk)
    
