@@ -39,7 +39,6 @@ class ChargeListView(generics.ListAPIView):
 
         if FREE not in user.category:
             user.category.append(FREE)
-
        
         user.save(update_fields=["checkout", "category", "temp_cat", "is_member", "mail_list"])
 
@@ -58,7 +57,6 @@ class PaymentSuccessView(generics.ListAPIView):
         # if user.temp_cat not in user.category:
         if user.temp_cat is not None:
             user.category.append(user.temp_cat)
-        # user.category = list(set(user.category))
             user.temp_cat = None
             user.checkout = None
             user.save(update_fields=["category", "temp_cat", "checkout"])

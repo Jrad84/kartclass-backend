@@ -51,7 +51,6 @@ urlpatterns = [
      path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
      path('pay-success/', PaymentSuccessView.as_view(), name='pay-success'),
      path('popup/', PopupView.as_view(), name='popup'),
-     
 ]
 
 router = routers.DefaultRouter()
