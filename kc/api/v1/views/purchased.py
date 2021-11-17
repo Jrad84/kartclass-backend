@@ -22,7 +22,8 @@ class PurchasedDatePostView(mixins.ListModelMixin,
     def post(self, request):
         data=request.data
         serializer = PurchasedDateSerializer(data=data)
-
+        print(serializer)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
