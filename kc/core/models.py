@@ -141,6 +141,7 @@ class Video(models.Model):
     image2_url = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     document = models.CharField(max_length=500, null=True, blank=True)
+    release_id = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Video"
@@ -223,4 +224,44 @@ class Podcast(models.Model):
 
 class Charge(models.Model):
     name = models.CharField(max_length=100, blank=True)
-    
+
+
+class Worksheet(models.Model):
+    title = models.CharField(max_length=100)
+    category = models.ManyToManyField(Category, related_name='worksheet_category')
+    slug = models.SlugField(max_length=100, null=True, unique=True)
+    description = models.CharField(max_length=150, null=True, blank=True)
+    image = models.CharField(max_length=100, null=True)
+    document = models.CharField(max_length=500, null=True)
+    likes = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Worksheet"
+        verbose_name_plural = "Worksheet"
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+class PurchasedDate(models.Model):
+    email_validator = EmailValidator()
+    email = models.EmailField(
+        _("email address"),
+        validators=[email_validator],
+        error_messages={"unique": _("A user with that email already exists.")}, 
+    )
+    category = models.ManyToManyField(Category, related_name='purchased_category')
+    purchased = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "PurchasedDate"
+        verbose_name_plural = "PurchasedDate"
+
+    def __str__(self):
+        return self.email
