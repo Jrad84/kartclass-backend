@@ -141,6 +141,7 @@ class Video(models.Model):
     image2_url = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     document = models.CharField(max_length=500, null=True, blank=True)
+    release_id = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Video"
@@ -246,3 +247,21 @@ class Worksheet(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PurchasedDate(models.Model):
+    email_validator = EmailValidator()
+    email = models.EmailField(
+        _("email address"),
+        validators=[email_validator],
+        error_messages={"unique": _("A user with that email already exists.")}, 
+    )
+    category = models.ManyToManyField(Category, related_name='purchased_category')
+    purchased = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "PurchasedDate"
+        verbose_name_plural = "PurchasedDate"
+
+    def __str__(self):
+        return self.email

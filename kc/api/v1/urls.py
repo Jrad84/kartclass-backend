@@ -1,6 +1,8 @@
 
 from django.urls import path, include
+from kc.api.v1.views.purchased import PurchasedDatePostView, PurchasedDateView
 from kc.api.v1.views.worksheet import WorksheetView
+from kc.core.models import PurchasedDate
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *
@@ -54,6 +56,7 @@ urlpatterns = [
      path('upload-blog/', csrf_exempt(BlogUploadView.as_view()), name='upload-blog'),
      path('pay-success/', PaymentSuccessView.as_view(), name='pay-success'),
      path('popup/', PopupView.as_view(), name='popup'),
+     path('post-purchasedDate/', PurchasedDatePostView.as_view(), name='post-purchasedDate'),
 ]
 
 router = routers.DefaultRouter()
@@ -67,6 +70,7 @@ router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
 router.register(r'products', ProductListView)
 router.register(r'worksheets', WorksheetView)
+router.register(r'purchasedDate', PurchasedDateView)
 
 
 
