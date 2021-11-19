@@ -14,7 +14,7 @@ class WorksheetUploadView(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                     generics.GenericAPIView):
 
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
         return Worksheet.objects.get(pk=uid)
