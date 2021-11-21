@@ -16,6 +16,7 @@ class WorksheetSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.image = validated_data.get('image', instance.image)
         instance.document = validated_data.get('document', instance.document)
+        instance.order_id = validated_data.get('order_id', instance.order_id)
 
         instance.save()
         return instance
