@@ -16,9 +16,6 @@ class PurchasedDatePostView(mixins.ListModelMixin,
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get_object(self, pk):
-        return PurchasedDate.objects.get(pk=uid)
-
     def post(self, request):
         data=request.data
         serializer = PurchasedDateSerializer(data=data)

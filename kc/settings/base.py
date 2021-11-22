@@ -100,7 +100,6 @@ INSTALLED_APPS = [
     'kc.api',
     'kc.users',
     'corsheaders',
-    'django_filters',
     'storages',
     'drf_yasg',
   
