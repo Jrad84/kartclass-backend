@@ -61,6 +61,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
     token = models.CharField(max_length=400, blank=True, null=True)
     checkout = models.CharField(max_length=250, blank=True, null=True)
     popupMyChron = models.IntegerField(null=True, default=0, blank=True)
+    purchasedChampions = models.DateTimeField(null=True)
   
     mail_list = models.BooleanField(
                 default=False, 
