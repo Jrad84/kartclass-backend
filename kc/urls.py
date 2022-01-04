@@ -25,12 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/", include('kc.api.v1.urls')),
     path("", include('kc.api.v1.urls')),
-    # path("auth/", include('kc.api.v1.urls'))
-    #   path('auth/', include('djoser.urls')),
-    #  path('auth/', include('djoser.urls.authtoken')),
-    #  path('auth/', include('djoser.urls.jwt')),
-    
-    
+    # ('auth/', include('rest_framework_social_oauth2.urls')),
 ]
 
 

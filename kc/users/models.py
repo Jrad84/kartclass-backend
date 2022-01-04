@@ -1,18 +1,16 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import PermissionDenied
 from django.core.validators import EmailValidator
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-import django.dispatch
-from django.db.models.signals import pre_delete, post_save, pre_save
+from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from kc.users.managers import CustomUserManager
 import jwt
-from kc.core.models import Category, Base, Video
+from kc.core.models import Base
 from django.conf import settings
-import decimal
+
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin, Base):

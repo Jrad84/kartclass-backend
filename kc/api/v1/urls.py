@@ -1,8 +1,7 @@
 
-from django.urls import path, include
+from django.urls import path
 from kc.api.v1.views.purchased import PurchasedDatePostView, PurchasedDateView
 from kc.api.v1.views.worksheet import WorksheetView
-from kc.core.models import PurchasedDate
 from rest_framework import routers
 from kc.api.v1.views.testimonial import TestimonialView
 from kc.api.v1.views.video import *

@@ -19,19 +19,8 @@ from corsheaders.defaults import default_headers
 from django.utils.log import DEFAULT_LOGGING
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-import logging.config
-# import django_heroku
-# import dj_database_url
-# from dj_database_url import parse as db_url
 
-# sentry_sdk.init(
-#     "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
 
-#     # Set traces_sample_rate to 1.0 to capture 100%
-#     # of transactions for performance monitoring.
-#     # We recommend adjusting this value in production.
-#     traces_sample_rate=1.0
-# )
 sentry_sdk.init(
     dsn= "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
     integrations=[DjangoIntegration()],
@@ -103,7 +92,9 @@ INSTALLED_APPS = [
     'django_filters',
     'storages',
     'drf_yasg',
-  
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
   
 ]
 
@@ -132,6 +123,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -172,14 +165,27 @@ REST_FRAMEWORK = {
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        # 'rest_framework_social_oauth2.authentication.SocialAuthentication',
     ),
 
 }
 
+# AUTHENTICATION_BACKENDS = (
+
+#    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+#    'django.contrib.auth.backends.ModelBackend',
+# )
+
+# # SOCIAL AUTH
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True
+# DRFSO2_PROPRIETARY_BACKEND_NAME = 'Facebook'
+# DRFSO2_URL_NAMESPACE = 'social'
+
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
 JWT_AUTH = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1 ),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
     "ROTATE_REFRESH_TOKENS": True, 
     'JWT_ALLOW_REFRESH': True,
