@@ -305,17 +305,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
-
-# Heroku: Update database configuration from $DATABASE_URL.
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgres://jarben:good_password@localhost/kartclass',
-#     ),
-
-# }
-
-#Activate Django-Heroku.
-# django_heroku.settings(locals())
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
