@@ -15,13 +15,17 @@ from kc.api.v1.views.article import *
 from kc.api.v1.views.worksheet import *
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.views.me import *
+# from kc.api.v1.views.facebook import FacebookSocialAuthView
+from kc.api.v1.views.social import FacebookLoginView
 from kc.api.v1.views.payments import *
 from kc.api.v1.views.mail_list import MailListView
 from kc.api.v1.views.product import *
 from kc.api.v1.views.blog import *
 
 urlpatterns = [
-    
+#     path('auth/facebook', FacebookSocialAuthView.as_view(), name='auth'),
+
+   path("auth/social/facebook/", FacebookLoginView.as_view(), name="fb_login"),
    path('auth/token/', csrf_exempt(MyTokenObtainPairView.as_view()),
          name='auth-token-obtain-pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),

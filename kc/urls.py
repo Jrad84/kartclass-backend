@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include        # add this
 from django.conf import settings             # add this
 from django.conf.urls.static import static   # add this
-from django.views.static import serve
+from kc.api.v1.views.social import FacebookLoginView
 
 
 
@@ -25,7 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/", include('kc.api.v1.urls')),
     path("", include('kc.api.v1.urls')),
-    # ('auth/', include('rest_framework_social_oauth2.urls')),
+    path("auth/", include("dj_rest_auth.urls")),
+    path("auth/social/facebook/", FacebookLoginView.as_view(), name="fb_login"),
 ]
 
 

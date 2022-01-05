@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from utils import register_social_user
-import fb
+from kc.utils import register_social_user
+import kc.fb as fb
 
 class FacebookSocialAuthSerializer(serializers.Serializer):
     """Handles serialization of facebook related data"""
@@ -8,6 +8,7 @@ class FacebookSocialAuthSerializer(serializers.Serializer):
 
     def validate_auth_token(self, auth_token):
         user_data = fb.Facebook.validate(auth_token)
+        print(user_data)
 
         try:
             user_id = user_data['id']
