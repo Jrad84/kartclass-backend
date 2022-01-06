@@ -17,7 +17,11 @@ from django.contrib import admin
 from django.urls import path, include        # add this
 from django.conf import settings             # add this
 from django.conf.urls.static import static   # add this
+<<<<<<< Updated upstream
 from django.views.static import serve
+=======
+# from kc.api.v1.views.social import FacebookLoginView
+>>>>>>> Stashed changes
 
 
 
@@ -25,11 +29,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/", include('kc.api.v1.urls')),
     path("", include('kc.api.v1.urls')),
+<<<<<<< Updated upstream
     # path("auth/", include('kc.api.v1.urls'))
     #   path('auth/', include('djoser.urls')),
     #  path('auth/', include('djoser.urls.authtoken')),
     #  path('auth/', include('djoser.urls.jwt')),
     
+=======
+    path('auth/', include('dj_rest_auth.urls')),
+    # path('social-login/facebook/', FacebookLoginView.as_view(), name='facebook_login'),
+>>>>>>> Stashed changes
     
 ]
 

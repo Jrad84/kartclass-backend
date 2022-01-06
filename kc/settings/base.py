@@ -103,8 +103,21 @@ INSTALLED_APPS = [
     'django_filters',
     'storages',
     'drf_yasg',
+<<<<<<< Updated upstream
   
   
+=======
+    'rest_framework.authtoken',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'dj_rest_auth',
+    # 'dj_rest_auth.registration',
+    # 'oauth2_provider',
+    # 'social_django',
+    # 'rest_framework_social_oauth2',
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -117,6 +130,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -132,6 +146,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+<<<<<<< Updated upstream
+=======
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect',
+>>>>>>> Stashed changes
             ],
         },
     },
@@ -172,10 +191,96 @@ REST_FRAMEWORK = {
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+<<<<<<< Updated upstream
+=======
+        # 'dj_rest_auth.utils.JWTCookieAuthentication',
+        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        # 'rest_framework_social_oauth2.authentication.SocialAuthentication',
+
+>>>>>>> Stashed changes
     ),
 
 }
 
+<<<<<<< Updated upstream
+=======
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.facebook.FacebookAppOAuth2',
+#     'social_core.backends.facebook.FacebookOAuth2',
+#     'rest_framework_social_oauth2.backends.DjangoOAuth2',
+#     'django.contrib.auth.backends.ModelBackend',
+   
+# )
+
+# Facebook configuration
+# SOCIAL_AUTH_FACEBOOK_KEY = 477767570532830
+# SOCIAL_AUTH_FACEBOOK_SECRET = 'ae68823eb47a7c389418112c00a4fc2d'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/callback'
+# # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# # Email is not sent by default, to get it, you must request the email permission.
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+#     'fields': 'id, name, email'
+# }
+# SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['first_name', 'last_name','email']
+# FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+# SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+# SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+# SOCIAL_AUTH_PIPELINE = (
+#     'social_core.pipeline.social_auth.social_details',
+#     'social_core.pipeline.social_auth.social_uid',
+#     'social_core.pipeline.social_auth.auth_allowed',
+#     'social_core.pipeline.social_auth.social_user',
+#     'social_core.pipeline.user.get_username',
+#     'social_core.pipeline.social_auth.associate_by_email',
+#     'social_core.pipeline.user.create_user',
+#     'social_core.pipeline.social_auth.associate_user',
+#     'social_core.pipeline.social_auth.load_extra_data',
+#     'social_core.pipeline.user.user_details', 
+# )
+# ALL AUTH
+# SITE_ID = 1
+# ACCOUNT_AUTHENTICATION_METHOD = 'email' 
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = 'none' 
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_LOGOUT_ON_GET = True
+
+# REST_USE_JWT = True
+
+# # SOCIAL AUTH
+# SOCIALACCOUNT_PROVIDERS = {
+#     "facebook": {
+#         "METHOD": "oauth2",
+#         "SCOPE": ["email", "public_profile"],
+#         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+#         "FIELDS": [
+#             "id",
+#             "email",
+#             "name",
+#             "first_name",
+#             "last_name",
+#             "verified",
+#             "locale",
+#             "timezone",
+#             "link",
+#             "gender",
+#             "updated_time",
+#         ],
+#         "EXCHANGE_TOKEN": True,
+#     }
+# }
+
+# Enable GET logout
+# ACCOUNT_LOGOUT_ON_GET = True
+
+# Disable email verification since this is just a test.
+# If you want to enable it, you'll need to configure django-allauth's email confirmation pages
+# SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+# SOCIALACCOUNT_EMAIL_REQUIRED = False
+
+>>>>>>> Stashed changes
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
 JWT_AUTH = {
@@ -188,6 +293,11 @@ JWT_AUTH = {
 
 # SIMPLE_JWT = {
 #    'AUTH_HEADER_TYPES': ('Bearer',),
+#      'ACCESS_TOKEN_LIFETIME': timedelta(hours=1 ),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+#     'ROTATE_REFRESH_TOKENS': True, 
+#     'JWT_ALLOW_REFRESH': True,
+#     'UPDATE_LAST_LOGIN': True,
 # }
 
 
