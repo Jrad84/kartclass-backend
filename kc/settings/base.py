@@ -100,13 +100,8 @@ INSTALLED_APPS = [
     'kc.api',
     'kc.users',
     'corsheaders',
-    'django_filters',
     'storages',
     'drf_yasg',
-<<<<<<< Updated upstream
-  
-  
-=======
     'rest_framework.authtoken',
     # 'allauth',
     # 'allauth.account',
@@ -117,7 +112,6 @@ INSTALLED_APPS = [
     # 'oauth2_provider',
     # 'social_django',
     # 'rest_framework_social_oauth2',
->>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -146,11 +140,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-<<<<<<< Updated upstream
-=======
                 # 'social_django.context_processors.backends',
                 # 'social_django.context_processors.login_redirect',
->>>>>>> Stashed changes
             ],
         },
     },
@@ -191,19 +182,14 @@ REST_FRAMEWORK = {
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-<<<<<<< Updated upstream
-=======
         # 'dj_rest_auth.utils.JWTCookieAuthentication',
         # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
         # 'rest_framework_social_oauth2.authentication.SocialAuthentication',
 
->>>>>>> Stashed changes
     ),
 
 }
 
-<<<<<<< Updated upstream
-=======
 # AUTHENTICATION_BACKENDS = (
 #     'social_core.backends.facebook.FacebookAppOAuth2',
 #     'social_core.backends.facebook.FacebookOAuth2',
@@ -280,7 +266,6 @@ REST_FRAMEWORK = {
 # SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 # SOCIALACCOUNT_EMAIL_REQUIRED = False
 
->>>>>>> Stashed changes
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
 JWT_AUTH = {
