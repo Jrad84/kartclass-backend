@@ -55,20 +55,20 @@ class PaymentSuccessView(generics.ListAPIView):
 
         user = CustomUser.objects.get(email=request.user)
         
-        if user.temp_cat == 8:
-            print("yes")
-            print(datetime.now())
-            user.purchasedChampions = datetime.now()
-            user.save(update_fields=["purchasedChampions"])
-
-        # if user.temp_cat not in user.category:
         if user.temp_cat is not None:
-            user.category.append(user.temp_cat)
-            user.temp_cat = None
-            user.checkout = None
-            user.save(update_fields=["category", "temp_cat", "checkout"])
+            #if user.temp_cat == 8:
+            #    print("yes")
+            #    print(datetime.now())
+            #    user.purchasedChampions = datetime.now()
+            #    user.save(update_fields=["purchasedChampions"])
 
-            return Response({'temp_cat': user.temp_cat, 'category': user.category}, status=status.HTTP_200_OK)
+            if user.temp_cat not in user.category:
+                user.category.append(user.temp_cat)
+                user.temp_cat = None
+                user.checkout = None
+                user.save(update_fields=["category", "temp_cat", "checkout"])
+
+                return Response({'temp_cat': user.temp_cat, 'category': user.category}, status=status.HTTP_200_OK)
         
 
         error = "Failed to update category"
