@@ -2,6 +2,7 @@ from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from kc.users.models import CustomUser
 from kc.api.v1.serializers.payments import ChargeSerializer
+from datetime import datetime, timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -54,6 +55,12 @@ class PaymentSuccessView(generics.ListAPIView):
 
         user = CustomUser.objects.get(email=request.user)
         
+        if user.temp_cat == 8:
+            print("yes")
+            print(datetime.now())
+            user.purchasedChampions = datetime.now()
+            user.save(update_fields=["purchasedChampions"])
+
         # if user.temp_cat not in user.category:
         if user.temp_cat is not None:
             user.category.append(user.temp_cat)
@@ -63,6 +70,7 @@ class PaymentSuccessView(generics.ListAPIView):
 
             return Response({'temp_cat': user.temp_cat, 'category': user.category}, status=status.HTTP_200_OK)
         
+
         error = "Failed to update category"
                 
         return Response(error, status=status.HTTP_400_BAD_REQUEST)

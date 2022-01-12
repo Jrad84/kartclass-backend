@@ -14,7 +14,7 @@ class PurchasedDatePostView(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                     generics.GenericAPIView):
 
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
         return PurchasedDate.objects.get(pk=uid)
