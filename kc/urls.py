@@ -25,8 +25,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/", include('kc.api.v1.urls')),
     path("", include('kc.api.v1.urls')),
+    path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
     # path('auth/', include('dj_rest_auth.urls')),
-    # path('social-login/facebook/', FacebookLoginView.as_view(), name='facebook_login'),
+    # path('auth/social/facebook/', FacebookLoginView.as_view(), name='facebook_login'),
+    # path('accounts/', include('allauth.urls'))
     
 ]
 

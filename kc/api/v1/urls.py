@@ -16,7 +16,7 @@ from kc.api.v1.views.article import *
 from kc.api.v1.views.worksheet import *
 from django.views.decorators.csrf import csrf_exempt
 from kc.api.v1.views.me import *
-from kc.api.v1.views.facebook import FacebookSocialAuthView
+# from kc.api.v1.views.facebook import FacebookSocialAuthView
 # from kc.api.v1.views.social import FacebookLoginView
 from kc.api.v1.views.payments import *
 from kc.api.v1.views.mail_list import MailListView
@@ -24,16 +24,16 @@ from kc.api.v1.views.product import *
 from kc.api.v1.views.blog import *
 
 urlpatterns = [
-     path('auth/facebook/', FacebookSocialAuthView.as_view(), name='auth'),
+    #  path('auth/facebook/', FacebookSocialAuthView.as_view(), name='auth'),
      # path('auth/oauth/', include('rest_framework_social_oauth2.urls')),
 #    path("oauth/login/", SocialLoginView.as_view(), name="fb_login"),
      # path("auth/social/facebook/", FacebookLoginView.as_view(), name="fb_login"),
-     path('auth/token/', csrf_exempt(MyTokenObtainPairView.as_view()),
-         name='auth-token-obtain-pair'),
-     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
-         name='auth-token-refresh'),
-     path('auth/token/verify', jwt_views.TokenVerifyView.as_view(),
-          name='auth-token-verify'),
+    #  path('auth/token/', csrf_exempt(MyTokenObtainPairView.as_view()),
+    #      name='auth-token-obtain-pair'),
+    #  path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(),
+    #      name='auth-token-refresh'),
+    #  path('auth/token/verify', jwt_views.TokenVerifyView.as_view(),
+    #       name='auth-token-verify'),
      path('auth/logout/', LogoutView.as_view(), name='logout'),
      path('me/', MeView.as_view(), name='me'),   
      path('edit-password/', ChangePasswordView.as_view(), name='edit-password'),
@@ -71,7 +71,7 @@ router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
-router.register(r'accounts', UserViewSet)
+# router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
 router.register(r'products', ProductListView)
 router.register(r'worksheets', WorksheetView)

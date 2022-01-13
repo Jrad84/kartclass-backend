@@ -4,11 +4,11 @@ import kc.fb as fb
 
 class FacebookSocialAuthSerializer(serializers.Serializer):
     """Handles serialization of facebook related data"""
-    auth_token = serializers.CharField()
+    code = serializers.CharField()
 
-    def validate_auth_token(self, auth_token):
-        user_data = fb.Facebook.validate(auth_token)
-        print(user_data)
+    def validate_auth_token(self, code):
+        user_data = fb.Facebook.validate(code)
+        print('serializer class: ', user_data)
 
         try:
             user_id = user_data['id']

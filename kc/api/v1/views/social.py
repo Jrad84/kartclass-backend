@@ -6,7 +6,7 @@
 # class FacebookLoginView(SocialLoginView):
 #     authentication_classes = []
 #     adapter_class = FacebookOAuth2Adapter
-#     callback_url = "http://localhost:3000/callback"
+#     callback_url = "http://localhost:3000/login"
 #     client_class = OAuth2Client
 #     print(adapter_class)
 

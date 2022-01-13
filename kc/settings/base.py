@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.sites',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -109,9 +110,9 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.facebook',
     # 'dj_rest_auth',
     # 'dj_rest_auth.registration',
-    # 'oauth2_provider',
-    # 'social_django',
-    # 'rest_framework_social_oauth2',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +125,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'social_django.middleware.SocialAuthExceptionMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -140,8 +141,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'social_django.context_processors.backends',
-                # 'social_django.context_processors.login_redirect',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -181,49 +182,53 @@ REST_FRAMEWORK = {
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'dj_rest_auth.utils.JWTCookieAuthentication',
-        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
-        # 'rest_framework_social_oauth2.authentication.SocialAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
 
     ),
 
 }
 
-# AUTHENTICATION_BACKENDS = (
-#     'social_core.backends.facebook.FacebookAppOAuth2',
-#     'social_core.backends.facebook.FacebookOAuth2',
-#     'rest_framework_social_oauth2.backends.DjangoOAuth2',
-#     'django.contrib.auth.backends.ModelBackend',
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend',
    
-# )
+)
 
 # Facebook configuration
-# SOCIAL_AUTH_FACEBOOK_KEY = 477767570532830
-# SOCIAL_AUTH_FACEBOOK_SECRET = 'ae68823eb47a7c389418112c00a4fc2d'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/callback'
-# # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
-# # Email is not sent by default, to get it, you must request the email permission.
-# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-#     'fields': 'id, name, email'
-# }
+DRFSO2_PROPRIETARY_BACKEND_NAME= 'Facebook'
+DRFSO2_URL_NAMESPACE = 'drf'
+ACTIVATE_JWT = True
+SOCIAL_AUTH_FACEBOOK_KEY = '477767570532830'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'ae68823eb47a7c389418112c00a4fc2d'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/login/'
+# # # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# # # Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
 # SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['first_name', 'last_name','email']
 # FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 # SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
-# SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
-# SOCIAL_AUTH_PIPELINE = (
-#     'social_core.pipeline.social_auth.social_details',
-#     'social_core.pipeline.social_auth.social_uid',
-#     'social_core.pipeline.social_auth.auth_allowed',
-#     'social_core.pipeline.social_auth.social_user',
-#     'social_core.pipeline.user.get_username',
-#     'social_core.pipeline.social_auth.associate_by_email',
-#     'social_core.pipeline.user.create_user',
-#     'social_core.pipeline.social_auth.associate_user',
-#     'social_core.pipeline.social_auth.load_extra_data',
-#     'social_core.pipeline.user.user_details', 
-# )
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details', 
+)
 # ALL AUTH
 # SITE_ID = 1
 # ACCOUNT_AUTHENTICATION_METHOD = 'email' 
@@ -235,12 +240,12 @@ REST_FRAMEWORK = {
 
 # REST_USE_JWT = True
 
-# # SOCIAL AUTH
+# # # SOCIAL AUTH
 # SOCIALACCOUNT_PROVIDERS = {
 #     "facebook": {
 #         "METHOD": "oauth2",
 #         "SCOPE": ["email", "public_profile"],
-#         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+#         # 'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
 #         "FIELDS": [
 #             "id",
 #             "email",
@@ -268,13 +273,13 @@ REST_FRAMEWORK = {
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
-JWT_AUTH = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
-    "ROTATE_REFRESH_TOKENS": True, 
-    'JWT_ALLOW_REFRESH': True,
+# JWT_AUTH = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+#     "ROTATE_REFRESH_TOKENS": True, 
+#     'JWT_ALLOW_REFRESH': True,
 
-}
+# }
 
 # SIMPLE_JWT = {
 #    'AUTH_HEADER_TYPES': ('Bearer',),
@@ -401,17 +406,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
-
-# Heroku: Update database configuration from $DATABASE_URL.
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgres://jarben:good_password@localhost/kartclass',
-#     ),
-
-# }
-
-#Activate Django-Heroku.
-# django_heroku.settings(locals())
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
