@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 FREE = 6 # id of Free Category
+SPROKETS = 12 # id of Junior Sprokets Category
 
 
 class ChargeListView(generics.ListAPIView):
@@ -23,7 +24,6 @@ class ChargeListView(generics.ListAPIView):
       
         # only if checkout required
         if request.data.get('temp') is not None:
-         
             user.temp_cat = request.data.get('temp')
             user.checkout = request.data.get('checkout')
 
@@ -37,6 +37,9 @@ class ChargeListView(generics.ListAPIView):
 
         user.mail_list = mail_list
         user.is_member = True
+
+        if request.data.get('sprokets') == 1 and SPROKETS not in user.category:
+            user.category.append(SPROKETS)
 
         if FREE not in user.category:
             user.category.append(FREE)
@@ -56,11 +59,9 @@ class PaymentSuccessView(generics.ListAPIView):
         user = CustomUser.objects.get(email=request.user)
         
         if user.temp_cat is not None:
-            #if user.temp_cat == 8:
-            #    print("yes")
-            #    print(datetime.now())
-            #    user.purchasedChampions = datetime.now()
-            #    user.save(update_fields=["purchasedChampions"])
+            if user.temp_cat == 8:
+                user.purchasedChampions = datetime.now()
+                user.save(update_fields=["purchasedChampions"])
 
             if user.temp_cat not in user.category:
                 user.category.append(user.temp_cat)
