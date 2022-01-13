@@ -235,6 +235,7 @@ class Worksheet(models.Model):
     document = models.CharField(max_length=500, null=True)
     likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    order_id = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Worksheet"
