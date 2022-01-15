@@ -19,19 +19,9 @@ from corsheaders.defaults import default_headers
 from django.utils.log import DEFAULT_LOGGING
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-import logging.config
-# import django_heroku
-# import dj_database_url
-# from dj_database_url import parse as db_url
 
-# sentry_sdk.init(
-#     "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
+DEBUG = True
 
-#     # Set traces_sample_rate to 1.0 to capture 100%
-#     # of transactions for performance monitoring.
-#     # We recommend adjusting this value in production.
-#     traces_sample_rate=1.0
-# )
 sentry_sdk.init(
     dsn= "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
     integrations=[DjangoIntegration()],
@@ -56,13 +46,10 @@ BASE_DIR = Path(__file__).parent
 
 DEBUG = False
 
-# add the following just below STATIC_URL
-MEDIA_URL = '/media/'  # add this
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # add this
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
 ROOT_URLCONF = 'kc.urls'
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -76,13 +63,9 @@ ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
     "localhost",
-    "http://127.0.0.1:3000/",
     "104.156.232.113",
     "https://kartclass-engine.xyz",
      "https://www.kartclass.com/",
-     "https://www.kartclass.com/login"
-     "https://kart-class.myshopify.com/",
-  
      ]
 
 
@@ -104,12 +87,6 @@ INSTALLED_APPS = [
     'storages',
     'drf_yasg',
     'rest_framework.authtoken',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.facebook',
-    # 'dj_rest_auth',
-    # 'dj_rest_auth.registration',
     'oauth2_provider',
     'social_django',
     'drf_social_oauth2',
@@ -183,21 +160,21 @@ REST_FRAMEWORK = {
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'dj_rest_auth.utils.JWTCookieAuthentication',
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
-        'rest_framework_social_oauth2.authentication.SocialAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'drf_social_oauth2.authentication.SocialAuthentication',
 
     ),
 
 }
 
 AUTHENTICATION_BACKENDS = (
+    # # Facebook OAuth2
     'social_core.backends.facebook.FacebookAppOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.orcid.ORCIDOAuth2',
     'drf_social_oauth2.backends.DjangoOAuth2',
+    # Django
     'django.contrib.auth.backends.ModelBackend',
-    # 'allauth.account.auth_backends.AuthenticationBackend',
-   
 )
 
 # Facebook configuration
@@ -213,6 +190,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id, name, email'
 }
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '12.0'
 # SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['first_name', 'last_name','email']
 # FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 # SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
@@ -229,47 +207,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details', 
 )
-# ALL AUTH
-# SITE_ID = 1
-# ACCOUNT_AUTHENTICATION_METHOD = 'email' 
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = 'none' 
-# ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-# ACCOUNT_LOGOUT_ON_GET = True
 
-# REST_USE_JWT = True
-
-# # # SOCIAL AUTH
-# SOCIALACCOUNT_PROVIDERS = {
-#     "facebook": {
-#         "METHOD": "oauth2",
-#         "SCOPE": ["email", "public_profile"],
-#         # 'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-#         "FIELDS": [
-#             "id",
-#             "email",
-#             "name",
-#             "first_name",
-#             "last_name",
-#             "verified",
-#             "locale",
-#             "timezone",
-#             "link",
-#             "gender",
-#             "updated_time",
-#         ],
-#         "EXCHANGE_TOKEN": True,
-#     }
-# }
-
-# Enable GET logout
-# ACCOUNT_LOGOUT_ON_GET = True
-
-# Disable email verification since this is just a test.
-# If you want to enable it, you'll need to configure django-allauth's email confirmation pages
-# SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
-# SOCIALACCOUNT_EMAIL_REQUIRED = False
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
