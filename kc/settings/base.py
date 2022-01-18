@@ -59,7 +59,6 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 ALLOWED_HOSTS = [
-
     "0.0.0.0",
     "127.0.0.1",
     "localhost",
@@ -178,12 +177,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-DRFSO2_PROPRIETARY_BACKEND_NAME= 'Facebook'
-DRFSO2_URL_NAMESPACE = 'drf'
+# DRFSO2_PROPRIETARY_BACKEND_NAME= 'facebook'
+# DRFSO2_URL_NAMESPACE = 'drf'
 ACTIVATE_JWT = True
 SOCIAL_AUTH_FACEBOOK_KEY = '477767570532830'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'ae68823eb47a7c389418112c00a4fc2d'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/login/'
+
 # # # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
 # # # Email is not sent by default, to get it, you must request the email permission.
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']

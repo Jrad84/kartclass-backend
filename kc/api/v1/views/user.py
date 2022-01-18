@@ -102,7 +102,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
                 return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
             error = "No user found with that email address"
                 
-        return Response(error, status=status.HTTP_400_BAD_REQUEST)
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
