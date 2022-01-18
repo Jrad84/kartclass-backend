@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 FREE = 6 # id of Free Category
 SPROKETS = 12 # id of Junior Sprokets Category
+NKA = 13 # id of NKA Category
 
 
 class ChargeListView(generics.ListAPIView):
@@ -40,6 +41,9 @@ class ChargeListView(generics.ListAPIView):
 
         if request.data.get('sprokets') == 1 and SPROKETS not in user.category:
             user.category.append(SPROKETS)
+
+        if request.data.get('sprokets') == 2 and NKA not in user.category:
+            user.category.append(NKA)
 
         if FREE not in user.category:
             user.category.append(FREE)
