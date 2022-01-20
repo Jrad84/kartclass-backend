@@ -190,9 +190,6 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id, name, email'
 }
 SOCIAL_AUTH_FACEBOOK_API_VERSION = '12.0'
-# SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['first_name', 'last_name','email']
-# FACEBOOK_EXTENDED_PERMISSIONS = ['email']
-# SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -206,17 +203,18 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details', 
 )
-
+SOCIAL_AUTH_ACCESS_TOKEN_EXPIRE_SECONDS=720000
+SOCIAL_AUTH_REFRESH_TOKEN_EXPIRE_SECONDS=1500000
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
-# JWT_AUTH = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
-#     "ROTATE_REFRESH_TOKENS": True, 
-#     'JWT_ALLOW_REFRESH': True,
+JWT_AUTH = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+    "ROTATE_REFRESH_TOKENS": True, 
+    'JWT_ALLOW_REFRESH': True,
 
-# }
+}
 
 # SIMPLE_JWT = {
 #    'AUTH_HEADER_TYPES': ('Bearer',),
