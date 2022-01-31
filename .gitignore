@@ -5,3 +5,4 @@ kc/media/
 .vscode
 kc/kc/settings/.env
 kc/kc/__pycache__/*
+venv/
