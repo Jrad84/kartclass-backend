@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
+    # 'django_extensions',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -158,10 +158,8 @@ REST_FRAMEWORK = {
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'drf_social_oauth2.authentication.SocialAuthentication',
-
     ),
 
 }
@@ -177,20 +175,18 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-# DRFSO2_PROPRIETARY_BACKEND_NAME= 'facebook'
+# DRFSO2_PROPRIETARY_BACKEND_NAME= 'kartclass - Test'
 # DRFSO2_URL_NAMESPACE = 'drf'
 ACTIVATE_JWT = True
-SOCIAL_AUTH_FACEBOOK_KEY = '477767570532830'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'ae68823eb47a7c389418112c00a4fc2d'
-
-# # # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
-# # # Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_KEY = '1372045463251568'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'fe0e9aeac072cb939baa6f0a609caa34'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email'
+    'fields': 'first_name, last_name, email'
 }
-SOCIAL_AUTH_FACEBOOK_API_VERSION = '12.0'
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '13.0'
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_USER_MODEL = 'users.CustomUser'
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
@@ -199,6 +195,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
+    # 'social_core.pipeline.user.cleanup_social_account',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details', 

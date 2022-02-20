@@ -71,13 +71,11 @@ router.register(r'blogs', BlogListView)
 router.register(r'testimonials', TestimonialView)
 router.register(r'categories', CategoryView)
 router.register(r'articles', ArticleView)
-# router.register(r'accounts', UserViewSet)
+router.register(r'accounts', UserViewSet)
 router.register(r'edit-user', UpdateUserView, basename='edit-user')
 router.register(r'products', ProductListView)
 router.register(r'worksheets', WorksheetView)
 router.register(r'purchasedDate', PurchasedDateView)
-
-
 
 
 urlpatterns.extend(router.urls)
