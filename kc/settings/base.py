@@ -77,7 +77,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django_extensions',
     'rest_framework',
     'kc.core',
     'kc.api',
@@ -178,8 +177,8 @@ AUTHENTICATION_BACKENDS = (
 # DRFSO2_PROPRIETARY_BACKEND_NAME= 'kartclass - Test'
 # DRFSO2_URL_NAMESPACE = 'drf'
 ACTIVATE_JWT = True
-SOCIAL_AUTH_FACEBOOK_KEY = '1372045463251568'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'fe0e9aeac072cb939baa6f0a609caa34'
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_ID')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'first_name, last_name, email'
@@ -195,13 +194,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
-    # 'social_core.pipeline.user.cleanup_social_account',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details', 
 )
-SOCIAL_AUTH_ACCESS_TOKEN_EXPIRE_SECONDS=720000
-SOCIAL_AUTH_REFRESH_TOKEN_EXPIRE_SECONDS=1500000
+SOCIAL_AUTH_ACCESS_TOKEN_EXPIRE_SECONDS=60*60*60
+SOCIAL_AUTH_REFRESH_TOKEN_EXPIRE_SECONDS=60*60*60*60
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
@@ -212,16 +210,6 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
 
 }
-
-# SIMPLE_JWT = {
-#    'AUTH_HEADER_TYPES': ('Bearer',),
-#      'ACCESS_TOKEN_LIFETIME': timedelta(hours=1 ),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
-#     'ROTATE_REFRESH_TOKENS': True, 
-#     'JWT_ALLOW_REFRESH': True,
-#     'UPDATE_LAST_LOGIN': True,
-# }
-
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = config('EMAIL_HOST')
