@@ -86,6 +86,7 @@ class Category(models.Model):
     step2_description  = models.CharField(max_length=200, null=True, blank=True)
     step3_title  = models.CharField(max_length=50, null=True, blank=True)
     step3_description  = models.CharField(max_length=200, null=True, blank=True)
+    meta = models.CharField(max_length=160, null=False, blank=True)
     image = models.CharField(max_length=100, null=True)
     category_image = models.CharField(max_length=100, null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
