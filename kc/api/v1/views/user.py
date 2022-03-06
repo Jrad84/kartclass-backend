@@ -92,7 +92,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
                 # CHANGE HERE FOR DEV / PROD
                 absurl = current_site + relativeLink 
                
-                email_body = 'Hey ' + user.fname +', \n Use the link below to reset your password  \n' + \
+                email_body = 'Hey ' + user.first_name +', \n Use the link below to reset your password  \n' + \
                     absurl+"?redirect_url="+redirect_url
                 data = {'email_body': email_body, 'to_email': (user.email, ''),
                         'email_subject': 'Reset your KartClass password'}
