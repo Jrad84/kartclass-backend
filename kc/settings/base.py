@@ -19,19 +19,9 @@ from corsheaders.defaults import default_headers
 from django.utils.log import DEFAULT_LOGGING
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-import logging.config
-# import django_heroku
-# import dj_database_url
-# from dj_database_url import parse as db_url
 
-# sentry_sdk.init(
-#     "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
+DEBUG = True
 
-#     # Set traces_sample_rate to 1.0 to capture 100%
-#     # of transactions for performance monitoring.
-#     # We recommend adjusting this value in production.
-#     traces_sample_rate=1.0
-# )
 sentry_sdk.init(
     dsn= "https://cce30515b72046d09ac3168af38646d5@o969238.ingest.sentry.io/5920408",
     integrations=[DjangoIntegration()],
@@ -56,13 +46,10 @@ BASE_DIR = Path(__file__).parent
 
 DEBUG = False
 
-# add the following just below STATIC_URL
-MEDIA_URL = '/media/'  # add this
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # add this
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
 ROOT_URLCONF = 'kc.urls'
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -72,17 +59,12 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 ALLOWED_HOSTS = [
-
     "0.0.0.0",
     "127.0.0.1",
     "localhost",
-    "http://127.0.0.1:3000/",
     "104.156.232.113",
     "https://kartclass-engine.xyz",
      "https://www.kartclass.com/",
-     "https://www.kartclass.com/login"
-     "https://kart-class.myshopify.com/",
-  
      ]
 
 
@@ -100,11 +82,12 @@ INSTALLED_APPS = [
     'kc.api',
     'kc.users',
     'corsheaders',
-    'django_filters',
     'storages',
     'drf_yasg',
-  
-  
+    'rest_framework.authtoken',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +100,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -132,6 +116,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -171,10 +157,47 @@ REST_FRAMEWORK = {
          ),
 
    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'drf_social_oauth2.authentication.SocialAuthentication',
     ),
 
 }
+
+AUTHENTICATION_BACKENDS = (
+    # # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.orcid.ORCIDOAuth2',
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    # Django
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Facebook configuration
+ACTIVATE_JWT = True
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_ID')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_SECRET')
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'first_name, last_name, email'
+}
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '13.0'
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_USER_MODEL = 'users.CustomUser'
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details', 
+)
+SOCIAL_AUTH_ACCESS_TOKEN_EXPIRE_SECONDS=60*60*60
+SOCIAL_AUTH_REFRESH_TOKEN_EXPIRE_SECONDS=60*60*60*60
 
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html
 # Change token expiry after launch
@@ -185,11 +208,6 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
 
 }
-
-# SIMPLE_JWT = {
-#    'AUTH_HEADER_TYPES': ('Bearer',),
-# }
-
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = config('EMAIL_HOST')
@@ -306,17 +324,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
-
-# Heroku: Update database configuration from $DATABASE_URL.
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgres://jarben:good_password@localhost/kartclass',
-#     ),
-
-# }
-
-#Activate Django-Heroku.
-# django_heroku.settings(locals())
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",

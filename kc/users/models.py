@@ -33,8 +33,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, Base):
         validators=[email_validator],
         error_messages={"unique": _("A user with that email already exists.")}, 
     )
-    fname = models.CharField(_("first name"), max_length=80, default='')
-    lname = models.CharField(_("last name"), max_length=80, default='')
+    first_name = models.CharField(_("first name"), max_length=80, default='')
+    last_name = models.CharField(_("last name"), max_length=80, default='')
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,

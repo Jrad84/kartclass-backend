@@ -92,7 +92,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
                 # CHANGE HERE FOR DEV / PROD
                 absurl = current_site + relativeLink 
                
-                email_body = 'Hey ' + user.fname +', \n Use the link below to reset your password  \n' + \
+                email_body = 'Hey ' + user.first_name +', \n Use the link below to reset your password  \n' + \
                     absurl+"?redirect_url="+redirect_url
                 data = {'email_body': email_body, 'to_email': (user.email, ''),
                         'email_subject': 'Reset your KartClass password'}
@@ -102,7 +102,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
                 return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
             error = "No user found with that email address"
                 
-        return Response(error, status=status.HTTP_400_BAD_REQUEST)
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
